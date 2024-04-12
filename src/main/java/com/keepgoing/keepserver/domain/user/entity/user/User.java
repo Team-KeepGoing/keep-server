@@ -64,4 +64,9 @@ public class User {
         }
         return user;
     }
+
+    public void fixUserData(String email, String name) {
+        this.email = email;
+        this.name = name;
+    }
 }
