@@ -3,6 +3,7 @@ package com.keepgoing.keepserver.domain.user.service.user;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.domain.user.exception.CustomException;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
+import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +47,21 @@ public class UserServiceImpl implements UserService {
                 signupRequest.getName(), roleService.getDefaultRole()
         );
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void fixUserData(UserInfoRequest request, String email) {
+        Optional<User> user = userRepository.findByEmailEquals(email);
+
+        System.out.println(user);
+
+        user.ifPresent(value -> {
+            value.fixUserData(
+                    request.getEmail(),
+                    request.getName()
+            );
+            userRepository.save(value);
+        });
     }
 
     /* 인증 및 JWT 토큰 생성 */
