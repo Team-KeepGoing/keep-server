@@ -2,10 +2,7 @@ package com.keepgoing.keepserver.domain.device.entity.device;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -28,19 +25,26 @@ public class Device {
     /*
         기기 종류
     */
-    @Column(nullable = false)
+    @Column
     private String category;
 
     /*
-        기기 등록일
+        기기 사진
     */
-    @CreatedDate
     @Column(nullable = false)
-    private LocalDateTime registration_date;
+    private String imgUrl;
 
     /*
         기기 대여 상태
     */
     @Column(nullable = false)
     private int status;  /* 1 대여 가능, 2 대여 불가능 */
+
+    @Builder
+    public Device(String device_name, String category, int status, String imgUrl) {
+        this.device_name = device_name;
+        this.category = category;
+        this.status = status;
+        this.imgUrl = imgUrl;
+    }
 }
