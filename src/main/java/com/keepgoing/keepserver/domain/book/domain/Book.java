@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.book;
+package com.keepgoing.keepserver.domain.book.domain;
 
 
 import jakarta.persistence.*;
@@ -31,7 +31,7 @@ public class Book {
     private Date registrationDate;
 
     @Column(nullable = false)
-    private String state;
+    private String state; //대여 불가능시 '1' 대여 가능시 '0'
 
     @Builder
     public Book(long id, String name, String nfcCode, String writer, Date registrationDate, String state) {
