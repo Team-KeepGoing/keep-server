@@ -6,6 +6,6 @@ import lombok.Builder;
 public record DeviceResponseDto(
         Long id,
         String device_name,
-        String category,
+        String imgUrl,
         int status) {
 }

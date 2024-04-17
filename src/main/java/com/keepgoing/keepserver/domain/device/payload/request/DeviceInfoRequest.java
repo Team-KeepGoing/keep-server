@@ -14,6 +14,9 @@ public class DeviceInfoRequest {
     /* 기기 이름 */
     private String device_name;
 
+    /* 기기 사진 */
+    private String imgUrl;
+
     /* 기기 대여 상태 */
     private int status;
 }
