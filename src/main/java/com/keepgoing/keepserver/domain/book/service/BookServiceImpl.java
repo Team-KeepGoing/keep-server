@@ -12,6 +12,7 @@ import java.util.Date;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private final Book book;
     Date today = new Date();
 
     @Override
@@ -27,8 +28,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ArrayList<Book> selectAllContent() {
-        return null;
+    public ArrayList<Book> selectAllBook() {
+        return (ArrayList<Book>) bookRepository.findAll();
+
     }
 
     @Override
