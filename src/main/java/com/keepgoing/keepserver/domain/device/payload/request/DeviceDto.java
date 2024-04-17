@@ -8,7 +8,6 @@ import lombok.Getter;
 public class DeviceDto {
     private Long id;
     private String device_name;
-    private String category;
     private String imgUrl;
     private int status;
 
