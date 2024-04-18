@@ -71,7 +71,7 @@ public class DeviceServiceImpl implements DeviceService {
         BaseResponse baseResponse = new BaseResponse();
 
         String userName = userRepository.findByEmail(authentication.name()).orElseThrow(DeviceException::userNotFound).getEmail();
-        List<Device> devices = deviceRepository.findByDeviceUserNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
+        List<Device> devices = deviceRepository.findByDeviceNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
 
         List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>(devices.stream()
                 .map(this::entityToDto)
