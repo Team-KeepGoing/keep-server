@@ -20,13 +20,7 @@ public class Device {
         기기 이름
     */
     @Column(nullable = false)
-    private String device_name;
-
-    /*
-        기기 종류
-    */
-    @Column
-    private String category;
+    private String deviceName;
 
     /*
         기기 사진
@@ -41,9 +35,8 @@ public class Device {
     private int status;  /* 1 대여 가능, 2 대여 불가능 */
 
     @Builder
-    public Device(String device_name, String category, int status, String imgUrl) {
-        this.device_name = device_name;
-        this.category = category;
+    public Device(String deviceName, int status, String imgUrl) {
+        this.deviceName = deviceName;
         this.status = status;
         this.imgUrl = imgUrl;
     }

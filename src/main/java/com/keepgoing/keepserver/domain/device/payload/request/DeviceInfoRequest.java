@@ -12,7 +12,10 @@ public class DeviceInfoRequest {
     private Long id;
 
     /* 기기 이름 */
-    private String device_name;
+    private String deviceName;
+
+    /* 기기 사진 */
+    private String imgUrl;
 
     /* 기기 대여 상태 */
     private int status;
