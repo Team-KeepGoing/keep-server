@@ -26,7 +26,6 @@ public class BookController {
                 HttpStatus.OK,
                 "Book Adding Successful"
         );
-
     }
 
     @GetMapping("/allBook")
@@ -36,6 +35,17 @@ public class BookController {
                 (ArrayList<Book>) bookService.selectAllBook()
         );
     }
+
+    @PostMapping("/deleteBook")
+    public CustomResponseEntity<String> deleteBookByName(String name){
+        bookService.deleteBook(name);
+        return new CustomResponseEntity<String>(
+                HttpStatus.OK,
+                "delete Successful"
+        );
+    }
+
+
 
 
 

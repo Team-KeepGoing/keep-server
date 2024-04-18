@@ -9,5 +9,5 @@ public interface BookService {
     public List<Book> selectAllBook();
     public Book selectByTitle(String title);
     public void editBook(Book book);
-    public void deleteBook(String book);
+    public void deleteBook(String name);
 }

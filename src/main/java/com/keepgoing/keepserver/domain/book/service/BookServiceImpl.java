@@ -12,7 +12,6 @@ import java.util.Date;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-    private final Book book;
     Date today = new Date();
 
     @Override
@@ -44,7 +43,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBook(String book) {
-
+    public void deleteBook(String name) {
+        bookRepository.deleteBookByName(name);
     }
 }

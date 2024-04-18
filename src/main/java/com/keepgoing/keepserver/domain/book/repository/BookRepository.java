@@ -8,8 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    public List<Book> FindByName(String name);
-
-    public List<Book> FindByNfc(String nfcCode);
-    public List<Book> getAll();
+    public List<Book> findAllByName(String name);
+    public String deleteBookByName(String name);
 }
