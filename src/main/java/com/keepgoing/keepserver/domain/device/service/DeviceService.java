@@ -25,7 +25,7 @@ public interface DeviceService {
 
     default Device dtoToEntity(DeviceDto dto){
         return Device.builder()
-                .device_name(dto.getDevice_name())
+                .deviceName(dto.getDeviceName())
                 .status(dto.getStatus())
                 .imgUrl(dto.getImgUrl())
                 .build();
@@ -34,7 +34,7 @@ public interface DeviceService {
     default DeviceResponseDto entityToDto(Device entity){
         return DeviceResponseDto.builder()
                 .id(entity.getId())
-                .device_name((entity.getDevice_name()))
+                .deviceName((entity.getDeviceName()))
                 .status(entity.getStatus())
                 .build();
     }

@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class DeviceDto {
     private Long id;
-    private String device_name;
+    private String deviceName;
     private String imgUrl;
     private int status;
 
