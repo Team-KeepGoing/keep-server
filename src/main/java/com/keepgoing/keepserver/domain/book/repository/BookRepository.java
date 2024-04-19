@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.book.repository;
 
-import com.keepgoing.keepserver.domain.book.domain.Book;
+import com.keepgoing.keepserver.domain.book.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

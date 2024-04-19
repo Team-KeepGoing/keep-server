@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.book.domain;
+package com.keepgoing.keepserver.domain.book.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

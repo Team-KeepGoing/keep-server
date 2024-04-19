@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.book.service;
 
-import com.keepgoing.keepserver.domain.book.domain.Book;
+import com.keepgoing.keepserver.domain.book.entity.Book;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,15 +32,6 @@ public class BookServiceImpl implements BookService {
 
     }
 
-    @Override
-    public Book selectByTitle(String title) {
-        return null;
-    }
-
-    @Override
-    public void editBook(Book book) {
-
-    }
 
     @Override
     public void deleteBook(String name) {
