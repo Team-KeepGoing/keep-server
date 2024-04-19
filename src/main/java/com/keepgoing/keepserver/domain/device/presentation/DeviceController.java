@@ -19,14 +19,14 @@ public class DeviceController {
     private final DeviceService deviceService;
 
     @Operation(summary = "기자재 리스트", description = "기자재 리스트를 확인합니다.")
-    @GetMapping("/all")
+    @GetMapping("/list")
     public ResponseEntity<BaseResponse> allReport(){
         return deviceService.findAll();
     }
 
     @Operation(summary = "선택한 기자재", description = "선택한 기자재의 정보를 확인합니다.")
-    @GetMapping("/{id}")
-    public ResponseEntity<BaseResponse> DeviceRead(@PathVariable("id") Long id){
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<BaseResponse> deviceRead(@PathVariable("id") Long id){
         return deviceService.deviceRead(id);
     }
 
@@ -36,4 +36,9 @@ public class DeviceController {
         return deviceService.myDevices(authentication);
     }
 
+    @DeleteMapping("/delete/{id}")
+    @Operation(summary = "기자재 삭제" , description = "선택한 기자재를 삭제합니다.")
+    public ResponseEntity<BaseResponse> deleteDevice(@PathVariable Long id, Authentication authentication){
+        return deviceService.deleteDevice(id, authentication);
+    }
 }

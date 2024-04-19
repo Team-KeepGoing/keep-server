@@ -13,11 +13,10 @@ import java.io.IOException;
 
 public interface DeviceService {
 
-    ResponseEntity<BaseResponse> deviceCreate(DeviceRequest request, MultipartFile multipartFile , Authentication authentication) throws IOException;
-
     ResponseEntity<BaseResponse> myDevices(Authentication authentication);
 
     ResponseEntity<BaseResponse> deviceRead(Long id);
+    ResponseEntity<BaseResponse> deleteDevice(Long id, Authentication authentication);
 
     ResponseEntity<BaseResponse> findAll();
 
