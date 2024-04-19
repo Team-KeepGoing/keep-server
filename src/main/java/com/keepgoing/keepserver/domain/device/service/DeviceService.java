@@ -2,14 +2,10 @@ package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.device.Device;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
-import com.keepgoing.keepserver.domain.device.payload.request.DeviceRequest;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.global.dto.response.BaseResponse;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
+import org.springframework.security.core.Authentication;
 
 public interface DeviceService {
 
