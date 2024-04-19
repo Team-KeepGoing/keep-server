@@ -1,11 +1,10 @@
 package com.keepgoing.keepserver.domain.book.controller;
 
-import com.keepgoing.keepserver.domain.book.domain.Book;
-import com.keepgoing.keepserver.domain.book.domain.CustomResponseEntity;
+import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.entity.CustomResponseEntity;
 import com.keepgoing.keepserver.domain.book.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +28,7 @@ public class BookController {
     }
 
     @GetMapping("/allBook")
-    public CustomResponseEntity<ArrayList<Book>> selectAllBook(Book book){
+    public CustomResponseEntity<ArrayList<Book>> selectAllBook(){
         return new CustomResponseEntity<ArrayList<Book>>(
                 HttpStatus.OK,
                 (ArrayList<Book>) bookService.selectAllBook()
