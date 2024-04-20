@@ -10,4 +10,6 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     public List<Book> findAllByName(String name);
     public String deleteBookByName(String name);
+
+    public String countAllById(long id);
 }
