@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.book.controller;
+package com.keepgoing.keepserver.domain.book.presentation;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
 import com.keepgoing.keepserver.domain.book.entity.CustomResponseEntity;
