@@ -60,6 +60,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/user/**").permitAll()
+                                .requestMatchers("device/**").permitAll()
                                 .anyRequest().permitAll()
                 );
 
