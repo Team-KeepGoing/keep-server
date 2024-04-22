@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
             throw new CustomException("이미 사용중인 이메일 입니다.");
         }
         User user = User.registerUser(
-                encoder.encode(signupRequest.getEmail()),signupRequest.getPassword(),
+                signupRequest.getEmail(), encoder.encode(signupRequest.getPassword()),
                 signupRequest.getName(), roleService.getDefaultRole()
         );
         userRepository.save(user);
