@@ -14,13 +14,15 @@ public class JwtResponse {
     private Long id;
     private String email;
     private String password;
+    private boolean teacher;
     private List<String> roles;
-    public static JwtResponse setJwtResponse(String token, Long id, String email, String password, List<String> roles) {
+    public static JwtResponse setJwtResponse(String token, Long id, String email, String password, boolean teacher, List<String> roles) {
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.token = token;
         jwtResponse.id = id;
         jwtResponse.email = email;
         jwtResponse.password = password;
+        jwtResponse.teacher = teacher;
         jwtResponse.roles = roles;
         return jwtResponse;
     }

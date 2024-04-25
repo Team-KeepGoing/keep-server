@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = User.registerUser(
                 encoder.encode(signupRequest.getEmail()),signupRequest.getPassword(),
-                signupRequest.getName(), roleService.getDefaultRole()
+                signupRequest.getName(), signupRequest.isTeacher(), roleService.getDefaultRole()
         );
         userRepository.save(user);
     }
@@ -76,6 +76,6 @@ public class UserServiceImpl implements UserService {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
-        return JwtResponse.setJwtResponse(jwt, (long) userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roleNames);
+        return JwtResponse.setJwtResponse(jwt, (long) userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.isTeacher(), roleNames);
     }
 }
