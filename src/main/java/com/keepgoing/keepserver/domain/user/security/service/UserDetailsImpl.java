@@ -2,6 +2,7 @@ package com.keepgoing.keepserver.domain.user.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,14 +26,18 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore // 이 어노테이션은 JSON으로 변환될 때, password를 제외시킴
     private final String password;
 
+    @Getter
+    private final boolean teacher;
+
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(int id, String email, String name, String password,
+    public UserDetailsImpl(int id, String email, String name, String password, boolean teacher,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
+        this.teacher = teacher;
         this.authorities = authorities;
     }
 
@@ -46,6 +51,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getEmail(),
                 user.getName(),
                 user.getPassword(),
+                user.isTeacher(),
                 authorities);
     }
 
