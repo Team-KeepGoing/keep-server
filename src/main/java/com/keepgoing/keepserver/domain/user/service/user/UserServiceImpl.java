@@ -39,15 +39,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void registerUser(SignupRequest signupRequest) throws CustomException {
-        if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new CustomException("이미 사용중인 이메일 입니다.");
-        }
-        User user = User.registerUser(
-                encoder.encode(signupRequest.getEmail()),signupRequest.getPassword(),
-                signupRequest.getName(), signupRequest.isTeacher(), roleService.getDefaultRole()
-        );
-        userRepository.save(user);
+      if (userRepository.existsByEmail(signupRequest.getEmail())) {
+          throw new CustomException("이미 사용중인 이메일 입니다.");
+      }
+      User user = User.registerUser(
+          signupRequest.getEmail(),
+          encoder.encode(signupRequest.getPassword()),
+          signupRequest.getName(),
+          signupRequest.isTeacher(), // 혹은 해당 필드가 없는 경우에는 signupRequest에서 해당 메서드를 제거하세요
+          roleService.getDefaultRole()
+      );
+      userRepository.save(user);
     }
+
 
     @Transactional
     public void fixUserData(UserInfoRequest request, String email) {

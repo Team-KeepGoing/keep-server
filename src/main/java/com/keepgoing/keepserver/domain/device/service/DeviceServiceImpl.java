@@ -2,21 +2,19 @@ package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.device.Device;
 import com.keepgoing.keepserver.domain.device.exception.DeviceException;
+import com.keepgoing.keepserver.domain.device.exception.device.DeviceError;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
-import com.keepgoing.keepserver.domain.device.payload.request.DeviceRequest;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.dto.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,22 +60,33 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse> deviceCreate(DeviceRequest request, MultipartFile multipartFile, Authentication authentication) throws IOException {
-        return null;
+    public ResponseEntity<BaseResponse> deleteDevice(Long id, Authentication authentication) {
+        Device device = deviceRepository.findById(id).orElseThrow(DeviceException::notFoundDevice);
+        BaseResponse baseResponse = new BaseResponse();
+        String info = device.getCheck_info().toString();
+
+        if (info.equals(authentication.getName())){
+            deviceRepository.deleteById(id);
+        } else {
+            throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
+        }
+
+        baseResponse.of(HttpStatus.OK, "기자재 삭제 성공");
+        return ResponseEntity.ok(baseResponse);
     }
 
     @Override
     public ResponseEntity<BaseResponse> myDevices(Authentication authentication) {
         BaseResponse baseResponse = new BaseResponse();
 
-        String userName = userRepository.findByEmail(authentication.name()).orElseThrow(DeviceException::userNotFound).getEmail();
-        List<Device> devices = deviceRepository.findByDeviceUserNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
+        String userName = userRepository.findByEmail(authentication.getName()).orElseThrow(DeviceException::userNotFound).getEmail();
+        List<Device> devices = deviceRepository.findByDeviceNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
 
         List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>(devices.stream()
                 .map(this::entityToDto)
                 .toList());
 
-        baseResponse.of(HttpStatus.OK, "기기 불러오기 성공" , deviceResponseDtos);
+        baseResponse.of(HttpStatus.OK, "기기 불러오기 성공", deviceResponseDtos);
 
         return ResponseEntity.ok(baseResponse);
     }

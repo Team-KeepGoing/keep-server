@@ -36,6 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-### + ###
-.gitignore
+# Ignore application.properties file
 application.properties

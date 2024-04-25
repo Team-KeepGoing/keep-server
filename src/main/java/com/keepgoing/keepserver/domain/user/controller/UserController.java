@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,15 +24,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final AuthenticationManager authenticationManager;
 
     private final UserService userService;
 
     private final UserServiceImpl userServiceImpl;
 
     private final UserRepository userRepository;
-
-    private final JwtUtils jwtUtils;
 
     @Operation(summary = "로그인", description = "로그인을 진행합니다.")
     @PostMapping("/signin")
