@@ -17,7 +17,7 @@ public class UserDetailsImpl implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final int id;
+    private final Long id;
 
     private final String email;
 
@@ -31,7 +31,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(int id, String email, String name, String password, boolean teacher,
+    public UserDetailsImpl(Long id, String email, String name, String password, boolean teacher,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
@@ -60,7 +60,7 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
