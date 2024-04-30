@@ -1,21 +1,19 @@
 package com.keepgoing.keepserver.domain.user.controller;
 
 import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.domain.user.exception.CustomException;
+import com.keepgoing.keepserver.domain.user.exception.BusinessException;
 import com.keepgoing.keepserver.domain.user.payload.request.LoginRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.response.ApiResponse;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
-import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
 import com.keepgoing.keepserver.domain.user.service.user.UserService;
 import com.keepgoing.keepserver.domain.user.service.user.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,15 +23,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final AuthenticationManager authenticationManager;
 
     private final UserService userService;
 
     private final UserServiceImpl userServiceImpl;
 
     private final UserRepository userRepository;
-
-    private final JwtUtils jwtUtils;
 
     @Operation(summary = "로그인", description = "로그인을 진행합니다.")
     @PostMapping("/signin")
@@ -43,7 +38,7 @@ public class UserController {
 
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     @PostMapping("/signup")
-    public ResponseEntity<?> registerAndAuthenticateUser(@RequestBody SignupRequest signupRequest) throws CustomException {
+    public ResponseEntity<?> registerAndAuthenticateUser(@RequestBody SignupRequest signupRequest) throws BusinessException {
 
         /* 유저 등록 */
         userService.registerUser(signupRequest);

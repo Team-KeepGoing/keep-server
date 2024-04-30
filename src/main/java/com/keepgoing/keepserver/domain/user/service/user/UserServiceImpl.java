@@ -1,7 +1,8 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
 import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.domain.user.exception.CustomException;
+import com.keepgoing.keepserver.domain.user.exception.BusinessException;
+import com.keepgoing.keepserver.domain.user.exception.error.ErrorCode;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
@@ -38,9 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void registerUser(SignupRequest signupRequest) throws CustomException {
+    public void registerUser(SignupRequest signupRequest) throws BusinessException {
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new CustomException("이미 사용중인 이메일 입니다.");
+            throw new BusinessException(ErrorCode.EMAIL_BAD_REQUEST);
         }
         User user = User.registerUser(
                 encoder.encode(signupRequest.getEmail()),signupRequest.getPassword(),
