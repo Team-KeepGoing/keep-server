@@ -1,13 +1,13 @@
 package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.device.Device;
-import com.keepgoing.keepserver.domain.device.exception.DeviceException;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceRequest;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.dto.response.BaseResponse;
+import com.keepgoing.keepserver.global.exception.DeviceException;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Sort;
@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +61,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse> deviceCreate(DeviceRequest request, MultipartFile multipartFile, Authentication authentication) throws IOException {
+    public ResponseEntity<BaseResponse> deviceCreate(DeviceRequest request, MultipartFile multipartFile, Authentication authentication) {
         return null;
     }
 

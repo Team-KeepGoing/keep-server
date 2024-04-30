@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.device.exception.device;
+package com.keepgoing.keepserver.global.exception.device;
 
 import com.keepgoing.keepserver.global.exception.error.ErrorProperty;
 import lombok.Getter;
