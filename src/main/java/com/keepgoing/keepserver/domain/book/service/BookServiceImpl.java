@@ -7,6 +7,7 @@ import com.keepgoing.keepserver.domain.book.util.GenerateCertCharacter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,24 +15,26 @@ import java.util.Date;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-    Date today = new Date();
-    BookDTO bookDTO = new BookDTO();
+
+//    @Override
+//    public void bookRegistration(Book book) {
+//        book.builder()
+//                .registrationDate(today)
+//                .name(book.getName())
+//                .nfcCode(createNfcCode())
+//                .writer(book.getWriter())
+//                .state("N")
+//                .build();
+//        bookRepository.save(book);
+//    }
 
     @Override
     public void bookRegistration(Book book) {
-        book.setName(book.getName());
-        book.setWriter(book.getName());
-        book.setRegistrationDate(today);
-        if(bookDTO.getState()=="L"){ //L잃어버림, //N 정상
-            book.setState("L");
-        }else{
-            book.setState("N");
-        }
-        book.setNfcCode(bookDTO.getNfcCode());
+        String nfcCode = createNfcCode();
+        book.setRegistrationDate(new Date());
+        book.setNfcCode(nfcCode);
+        book.setState("N");
         bookRepository.save(book);
-
-
-
     }
 
     @Override
@@ -44,6 +47,12 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(String name) {
         bookRepository.deleteBookByName(name);
+    }
+
+    @Override
+    public String createNfcCode() {
+        GenerateCertCharacter generateCertCharacter = new GenerateCertCharacter();
+        return generateCertCharacter.excuteGenerate();
     }
 
 
