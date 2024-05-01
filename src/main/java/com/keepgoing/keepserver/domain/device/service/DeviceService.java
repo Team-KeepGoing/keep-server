@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.device.service;
 
-import com.keepgoing.keepserver.domain.device.entity.device.Device;
+import com.keepgoing.keepserver.domain.device.entity.Device;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceRequest;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
