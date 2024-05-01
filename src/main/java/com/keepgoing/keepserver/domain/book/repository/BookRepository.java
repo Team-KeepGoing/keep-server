@@ -12,4 +12,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     public String deleteBookByName(String name);
 
     public String countAllById(long id);
+    public List<Book> findByNfcCode(String NfcCode);
 }
