@@ -1,31 +1,32 @@
 package com.keepgoing.keepserver.domain.book.presentation;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.CustomResponseEntity;
+import com.keepgoing.keepserver.domain.book.response.CustomResponseEntity;
 import com.keepgoing.keepserver.domain.book.service.BookService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
+@Slf4j
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/book")
 public class BookController {
     private final BookService bookService;
     @PostMapping("/register")
-    public CustomResponseEntity<String> bookRegistration(@RequestBody Book book){
+    public CustomResponseEntity<String> bookRegistration(@RequestBody Book book) {
         bookService.bookRegistration(book);
         return new CustomResponseEntity<String>(
                 HttpStatus.OK,
-                "Book Adding Successful"
+                "BookAdding Successful"
         );
     }
+
 
     @GetMapping("/allBook")
     public CustomResponseEntity<ArrayList<Book>> selectAllBook(){
