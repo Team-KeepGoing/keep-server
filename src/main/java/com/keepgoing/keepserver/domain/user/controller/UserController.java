@@ -61,9 +61,9 @@ public class UserController {
 
     @Operation(summary = "프로필 수정", description = "유저 정보를 수정합니다.")
     @PutMapping("/userfix")
-    public void fixUserData(@RequestBody UserInfoRequest request, Authentication authentication){
+    public void updateUserData(@RequestBody UserInfoRequest request, Authentication authentication){
         String userName = authentication.getName();
-        userServiceImpl.fixUserData(request, userName);
+        userServiceImpl.updateUserData(request, userName);
         ResponseEntity.ok().body("");
     }
 }
