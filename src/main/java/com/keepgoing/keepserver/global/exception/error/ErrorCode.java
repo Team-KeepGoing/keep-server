@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.user.exception.error;
+package com.keepgoing.keepserver.global.exception.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

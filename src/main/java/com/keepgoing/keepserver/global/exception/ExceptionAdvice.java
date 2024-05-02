@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.user.exception;
+package com.keepgoing.keepserver.global.exception;
 
 import lombok.Builder;
 import org.springframework.http.ResponseEntity;
