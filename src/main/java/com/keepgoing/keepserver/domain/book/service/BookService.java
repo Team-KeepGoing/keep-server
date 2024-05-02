@@ -8,4 +8,5 @@ public interface BookService {
     public void bookRegistration(Book book);
     public List<Book> selectAllBook();
     public void deleteBook(String name);
+    public String createNfcCode();
 }
