@@ -1,8 +1,6 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
 import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.global.exception.BusinessException;
-import com.keepgoing.keepserver.global.exception.error.ErrorCode;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
@@ -10,6 +8,8 @@ import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
 import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
 import com.keepgoing.keepserver.domain.user.service.role.RoleService;
+import com.keepgoing.keepserver.global.exception.BusinessException;
+import com.keepgoing.keepserver.global.exception.error.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -72,6 +72,5 @@ public class UserServiceImpl implements UserService {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
-        return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.isTeacher(), roleNames);
-    }
+        return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.isTeacher(), roleNames);    }
 }
