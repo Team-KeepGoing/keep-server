@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.device.entity.device;
+package com.keepgoing.keepserver.domain.device.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +20,7 @@ public class Device {
         기기 이름
     */
     @Column(nullable = false)
-    private String device_name;
+    private String deviceName;
 
     /*
         기기 사진
@@ -34,10 +34,14 @@ public class Device {
     @Column(nullable = false)
     private int status;  /* 1 대여 가능, 2 대여 불가능 */
 
+    @Column(nullable = false)
+    private Long check_info; // 비디오 작성자 pk 저장용
+
     @Builder
-    public Device(String device_name, int status, String imgUrl) {
-        this.device_name = device_name;
+    public Device(String deviceName, int status, String imgUrl, Long check_info) {
+        this.deviceName = deviceName;
         this.status = status;
         this.imgUrl = imgUrl;
+        this.check_info = check_info;
     }
 }

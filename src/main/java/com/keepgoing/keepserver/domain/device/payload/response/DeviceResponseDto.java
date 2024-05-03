@@ -5,7 +5,7 @@ import lombok.Builder;
 @Builder
 public record DeviceResponseDto(
         Long id,
-        String device_name,
+        String deviceName,
         String imgUrl,
         int status) {
 }
