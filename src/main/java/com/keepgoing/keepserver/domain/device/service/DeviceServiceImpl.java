@@ -2,19 +2,17 @@ package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.Device;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
-import com.keepgoing.keepserver.domain.device.payload.request.DeviceRequest;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.dto.response.BaseResponse;
 import com.keepgoing.keepserver.global.exception.DeviceException;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +59,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse> deviceCreate(DeviceRequest request, MultipartFile multipartFile, Authentication authentication) {
+    public ResponseEntity<BaseResponse> deleteDevice(Long id, Authentication authentication) {
         return null;
     }
 
@@ -69,8 +67,8 @@ public class DeviceServiceImpl implements DeviceService {
     public ResponseEntity<BaseResponse> myDevices(Authentication authentication) {
         BaseResponse baseResponse = new BaseResponse();
 
-        String userName = userRepository.findByEmail(authentication.name()).orElseThrow(DeviceException::userNotFound).getEmail();
-        List<Device> devices = deviceRepository.findByDeviceUserNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
+        String userName = userRepository.findByEmail(authentication.getName()).orElseThrow(DeviceException::userNotFound).getEmail();
+        List<Device> devices = deviceRepository.findByDeviceNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
 
         List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>(devices.stream()
                 .map(this::entityToDto)
