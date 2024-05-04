@@ -1,14 +1,13 @@
 package com.keepgoing.keepserver.domain.user.controller;
 
 import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.domain.user.exception.CustomException;
+import com.keepgoing.keepserver.global.exception.BusinessException;
 import com.keepgoing.keepserver.domain.user.payload.request.LoginRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.response.ApiResponse;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
-import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
 import com.keepgoing.keepserver.domain.user.service.user.UserService;
 import com.keepgoing.keepserver.domain.user.service.user.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +38,7 @@ public class UserController {
 
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     @PostMapping("/signup")
-    public ResponseEntity<?> registerAndAuthenticateUser(@RequestBody SignupRequest signupRequest) throws CustomException {
+    public ResponseEntity<?> registerAndAuthenticateUser(@RequestBody SignupRequest signupRequest) throws BusinessException {
 
         /* 유저 등록 */
         userService.registerUser(signupRequest);
@@ -62,9 +61,9 @@ public class UserController {
 
     @Operation(summary = "프로필 수정", description = "유저 정보를 수정합니다.")
     @PutMapping("/userfix")
-    public void fixUserData(@RequestBody UserInfoRequest request, Authentication authentication){
+    public void updateUserData(@RequestBody UserInfoRequest request, Authentication authentication){
         String userName = authentication.getName();
-        userServiceImpl.fixUserData(request, userName);
+        userServiceImpl.updateUserData(request, userName);
         ResponseEntity.ok().body("");
     }
 }

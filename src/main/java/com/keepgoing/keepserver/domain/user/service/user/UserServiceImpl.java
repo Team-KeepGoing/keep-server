@@ -1,7 +1,6 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
 import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.domain.user.exception.CustomException;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
@@ -9,6 +8,8 @@ import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
 import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
 import com.keepgoing.keepserver.domain.user.service.role.RoleService;
+import com.keepgoing.keepserver.global.exception.BusinessException;
+import com.keepgoing.keepserver.global.exception.error.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,30 +38,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void registerUser(SignupRequest signupRequest) throws CustomException {
+    public void registerUser(SignupRequest signupRequest) throws BusinessException {
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new CustomException("이미 사용중인 이메일 입니다.");
+            throw new BusinessException(ErrorCode.EMAIL_BAD_REQUEST);
         }
         User user = User.registerUser(
-                signupRequest.getEmail(), encoder.encode(signupRequest.getPassword()),
-                signupRequest.getName(), roleService.getDefaultRole()
+                encoder.encode(signupRequest.getEmail()),signupRequest.getPassword(),
+                signupRequest.getName(), signupRequest.isTeacher(), roleService.getDefaultRole()
         );
         userRepository.save(user);
     }
 
     @Transactional
-    public void fixUserData(UserInfoRequest request, String email) {
-        Optional<User> user = userRepository.findByEmailEquals(email);
+    public void updateUserData(UserInfoRequest request, String email) {
+        User user = userRepository.findByEmailEquals(email)
+                .orElseThrow(()-> new BusinessException(ErrorCode.NOT_FOUND));
 
-        System.out.println(user);
-
-        user.ifPresent(value -> {
-            value.fixUserData(
-                    request.getEmail(),
-                    request.getName()
-            );
-            userRepository.save(value);
-        });
+        user.fixUserData(
+                request.getEmail(),
+                request.getName()
+        );
     }
 
     /* 인증 및 JWT 토큰 생성 */
@@ -76,6 +72,5 @@ public class UserServiceImpl implements UserService {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
-        return JwtResponse.setJwtResponse(jwt, (long) userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roleNames);
-    }
+        return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.isTeacher(), roleNames);    }
 }
