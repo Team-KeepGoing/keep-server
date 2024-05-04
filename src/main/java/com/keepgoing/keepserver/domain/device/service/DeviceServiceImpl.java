@@ -7,7 +7,6 @@ import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.dto.response.BaseResponse;
 import com.keepgoing.keepserver.global.exception.DeviceException;
-import com.keepgoing.keepserver.global.exception.device.DeviceError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -61,18 +60,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResponseEntity<BaseResponse> deleteDevice(Long id, Authentication authentication) {
-        Device device = deviceRepository.findById(id).orElseThrow(DeviceException::notFoundDevice);
-        BaseResponse baseResponse = new BaseResponse();
-        String info = device.getCheck_info().toString();
-
-        if (info.equals(authentication.getName())){
-            deviceRepository.deleteById(id);
-        } else {
-            throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
-        }
-
-        baseResponse.of(HttpStatus.OK, "기자재 삭제 성공");
-        return ResponseEntity.ok(baseResponse);
+        return null;
     }
 
     @Override
@@ -86,7 +74,7 @@ public class DeviceServiceImpl implements DeviceService {
                 .map(this::entityToDto)
                 .toList());
 
-        baseResponse.of(HttpStatus.OK, "기기 불러오기 성공", deviceResponseDtos);
+        baseResponse.of(HttpStatus.OK, "기기 불러오기 성공" , deviceResponseDtos);
 
         return ResponseEntity.ok(baseResponse);
     }
