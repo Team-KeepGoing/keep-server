@@ -1,32 +1,21 @@
 package com.keepgoing.keepserver.domain.book.service;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.BookDTO;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.book.util.GenerateCertCharacter;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-
-//    @Override
-//    public void bookRegistration(Book book) {
-//        book.builder()
-//                .registrationDate(today)
-//                .name(book.getName())
-//                .nfcCode(createNfcCode())
-//                .writer(book.getWriter())
-//                .state("N")
-//                .build();
-//        bookRepository.save(book);
-//    }
 
     @Override
     public void bookRegistration(Book book) {
@@ -45,8 +34,8 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public void deleteBook(String name) {
-        bookRepository.deleteBookByName(name);
+    public void deleteBookByNfcCode(String nfcCode) {
+        bookRepository.deleteAllByNfcCode(nfcCode);
     }
 
     @Override
@@ -55,5 +44,30 @@ public class BookServiceImpl implements BookService {
         return generateCertCharacter.excuteGenerate();
     }
 
+    @Override
+    public void editBookByNfcCode(String nfcCode) {
+
+    }
+
+    public class DirtyChecking {
+
+        BookRepository bookRepository;
+
+
+        @Transactional
+        public void updateBook(String nfcCode, String name) {
+
+            // DB에서 id값을 기준으로 데이터를 찾는다 (영속화)
+            Optional<Book> book = bookRepository.findById(id);
+
+            // 만약 해당 값이 존재한다면 전달받은 name으로 set을 해준다.
+            book.ifPresent(value -> value.setName(name));
+        }
+    }
+
+
 
 }
+
+
+
