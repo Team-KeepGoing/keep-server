@@ -20,7 +20,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     /*
         이메일
@@ -40,6 +40,12 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    /*
+        교사 여부
+    */
+    @Column(nullable = false)
+    private boolean teacher;
+
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<Userroles.UserRoles> roles = new HashSet<>();
 
@@ -51,12 +57,14 @@ public class User {
             String email,
             String password,
             String name,
+            boolean teacher,
             Set<Role> roles
     ) {
         User user = new User();
         user.email = email;
         user.password = password;
         user.name = name;
+        user.teacher = teacher;
 
         for (Role role : roles) {
             Userroles.UserRoles userRoles = Userroles.UserRoles.createUserRoles(user, role);
