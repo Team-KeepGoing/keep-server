@@ -28,7 +28,7 @@ public class BookController {
     }
 
 
-    @GetMapping("/allBook")
+    @GetMapping("/all")
     public CustomResponseEntity<ArrayList<Book>> selectAllBook(){
         return new CustomResponseEntity<ArrayList<Book>>(
                 HttpStatus.OK,
@@ -36,15 +36,23 @@ public class BookController {
         );
     }
 
-    @PostMapping("/deleteBook")
-    public CustomResponseEntity<String> deleteBookByName(String name){
-        bookService.deleteBook(name);
+    @PostMapping("/del")
+    public CustomResponseEntity<String> deleteBookByNfcCode(@RequestBody String nfcCode){
+        bookService.deleteBookByNfcCode(nfcCode);
         return new CustomResponseEntity<String>(
                 HttpStatus.OK,
                 "delete Successful"
         );
     }
 
+    @PostMapping("/edit")
+    public CustomResponseEntity<String> editBookByNfcCode(@RequestBody String nfcCode){
+        bookService.editBookByNfcCode(nfcCode);
+        return new CustomResponseEntity<String>(
+                HttpStatus.OK,
+                "edit Successful"
+        )
+    }
 
 
 
