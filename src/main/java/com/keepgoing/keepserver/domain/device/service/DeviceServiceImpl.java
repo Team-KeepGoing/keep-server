@@ -1,7 +1,6 @@
 package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.Device;
-import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
@@ -37,17 +36,6 @@ public class DeviceServiceImpl implements DeviceService {
 
         return ResponseEntity.ok(baseResponse);
     }
-
-    @Override
-    public Device dtoToEntity(DeviceDto dto) {
-        return DeviceService.super.dtoToEntity(dto);
-    }
-
-    @Override
-    public DeviceResponseDto entityToDto(Device entity) {
-        return DeviceService.super.entityToDto(entity);
-    }
-
     @Override
     public ResponseEntity<BaseResponse> deviceRead(Long id) {
         BaseResponse baseResponse = new BaseResponse();
