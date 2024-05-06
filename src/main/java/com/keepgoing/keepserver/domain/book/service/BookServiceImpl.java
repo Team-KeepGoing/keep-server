@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -48,8 +49,9 @@ public class BookServiceImpl implements BookService {
     public void editBookByNfcCode(String nfcCode) {
 
     }
+}
 
-    public class DirtyChecking {
+    class DirtyChecking {
 
         BookRepository bookRepository;
 
@@ -58,16 +60,15 @@ public class BookServiceImpl implements BookService {
         public void updateBook(String nfcCode, String name) {
 
             // DB에서 id값을 기준으로 데이터를 찾는다 (영속화)
-            Optional<Book> book = bookRepository.findById(id);
+            List<Book> book = bookRepository.findByNfcCode(nfcCode);
 
-            // 만약 해당 값이 존재한다면 전달받은 name으로 set을 해준다.
-            book.ifPresent(value -> value.setName(name));
+
         }
     }
 
 
 
-}
+//}
 
 
 
