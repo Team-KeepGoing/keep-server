@@ -1,6 +1,6 @@
-package com.keepgoing.keepserver.global.exception;
+package com.keepgoing.keepserver.global.exception.device;
 
-import com.keepgoing.keepserver.global.exception.device.DeviceError;
+import com.keepgoing.keepserver.global.exception.BusinessException;
 
 public class DeviceException extends BusinessException {
     private static final DeviceException USER_NOT_FOUND = new DeviceException(DeviceError.USER_NOT_FOUND);

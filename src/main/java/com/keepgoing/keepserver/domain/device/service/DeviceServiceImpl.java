@@ -5,7 +5,7 @@ import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.dto.response.BaseResponse;
-import com.keepgoing.keepserver.global.exception.DeviceException;
+import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
