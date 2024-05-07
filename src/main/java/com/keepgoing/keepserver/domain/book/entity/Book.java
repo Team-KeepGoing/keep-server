@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Locale;
 
 @Entity
 @Getter
@@ -13,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "book")
+@ToString
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +37,7 @@ public class Book {
     private String state; //대여 불가능시 '1' 대여 가능시 '0'
 
     @Builder
-    public Book(long id, String name, String nfcCode, String writer, Date registrationDate, String state) {
-        this.id = id;
+    public Book(String name, String nfcCode, String writer, Date registrationDate, String state) {
         this.name = name;
         this.nfcCode = nfcCode;
         this.writer = writer;
