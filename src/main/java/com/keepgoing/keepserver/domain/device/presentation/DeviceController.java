@@ -38,7 +38,7 @@ public class DeviceController {
 
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "기자재 삭제" , description = "선택한 기자재를 삭제합니다.")
-    public ResponseEntity<BaseResponse> deleteDevice(@PathVariable Long id, Authentication authentication){
+    public BaseResponse deleteDevice(@PathVariable Long id, Authentication authentication){
         return deviceService.deleteDevice(id, authentication);
     }
 }
