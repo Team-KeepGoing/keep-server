@@ -9,7 +9,8 @@ public interface BookService {
     public List<Book> selectAllBook();
     public void deleteBookByNfcCode(String nfcCode);
     public String createNfcCode();
-    public void editBookByNfcCode(String nfcCode);
+//    public void editBookByNfcCode(String nfcCode); TODO
+//    public void deleteBookById(long id);
 
 }
 
