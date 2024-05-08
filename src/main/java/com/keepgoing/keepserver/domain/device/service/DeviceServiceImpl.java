@@ -10,7 +10,6 @@ import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -24,27 +23,20 @@ public class DeviceServiceImpl implements DeviceService {
     private final DeviceRepository deviceRepository;
 
     @Override
-    public ResponseEntity<BaseResponse> findAll() {
-        BaseResponse baseResponse = new BaseResponse();
-
+    public BaseResponse findAll() {
         List<Device> devices = deviceRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 
         List<DeviceResponseDto> dtos = devices.stream()
                 .map(this::entityToDto)
                 .toList();
 
-        baseResponse.of(HttpStatus.OK, "모든 기기 불러오기 성공", dtos);
-
-        return ResponseEntity.ok(baseResponse);
+        return new BaseResponse(HttpStatus.OK, "모든 기기 불러오기 성공", dtos);
     }
     @Override
-    public ResponseEntity<BaseResponse> deviceRead(Long id) {
-        BaseResponse baseResponse = new BaseResponse();
-
+    public BaseResponse deviceRead(Long id) {
         Device device = deviceRepository.findById(id).orElseThrow(DeviceException::notFoundDevice);
 
-        baseResponse.of(HttpStatus.OK, "기기 조회 성공", entityToDto(device));
-        return ResponseEntity.ok(baseResponse);
+        return new BaseResponse(HttpStatus.OK, "기기 조회 성공", entityToDto(device));
     }
 
     @Override
@@ -62,9 +54,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse> myDevices(Authentication authentication) {
-        BaseResponse baseResponse = new BaseResponse();
-
+    public BaseResponse myDevices(Authentication authentication) {
         String userName = userRepository.findByEmail(authentication.getName()).orElseThrow(DeviceException::userNotFound).getEmail();
         List<Device> devices = deviceRepository.findByDeviceNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
 
@@ -72,8 +62,6 @@ public class DeviceServiceImpl implements DeviceService {
                 .map(this::entityToDto)
                 .toList());
 
-        baseResponse.of(HttpStatus.OK, "기기 불러오기 성공" , deviceResponseDtos);
-
-        return ResponseEntity.ok(baseResponse);
+        return new BaseResponse(HttpStatus.OK, "기기 불러오기 성공" , deviceResponseDtos);
     }
 }
