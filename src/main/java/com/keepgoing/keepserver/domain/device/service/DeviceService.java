@@ -1,7 +1,6 @@
 package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.Device;
-import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.global.dto.response.BaseResponse;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +11,9 @@ public interface DeviceService {
     ResponseEntity<BaseResponse> myDevices(Authentication authentication);
 
     ResponseEntity<BaseResponse> deviceRead(Long id);
-    ResponseEntity<BaseResponse> deleteDevice(Long id, Authentication authentication);
+    BaseResponse deleteDevice(Long id, Authentication authentication);
 
     ResponseEntity<BaseResponse> findAll();
-
-
-
-    default Device dtoToEntity(DeviceDto dto){
-        return Device.builder()
-                .deviceName(dto.getDeviceName())
-                .status(dto.getStatus())
-                .imgUrl(dto.getImgUrl())
-                .build();
-    }
 
     default DeviceResponseDto entityToDto(Device entity){
         return DeviceResponseDto.builder()
