@@ -1,10 +1,13 @@
 package com.keepgoing.keepserver.domain.book.presentation;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.entity.BookDTO;
+import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.book.response.CustomResponseEntity;
 import com.keepgoing.keepserver.domain.book.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,8 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/book")
 public class BookController {
+    private static final Logger logger = LoggerFactory.getLogger(BookController.class);
+    private final BookRepository bookRepository;
     private final BookService bookService;
     @PostMapping("/register")
     public CustomResponseEntity<String> bookRegistration(@RequestBody Book book) {
@@ -36,23 +41,23 @@ public class BookController {
         );
     }
 
-    @PostMapping("/del")
-    public CustomResponseEntity<String> deleteBookByNfcCode(@RequestBody String nfcCode){
-        bookService.deleteBookByNfcCode(nfcCode);
+    @DeleteMapping("/del/{nfcCode}")
+    public CustomResponseEntity<String> deleteBookByNfcCode(@PathVariable(value = "nfcCode") String nfcCode){
         return new CustomResponseEntity<String>(
                 HttpStatus.OK,
-                "delete Successful"
+                bookService.deleteBookByNfcCode(nfcCode)
         );
     }
 
-    @PostMapping("/edit")
-    public CustomResponseEntity<String> editBookByNfcCode(@RequestBody String nfcCode){
-        bookService.editBookByNfcCode(nfcCode);
-        return new CustomResponseEntity<String>(
-                HttpStatus.OK,
-                "edit Successful"
-        );
-    }
+
+//    @PostMapping("/edit")
+//    public CustomResponseEntity<String> editBookByNfcCode(@RequestBody String nfcCode){
+//        bookService.editBookByNfcCode(nfcCode);
+//        return new CustomResponseEntity<String>(
+//                HttpStatus.OK,
+//                "edit Successful"
+//        );
+//    }
 
 
 

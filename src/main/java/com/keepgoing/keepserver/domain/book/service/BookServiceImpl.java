@@ -29,23 +29,21 @@ public class BookServiceImpl implements BookService {
 
     }
 
-
     @Override
-    public void deleteBookByNfcCode(String nfcCode) {
-        bookRepository.deleteByNfcCode(nfcCode);
+    public String deleteBookByNfcCode(String nfcCode) {
+        if(bookRepository.findBookByNfcCode(nfcCode) == null){
+            return "This Book cannot be found";
+        }
+        else {
+            bookRepository.delete(bookRepository.findBookByNfcCode(nfcCode));
+            return "successful";
+        }
     }
-
-
     @Override
     public String createNfcCode() {
         GenerateCertCharacter generateCertCharacter = new GenerateCertCharacter();
         return generateCertCharacter.excuteGenerate();
     }
-//
-//    @Override
-//    public void editBookByNfcCode(String nfcCode) {
-//
-//    }
 
 }
 
