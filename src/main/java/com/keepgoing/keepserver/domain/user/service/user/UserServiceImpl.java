@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(ErrorCode.EMAIL_BAD_REQUEST);
         }
         User user = User.registerUser(
-                encoder.encode(signupRequest.getEmail()),signupRequest.getPassword(),
+                signupRequest.getEmail(),encoder.encode(signupRequest.getPassword()),
                 signupRequest.getName(), signupRequest.isTeacher(), roleService.getDefaultRole()
         );
         userRepository.save(user);
