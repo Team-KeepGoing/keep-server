@@ -12,8 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.SimpleTimeZone;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,8 +31,9 @@ public class BookController {
     private final BookRepository bookRepository;
     private final BookService bookService;
     @PostMapping("/register")
-    public CustomResponseEntity<String> bookRegistration(@RequestBody Book book) {
-        bookService.bookRegistration(book);
+    public CustomResponseEntity<String> bookRegistration(@RequestPart(value = "book") Book book,
+                @RequestPart(value = "image") MultipartFile multipartFile){
+        bookService.bookRegistration(book,multipartFile);
         return new CustomResponseEntity<String>(
                 HttpStatus.OK,
                 "BookAdding Successful"
@@ -49,15 +57,6 @@ public class BookController {
         );
     }
 
-
-//    @PostMapping("/edit")
-//    public CustomResponseEntity<String> editBookByNfcCode(@RequestBody String nfcCode){
-//        bookService.editBookByNfcCode(nfcCode);
-//        return new CustomResponseEntity<String>(
-//                HttpStatus.OK,
-//                "edit Successful"
-//        );
-//    }
 
 
 
