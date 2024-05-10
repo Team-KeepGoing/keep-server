@@ -24,24 +24,27 @@ public class Book {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(updatable = false, nullable = false)
     private String nfcCode;
 
     @Column(nullable = false)
     private String writer;
 
-    @Column(nullable = false)
+    @Column(updatable = false, nullable = false)
     private Date registrationDate;
 
-    @Column(nullable = false)
+    @Column(updatable = false, nullable = false)
     private String state; //대여 불가능시 '1' 대여 가능시 '0'
 
+    private String image; //책 이미지 링크
+
     @Builder
-    public Book(String name, String nfcCode, String writer, Date registrationDate, String state) {
+    public Book(String name, String nfcCode, String writer, Date registrationDate, String state, String image) {
         this.name = name;
         this.nfcCode = nfcCode;
         this.writer = writer;
         this.registrationDate = registrationDate;
         this.state = state;
+        this.image = image;
     }
 }
