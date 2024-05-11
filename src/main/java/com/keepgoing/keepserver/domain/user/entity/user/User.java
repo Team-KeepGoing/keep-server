@@ -1,12 +1,10 @@
 package com.keepgoing.keepserver.domain.user.entity.user;
 
-import com.keepgoing.keepserver.domain.user.entity.role.Role;
 import com.keepgoing.keepserver.domain.user.entity.userroles.Userroles;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.HashSet;
@@ -16,7 +14,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "users")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,8 +55,7 @@ public class User {
             String email,
             String password,
             String name,
-            boolean teacher,
-            Set<Role> roles
+            boolean teacher
     ) {
         User user = new User();
         user.email = email;
@@ -66,10 +63,10 @@ public class User {
         user.name = name;
         user.teacher = teacher;
 
-        for (Role role : roles) {
-            Userroles.UserRoles userRoles = Userroles.UserRoles.createUserRoles(user, role);
-            user.getRoles().add(userRoles);
-        }
+//        for (Role role : roles) {
+//            Userroles.UserRoles userRoles = Userroles.UserRoles.createUserRoles(user, role);
+//            user.getRoles().add(userRoles);
+//        }
         return user;
     }
 
