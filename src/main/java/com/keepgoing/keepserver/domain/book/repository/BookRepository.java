@@ -10,9 +10,6 @@ import java.util.List;
 @Transactional
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    public List<Book> findAllByName(String name);
-    public String countAllById(long id);
-    public void deleteByNfcCode(String nfcCode);
     public Book findBookByNfcCode(String NfcCode);
 
 }
