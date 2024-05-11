@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class Userroles {
     @Entity
     @Getter
@@ -25,14 +26,5 @@ public class Userroles {
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "role_id")
         private Role role;
-
-
-        public static UserRoles createUserRoles(User user, Role role) {
-            UserRoles userRoles = new UserRoles();
-            userRoles.user = user;
-            userRoles.role = role;
-            return userRoles;
-        }
-
     }
 }
