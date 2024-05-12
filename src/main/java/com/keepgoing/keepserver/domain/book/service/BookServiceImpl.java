@@ -20,14 +20,13 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
     @Override
-    public String bookRegistration(Book book, MultipartFile multipartFile) {
+    public void bookRegistration(Book book, MultipartFile multipartFile) {
 
         String nfcCode = createNfcCode();
         book.setRegistrationDate(new Date());
         book.setNfcCode(nfcCode);
         book.setState("N");
         bookRepository.save(book);
-        return "success";
 
     }
 
