@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface BookService {
-    public String bookRegistration(Book book, MultipartFile multipartFile);
+    public void bookRegistration(Book book, MultipartFile multipartFile);
     public List<Book> selectAllBook();
     public String deleteBookByNfcCode(String nfcCode);
     public String createNfcCode();
