@@ -63,10 +63,6 @@ public class User {
         user.name = name;
         user.teacher = teacher;
 
-//        for (Role role : roles) {
-//            Userroles.UserRoles userRoles = Userroles.UserRoles.createUserRoles(user, role);
-//            user.getRoles().add(userRoles);
-//        }
         return user;
     }
 
