@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.book.response;
+package com.keepgoing.keepserver.global.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
