@@ -21,7 +21,8 @@ public class BaseResponse {
         this.httpStatus = httpStatus;
         this.massage = massage;
     }
-    public void of(HttpStatus httpStatus, String massage, Object data){
+
+    public BaseResponse(HttpStatus httpStatus, String massage, Object data){
         this.httpStatus = httpStatus;
         this.massage = massage;
         this.data = data;
