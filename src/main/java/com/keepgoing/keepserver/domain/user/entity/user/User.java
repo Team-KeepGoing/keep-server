@@ -1,20 +1,16 @@
 package com.keepgoing.keepserver.domain.user.entity.user;
 
-import com.keepgoing.keepserver.domain.user.entity.userroles.Userroles;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +39,6 @@ public class User {
     */
     @Column(nullable = false)
     private boolean teacher;
-
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<Userroles.UserRoles> roles = new HashSet<>();
 
     public void hidePassword(String password) {
         this.password = password;
