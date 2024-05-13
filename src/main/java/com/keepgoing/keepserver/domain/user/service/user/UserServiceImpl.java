@@ -7,7 +7,6 @@ import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
 import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
-import com.keepgoing.keepserver.domain.user.service.role.RoleService;
 import com.keepgoing.keepserver.global.exception.BusinessException;
 import com.keepgoing.keepserver.global.exception.error.ErrorCode;
 import jakarta.transaction.Transactional;
@@ -15,20 +14,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-    private final RoleService roleService;
 
     private final PasswordEncoder encoder;
 
@@ -44,7 +38,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = User.registerUser(
                 signupRequest.getEmail(),encoder.encode(signupRequest.getPassword()),
-                signupRequest.getName(), signupRequest.isTeacher(), roleService.getDefaultRole()
+                signupRequest.getName(), signupRequest.isTeacher()
         );
         userRepository.save(user);
     }
@@ -68,9 +62,7 @@ public class UserServiceImpl implements UserService {
 
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roleNames = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
 
-        return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.isTeacher(), roleNames);    }
+        return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.isTeacher());
+    }
 }

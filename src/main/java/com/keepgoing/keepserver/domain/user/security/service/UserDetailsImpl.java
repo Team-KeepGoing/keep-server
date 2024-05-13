@@ -4,14 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
     @Serial
@@ -29,35 +26,27 @@ public class UserDetailsImpl implements UserDetails {
     @Getter
     private final boolean teacher;
 
-    private final Collection<? extends GrantedAuthority> authorities;
-
-    public UserDetailsImpl(Long id, String email, String name, String password, boolean teacher,
-                           Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Long id, String email, String name, String password, boolean teacher) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
         this.teacher = teacher;
-        this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole().getName().name()))
-                .collect(Collectors.toList());
-
         return new UserDetailsImpl(
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
                 user.getPassword(),
-                user.isTeacher(),
-                authorities);
+                user.isTeacher()
+        );
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return null;
     }
 
     public Long getId() {
