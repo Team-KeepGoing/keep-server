@@ -42,8 +42,8 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
-            docker stop keep
-            docker rm keep
-            docker rmi ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
-            docker pull ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
-            docker run -d -p 8080:8080 --name keep ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
+            sudo docker stop keep
+            sudo docker rm keep
+            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
+            sudo docker run -d -p 8080:8080 --name keep ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
