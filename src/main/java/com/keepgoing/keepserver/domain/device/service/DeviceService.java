@@ -12,13 +12,12 @@ public interface DeviceService {
     ResponseEntity<BaseResponse> myDevices(Authentication authentication);
 
     ResponseEntity<BaseResponse> deviceRead(Long id);
+
     ResponseEntity<BaseResponse> deleteDevice(Long id, Authentication authentication);
 
     ResponseEntity<BaseResponse> findAll();
 
-
-
-    default Device dtoToEntity(DeviceDto dto){
+    default Device dtoToEntity(DeviceDto dto) {
         return Device.builder()
                 .deviceName(dto.getDeviceName())
                 .status(dto.getStatus())
@@ -26,7 +25,7 @@ public interface DeviceService {
                 .build();
     }
 
-    default DeviceResponseDto entityToDto(Device entity){
+    default DeviceResponseDto entityToDto(Device entity) {
         return DeviceResponseDto.builder()
                 .id(entity.getId())
                 .deviceName((entity.getDeviceName()))

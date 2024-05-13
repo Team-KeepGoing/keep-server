@@ -74,7 +74,7 @@ public class DeviceServiceImpl implements DeviceService {
                 .map(this::entityToDto)
                 .toList());
 
-        baseResponse.of(HttpStatus.OK, "기기 불러오기 성공" , deviceResponseDtos);
+        baseResponse.of(HttpStatus.OK, "기기 불러오기 성공", deviceResponseDtos);
 
         return ResponseEntity.ok(baseResponse);
     }

@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class BusinessException extends RuntimeException{
+public class BusinessException extends RuntimeException {
     private final ErrorProperty error;
 }

@@ -17,13 +17,10 @@ public class BaseResponse {
         this.massage = "잘못된 반환입니다.";
         this.data = null;
     }
-    public void of(HttpStatus httpStatus, String massage, Object data){
+
+    public void of(HttpStatus httpStatus, String massage, Object data) {
         this.httpStatus = httpStatus;
         this.massage = massage;
         this.data = data;
-    }
-    public void of(HttpStatus httpStatus, String massage){
-        this.httpStatus = httpStatus;
-        this.massage = massage;
     }
 }

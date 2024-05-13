@@ -6,7 +6,9 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/** swagger 설정 파일*/
+/**
+ * swagger 설정 파일
+ */
 @Configuration
 public class SwaggerConfig {
 

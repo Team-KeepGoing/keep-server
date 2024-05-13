@@ -10,11 +10,12 @@ public class DeviceException extends BusinessException {
     public DeviceException(DeviceError error) {
         super(error);
     }
+
     public static DeviceException userNotFound() {
         return USER_NOT_FOUND;
     }
 
-    public static DeviceException notFoundDevice(){
+    public static DeviceException notFoundDevice() {
         return DEVICE_NOT_FOUND_EXCEPTION;
     }
 }
