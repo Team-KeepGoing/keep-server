@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.book.entity;
+package com.keepgoing.keepserver.domain.book.repository.dto;
 
 import com.keepgoing.keepserver.domain.book.util.GenerateCertCharacter;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class BookDTO {
 
     private String writer;
     private Date registrationDate;
-    private String state = "N";
+    private String state = "0";
 
 
 
