@@ -21,7 +21,7 @@ public class BookServiceImpl implements BookService {
         String nfcCode = createNfcCode();
         book.setRegistrationDate(new Date());
         book.setNfcCode(nfcCode);
-        book.setState("N");
+        book.setState("0");
         bookRepository.save(book);
 
     }
