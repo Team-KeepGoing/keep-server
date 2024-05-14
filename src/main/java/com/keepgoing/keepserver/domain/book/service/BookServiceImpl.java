@@ -1,18 +1,14 @@
 package com.keepgoing.keepserver.domain.book.service;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.BookDTO;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.book.util.GenerateCertCharacter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -40,18 +36,27 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public String deleteBookByNfcCode(String nfcCode) {
-        if(bookRepository.findBookByNfcCode(nfcCode) == null){
-            return "This Book cannot be found";
+        if(nfcCode == null || nfcCode.isEmpty()){
+            return "Invalid NFC code";
+        }
+        Book book = bookRepository.findBookByNfcCode(nfcCode);
+        if(book == null){
+            return "This book cannot be found";
         }
         else {
             bookRepository.delete(bookRepository.findBookByNfcCode(nfcCode));
-            return "successful";
+            return "Deletion successful";
         }
     }
     @Override
     public String createNfcCode() {
         GenerateCertCharacter generateCertCharacter = new GenerateCertCharacter();
-        return generateCertCharacter.excuteGenerate();
+        String newNfcCode;
+        do {
+            newNfcCode = generateCertCharacter.excuteGenerate();
+        } while (bookRepository.findBookByNfcCode(newNfcCode) != null);
+
+        return newNfcCode;
     }
 
 
