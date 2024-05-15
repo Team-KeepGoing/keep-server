@@ -3,6 +3,7 @@ package com.keepgoing.keepserver.domain.device.service;
 import com.keepgoing.keepserver.domain.device.entity.Device;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
+import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.dto.response.BaseResponse;
 import com.keepgoing.keepserver.global.exception.device.DeviceError;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         return new BaseResponse(HttpStatus.OK, "모든 기기 불러오기 성공", dtos);
     }
+
     @Override
     public BaseResponse deviceRead(Long id) {
         Device device = deviceRepository.findById(id).orElseThrow(DeviceException::notFoundDevice);
@@ -41,10 +44,13 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
-        Device device = deviceRepository.findById(id).orElseThrow(DeviceException::notFoundDevice);
-        String info = device.getCheck_info().toString();
+        Optional<User> user = userRepository.findByEmail(authentication.getName());
 
-        if (info.equals(authentication.getName())){
+        if (user.get().isTeacher() == false) {
+            throw new DeviceException(DeviceError.USER_NOT_FOUND);
+        }
+
+        if (user.get().isTeacher() == true) {
             deviceRepository.deleteById(id);
         } else {
             throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
@@ -62,6 +68,6 @@ public class DeviceServiceImpl implements DeviceService {
                 .map(this::entityToDto)
                 .toList());
 
-        return new BaseResponse(HttpStatus.OK, "기기 불러오기 성공" , deviceResponseDtos);
+        return new BaseResponse(HttpStatus.OK, "기기 불러오기 성공", deviceResponseDtos);
     }
 }
