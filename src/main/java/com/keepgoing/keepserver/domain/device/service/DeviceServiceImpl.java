@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,20 +43,31 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
-        Optional<User> user = userRepository.findByEmail(authentication.getName());
-
-        if (user.get().isTeacher() == false) {
-            throw new DeviceException(DeviceError.USER_NOT_FOUND);
-        }
-
-        if (user.get().isTeacher() == true) {
-            deviceRepository.deleteById(id);
-        } else {
-            throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
-        }
+        User user = findUserByEmail(authentication.getName());
+        validateTeacher(user);
+        deleteDeviceById(id);
 
         return new BaseResponse(HttpStatus.OK, "기기 삭제 성공");
     }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new DeviceException(DeviceError.USER_NOT_FOUND));
+    }
+
+    private void validateTeacher(User user) {
+        if (!user.isTeacher()) {
+            throw new DeviceException(DeviceError.USER_NOT_FOUND);
+        }
+    }
+
+    private void deleteDeviceById(Long id) {
+        if (!deviceRepository.existsById(id)) {
+            throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
+        }
+        deviceRepository.deleteById(id);
+    }
+
 
     @Override
     public BaseResponse myDevices(Authentication authentication) {
