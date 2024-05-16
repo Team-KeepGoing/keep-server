@@ -15,13 +15,10 @@ public class BookDTO {
     GenerateCertCharacter generateCertCharacter = new GenerateCertCharacter();
     private long id;
     private String name;
-
     private String nfcCode;
-
     private String writer;
     private Date registrationDate;
     private String state = "0";
-
 
 
 }

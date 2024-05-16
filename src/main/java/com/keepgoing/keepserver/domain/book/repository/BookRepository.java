@@ -11,5 +11,4 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
     public Book findBookByNfcCode(String NfcCode);
-
 }
