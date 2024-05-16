@@ -19,7 +19,7 @@ public class DeviceController {
 
     @Operation(summary = "기자재 리스트", description = "기자재 리스트를 확인합니다.")
     @GetMapping("/list")
-    public BaseResponse allReport(){
+    public BaseResponse allDevices(){
         return deviceService.findAll();
     }
 
@@ -31,7 +31,7 @@ public class DeviceController {
 
     @Operation(summary = "나의 기자재 대여 현황", description = "내가 대여 중인 기자재의 정보를 확인합니다.")
     @GetMapping("/my")
-    public BaseResponse myDevice(Authentication authentication){
+    public BaseResponse myDevices(Authentication authentication){
         return deviceService.myDevices(authentication);
     }
 
