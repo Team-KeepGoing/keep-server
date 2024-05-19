@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.device.presentation;
 
 import com.keepgoing.keepserver.domain.device.service.DeviceService;
-import com.keepgoing.keepserver.global.dto.response.BaseResponse;
+import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
