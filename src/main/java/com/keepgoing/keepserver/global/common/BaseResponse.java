@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.global.dto.response;
+package com.keepgoing.keepserver.global.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -12,11 +12,6 @@ public class BaseResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object data;
 
-    public BaseResponse() {
-        this.httpStatus = HttpStatus.BAD_REQUEST;
-        this.massage = "잘못된 반환입니다.";
-        this.data = null;
-    }
     public BaseResponse(HttpStatus httpStatus, String massage) {
         this.httpStatus = httpStatus;
         this.massage = massage;

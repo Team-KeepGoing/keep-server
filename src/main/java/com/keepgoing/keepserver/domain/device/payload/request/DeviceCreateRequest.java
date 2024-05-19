@@ -8,7 +8,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeviceInfoRequest {
+public class DeviceCreateRequest {
     private Long id;
     private String deviceName;
     private String imgUrl;

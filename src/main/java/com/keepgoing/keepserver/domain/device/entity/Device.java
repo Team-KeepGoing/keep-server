@@ -34,14 +34,10 @@ public class Device {
     @Column(nullable = false)
     private int status;  /* 1 대여 가능, 2 대여 불가능 */
 
-    @Column(nullable = false)
-    private Long check_info; // 비디오 작성자 pk 저장용
-
     @Builder
-    public Device(String deviceName, int status, String imgUrl, Long check_info) {
+    public Device(String deviceName, int status, String imgUrl) {
         this.deviceName = deviceName;
         this.status = status;
         this.imgUrl = imgUrl;
-        this.check_info = check_info;
     }
 }
