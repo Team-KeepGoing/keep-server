@@ -5,7 +5,7 @@ import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
-import com.keepgoing.keepserver.global.dto.response.BaseResponse;
+import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.device.DeviceError;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         return new BaseResponse(HttpStatus.OK, "기기 조회 성공", entityToDto(device));
     }
-
+    
     @Override
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
         User user = findUserByEmail(authentication.getName());
