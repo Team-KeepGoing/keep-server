@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.device.presentation;
 
+import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.service.DeviceService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +22,12 @@ public class DeviceController {
     @GetMapping("/list")
     public BaseResponse allDevices(){
         return deviceService.findAll();
+    }
+
+    @Operation(summary = "기자재 생성", description = "기자재를 생성합니다.")
+    @GetMapping("/create")
+    public BaseResponse deviceCreate(DeviceDto deviceDto){
+        return deviceService.deviceCreate(deviceDto);
     }
 
     @Operation(summary = "선택한 기자재", description = "선택한 기자재의 정보를 확인합니다.")
