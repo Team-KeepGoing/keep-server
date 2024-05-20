@@ -1,6 +1,7 @@
 package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.Device;
+import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
@@ -32,6 +33,12 @@ public class DeviceServiceImpl implements DeviceService {
                 .toList();
 
         return new BaseResponse(HttpStatus.OK, "모든 기기 불러오기 성공", dtos);
+    }
+
+    @Override
+    public BaseResponse deviceCreate(DeviceDto deviceDto) {
+        deviceRepository.save(dtoToEntity(deviceDto));
+        return new BaseResponse(HttpStatus.OK, "기기 생성 성공");
     }
 
     @Override

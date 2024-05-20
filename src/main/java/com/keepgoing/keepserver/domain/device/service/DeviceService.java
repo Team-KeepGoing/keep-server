@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 public interface DeviceService {
 
     BaseResponse myDevices(Authentication authentication);
+    BaseResponse deviceCreate(DeviceDto deviceDto);
     BaseResponse deviceRead(Long id);
     BaseResponse deleteDevice(Long id, Authentication authentication);
 
@@ -23,9 +24,8 @@ public interface DeviceService {
                 .build();
     }
 
-    default DeviceResponseDto dtoToEntity(DeviceDto dto){
-        return DeviceResponseDto.builder()
-                .id(dto.getId())
+    default Device dtoToEntity(DeviceDto dto){
+        return Device.builder()
                 .deviceName((dto.getDeviceName()))
                 .imgUrl(dto.getImgUrl())
                 .status(dto.getStatus())
