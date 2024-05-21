@@ -61,6 +61,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BaseResponse findAll() {
         List<Book> books = bookRepository.findAll();
+        return null;
     }
 
 
