@@ -47,7 +47,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         return new BaseResponse(HttpStatus.OK, "기기 조회 성공", entityToDto(device));
     }
-    
+
     @Override
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
         User user = findUserByEmail(authentication.getName());
