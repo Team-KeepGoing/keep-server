@@ -1,0 +1,49 @@
+name: CI/CD using GitHub Actions & Docker
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  CI-CD:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Create directory and file if not exist
+        run: |
+          mkdir -p ./src/main/resources
+          echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.properties
+
+      - name: Set executable permission
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew bootJar
+
+      - name: Docker build & push to prod
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT .
+          docker push ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
+
+      - name: Deploy to prod
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_PROD }}
+          username: ubuntu
+          key: ${{ secrets.PRIVATE_KEY }}
+          envs: GITHUB_SHA
+          script: |
+            sudo docker stop keep
+            sudo docker rm keep
+            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
+            sudo docker run -d -p 8080:8080 --name keep ${{ secrets.DOCKER_USERNAME }}/keep:0.0.1-SNAPSHOT
