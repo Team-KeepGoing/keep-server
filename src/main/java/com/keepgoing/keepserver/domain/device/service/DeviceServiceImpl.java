@@ -47,7 +47,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         return new BaseResponse(HttpStatus.OK, "기기 조회 성공", entityToDto(device));
     }
-    
+
     @Override
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
         User user = findUserByEmail(authentication.getName());
@@ -55,6 +55,18 @@ public class DeviceServiceImpl implements DeviceService {
         deleteDeviceById(id);
 
         return new BaseResponse(HttpStatus.OK, "기기 삭제 성공");
+    }
+
+    @Override
+    public BaseResponse myDevices(Authentication authentication) {
+        String userName = userRepository.findByEmail(authentication.getName()).orElseThrow(DeviceException::userNotFound).getEmail();
+        List<Device> devices = deviceRepository.findByDeviceNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
+
+        List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>(devices.stream()
+                .map(this::entityToDto)
+                .toList());
+
+        return new BaseResponse(HttpStatus.OK, "기기 불러오기 성공", deviceResponseDtos);
     }
 
     private User findUserByEmail(String email) {
@@ -73,18 +85,5 @@ public class DeviceServiceImpl implements DeviceService {
             throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
         }
         deviceRepository.deleteById(id);
-    }
-
-
-    @Override
-    public BaseResponse myDevices(Authentication authentication) {
-        String userName = userRepository.findByEmail(authentication.getName()).orElseThrow(DeviceException::userNotFound).getEmail();
-        List<Device> devices = deviceRepository.findByDeviceNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
-
-        List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>(devices.stream()
-                .map(this::entityToDto)
-                .toList());
-
-        return new BaseResponse(HttpStatus.OK, "기기 불러오기 성공", deviceResponseDtos);
     }
 }
