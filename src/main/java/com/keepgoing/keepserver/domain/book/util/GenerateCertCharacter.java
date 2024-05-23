@@ -1,7 +1,12 @@
 package com.keepgoing.keepserver.domain.book.util;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Random;
 
+@Getter
+@Setter
 public class GenerateCertCharacter {
     private int certCharLength = 8;
     private final char[] characterTable = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
@@ -20,11 +25,4 @@ public class GenerateCertCharacter {
         return buf.toString();
     }
 
-    public int getCertCharLength() {
-        return certCharLength;
-    }
-
-    public void setCertCharLength(int certCharLength) {
-        this.certCharLength = certCharLength;
-    }
 }
