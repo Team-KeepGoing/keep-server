@@ -23,7 +23,7 @@ public class BookServiceImpl implements BookService {
     private final DeviceRepository deviceRepository;
 
     @Override
-    public BaseResponse bookRegister(Book book, MultipartFile multipartFile){
+    public BaseResponse bookRegister(Book book, MultipartFile multipartFile) {
         String nfcCode = createNfcCode();
         book.setRegistrationDate(new Date());
         book.setNfcCode(nfcCode);
@@ -35,22 +35,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BaseResponse selectAllBook() {
-        return new BaseResponse(HttpStatus.OK, "책 불러오기 성공",(ArrayList<Book>) bookRepository.findAll());
+        return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", (ArrayList<Book>) bookRepository.findAll());
     }
-
 
 
     @Override
     public BaseResponse deleteBook(String nfcCode) {
         if (nfcCode == null || nfcCode.isEmpty()) {
-            return new BaseResponse(HttpStatus.FORBIDDEN,"Invalid NFC code");
+            return new BaseResponse(HttpStatus.NOT_FOUND, "Invalid NFC code");
         }
         Book book = bookRepository.findBookByNfcCode(nfcCode);
         if (book == null) {
-            return new BaseResponse(HttpStatus.OK,"책을 찾을 수 없습니다");
+            return new BaseResponse(HttpStatus.NOT_FOUND, "책을 찾을 수 없습니다");
         } else {
             bookRepository.delete(bookRepository.findBookByNfcCode(nfcCode));
-            return new BaseResponse(HttpStatus.OK,"책 삭제 성공");
+            return new BaseResponse(HttpStatus.OK, "책 삭제 성공");
         }
     }
 
@@ -65,19 +64,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BaseResponse editBook(String nfcCode, BookRequestDTO bookRequest)throws IOException{
+    public BaseResponse editBook(String nfcCode, BookRequestDTO bookRequest) throws IOException {
         Book book = bookRepository.findBookByNfcCode(nfcCode);
 
         List<BookRequestDTO> list = new ArrayList<>();
         list.add(bookRequest);
 
-        for (int i=0;i< list.size();i++) {
+        for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getState() != null) book.setState(list.get(i).getState());
             if (list.get(i).getImageUrl() != null) book.setImage(list.get(i).getImageUrl());
             if (list.get(i).getName() != null) book.setName(list.get(i).getName());
         }
         bookRepository.save(book);
-        return new BaseResponse(HttpStatus.OK,"책 정보 수정 성공");
+        return new BaseResponse(HttpStatus.OK, "책 정보 수정 성공");
     }
 
 

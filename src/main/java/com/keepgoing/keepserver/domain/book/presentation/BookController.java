@@ -23,13 +23,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/book")
 public class BookController {
-    private static final Logger logger = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
 
     @PostMapping("/register")
     public BaseResponse bookRegistration(@RequestPart(value = "book") Book book,
                                          @RequestPart(value = "image") MultipartFile multipartFile) {
-        return bookService.bookRegister(book,multipartFile);
+        return bookService.bookRegister(book, multipartFile);
     }
 
     @GetMapping("/all")
@@ -45,6 +44,6 @@ public class BookController {
     @PutMapping("/edit/{nfcCode}")
     public BaseResponse editBookByNfcCode(@PathVariable(value = "nfcCode") String nfcCode,
                                           @RequestBody BookRequestDTO bookRequest) throws IOException {
-        return bookService.editBook(nfcCode,bookRequest);
+        return bookService.editBook(nfcCode, bookRequest);
     }
 }
