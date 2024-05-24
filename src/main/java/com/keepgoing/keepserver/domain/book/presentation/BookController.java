@@ -41,7 +41,7 @@ public class BookController {
         return bookService.deleteBook(nfcCode);
     }
 
-    @PutMapping("/edit/{nfcCode}")
+    @PatchMapping("/edit/{nfcCode}")
     public BaseResponse editBookByNfcCode(@PathVariable(value = "nfcCode") String nfcCode,
                                           @RequestBody BookRequestDTO bookRequest) throws IOException {
         return bookService.editBook(nfcCode, bookRequest);
