@@ -35,7 +35,7 @@ public class Book {
     @Column(updatable = false, nullable = false)
     private String state; //대여 불가능시 '1' 대여 가능시 '0'
 
-    private String image; //책 이미지 링크
+    private String imageUrl; //책 이미지 링크
 
     @Builder
     public Book(String name, String nfcCode, String writer, Date registrationDate, String state, String image) {
@@ -44,6 +44,6 @@ public class Book {
         this.writer = writer;
         this.registrationDate = registrationDate;
         this.state = state;
-        this.image = image;
+        this.imageUrl = image;
     }
 }

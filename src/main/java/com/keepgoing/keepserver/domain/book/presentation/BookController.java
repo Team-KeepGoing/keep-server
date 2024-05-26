@@ -26,9 +26,8 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping("/register")
-    public BaseResponse bookRegistration(@RequestPart(value = "book") Book book,
-                                         @RequestPart(value = "image") MultipartFile multipartFile) {
-        return bookService.bookRegister(book, multipartFile);
+    public BaseResponse bookRegistration(@RequestPart(value = "book") Book book) {
+        return bookService.bookRegister(book);
     }
 
     @GetMapping("/all")

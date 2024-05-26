@@ -9,7 +9,6 @@ import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class BookServiceImpl implements BookService {
     private final DeviceRepository deviceRepository;
 
     @Override
-    public BaseResponse bookRegister(Book book, MultipartFile multipartFile) {
+    public BaseResponse bookRegister(Book book) {
         String nfcCode = createNfcCode();
         book.setRegistrationDate(new Date());
         book.setNfcCode(nfcCode);
@@ -72,7 +71,7 @@ public class BookServiceImpl implements BookService {
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getState() != null) book.setState(list.get(i).getState());
-            if (list.get(i).getImageUrl() != null) book.setImage(list.get(i).getImageUrl());
+            if (list.get(i).getImageUrl() != null) book.setImageUrl(list.get(i).getImageUrl());
             if (list.get(i).getName() != null) book.setName(list.get(i).getName());
         }
         bookRepository.save(book);
