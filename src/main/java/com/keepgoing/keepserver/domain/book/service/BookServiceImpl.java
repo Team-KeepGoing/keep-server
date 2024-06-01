@@ -4,10 +4,16 @@ import com.keepgoing.keepserver.domain.book.entity.Book;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.book.repository.dto.BookRequestDTO;
 import com.keepgoing.keepserver.domain.book.util.GenerateCertCharacter;
+import com.keepgoing.keepserver.domain.device.entity.Device;
+import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
+import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
+import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,7 +25,7 @@ import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-    private final DeviceRepository deviceRepository;
+    private final UserRepository userRepository;
 
     @Override
     public BaseResponse bookRegister(Book book) {
@@ -50,6 +56,11 @@ public class BookServiceImpl implements BookService {
             bookRepository.delete(bookRepository.findBookByNfcCode(nfcCode));
             return new BaseResponse(HttpStatus.OK, "책 삭제 성공");
         }
+    }
+
+    @Override
+    public BaseResponse selectMyBook(Authentication auth) {
+        return null;
     }
 
     @Override

@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
     public Book findBookByNfcCode(String NfcCode);
+    public String findMyBook(String book);
 }
