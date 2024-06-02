@@ -1,22 +1,15 @@
 package com.keepgoing.keepserver.domain.book.presentation;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.book.repository.dto.BookRequestDTO;
 import com.keepgoing.keepserver.global.common.BaseResponse;
-import com.keepgoing.keepserver.global.dto.response.CustomResponseEntity;
 import com.keepgoing.keepserver.domain.book.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,6 +31,11 @@ public class BookController {
     @DeleteMapping("/del/{nfcCode}")
     public BaseResponse deleteBookByNfcCode(@PathVariable(value = "nfcCode") String nfcCode) {
         return bookService.deleteBook(nfcCode);
+    }
+
+    @GetMapping("/my")
+    public BaseResponse selectMyBook(Authentication auth){
+        return bookService.selectMyBook(auth);
     }
 
     @PatchMapping("/edit/{nfcCode}")

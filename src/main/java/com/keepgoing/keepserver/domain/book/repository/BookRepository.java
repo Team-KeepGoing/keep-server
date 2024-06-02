@@ -5,10 +5,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Transactional
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    public Book findBookByNfcCode(String NfcCode);
-    public String findMyBook(String book);
+    Book findBookByNfcCode(String NfcCode);
+    List<Book> findByNameContaining(String name);
 }
