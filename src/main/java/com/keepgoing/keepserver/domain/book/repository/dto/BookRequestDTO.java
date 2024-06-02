@@ -2,7 +2,6 @@ package com.keepgoing.keepserver.domain.book.repository.dto;
 
 import lombok.Getter;
 
-import java.util.Date;
 
 @Getter
 public class BookRequestDTO {
