@@ -59,14 +59,23 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public BaseResponse myDevices(Authentication authentication) {
-        String userName = userRepository.findByEmail(authentication.getName()).orElseThrow(DeviceException::userNotFound).getEmail();
+        String userName = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(DeviceException::userNotFound).getEmail();
+
         List<Device> devices = deviceRepository.findByDeviceNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
 
-        List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>(devices.stream()
-                .map(this::entityToDto)
-                .toList());
+        List<DeviceResponseDto> deviceResponseDtos = convertDevicesToDtos(devices);
 
         return new BaseResponse(HttpStatus.OK, "기기 불러오기 성공", deviceResponseDtos);
+    }
+
+    private List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
+        List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>();
+        for (Device device : devices) {
+            DeviceResponseDto dto = entityToDto(device);
+            deviceResponseDtos.add(dto);
+        }
+        return deviceResponseDtos;
     }
 
     private User findUserByEmail(String email) {
