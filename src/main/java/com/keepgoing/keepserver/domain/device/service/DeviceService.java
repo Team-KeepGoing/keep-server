@@ -24,7 +24,7 @@ public interface DeviceService {
                 .id(entity.getId())
                 .deviceName((entity.getDeviceName()))
                 .imgUrl(entity.getImgUrl())
-                .status(entity.getStatus())
+                .status(entity.isStatus())
                 .build();
     }
 

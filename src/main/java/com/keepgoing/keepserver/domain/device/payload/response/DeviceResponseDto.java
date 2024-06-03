@@ -7,5 +7,5 @@ public record DeviceResponseDto(
         Long id,
         String deviceName,
         String imgUrl,
-        int status) {
+        boolean status) {
 }

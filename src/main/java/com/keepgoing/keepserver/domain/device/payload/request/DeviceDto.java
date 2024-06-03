@@ -7,6 +7,6 @@ public record DeviceDto (
         Long id,
         String deviceName,
         String imgUrl,
-        int status
+        boolean status
 ){
 }
