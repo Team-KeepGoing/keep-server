@@ -3,7 +3,7 @@ package com.keepgoing.keepserver.domain.book.service;
 import com.keepgoing.keepserver.domain.book.entity.Book;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.book.repository.dto.BookRequestDTO;
-import com.keepgoing.keepserver.domain.book.util.GenerateCertCharacter;
+import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;

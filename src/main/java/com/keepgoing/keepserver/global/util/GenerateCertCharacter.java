@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.book.util;
+package com.keepgoing.keepserver.global.util;
 
 import lombok.Getter;
 import lombok.Setter;
