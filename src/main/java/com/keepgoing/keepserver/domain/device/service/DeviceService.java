@@ -35,11 +35,4 @@ public interface DeviceService {
                 .status(dto.status())
                 .build();
     }
-
-    default MyDevicesDto entityToDto(MyDevicesDto dto) {
-        return MyDevicesDto.builder()
-                .id(dto.id())
-                .deviceName(dto.deviceName())
-                .build();
-    }
 }
