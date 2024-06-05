@@ -18,6 +18,7 @@ public interface DeviceService {
     BaseResponse deleteDevice(Long id, Authentication authentication);
 
     BaseResponse findAll();
+    BaseResponse rentDevice(String deviceName, String email);
 
     default DeviceResponseDto entityToDto(Device entity) {
         return DeviceResponseDto.builder()
