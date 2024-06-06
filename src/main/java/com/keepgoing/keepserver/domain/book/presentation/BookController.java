@@ -29,8 +29,8 @@ public class BookController {
     }
 
     @DeleteMapping("/del/{nfcCode}")
-    public BaseResponse deleteBookByNfcCode(@PathVariable(value = "nfcCode") String nfcCode) {
-        return bookService.deleteBook(nfcCode);
+    public BaseResponse deleteBookByNfcCode(@PathVariable(value = "nfcCode") String nfcCode,Authentication auth) {
+        return bookService.deleteBook(nfcCode,auth);
     }
 
     @GetMapping("/my")

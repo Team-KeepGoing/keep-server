@@ -11,7 +11,7 @@ import java.io.IOException;
 public interface BookService {
     BaseResponse bookRegister(Book book);
     BaseResponse selectAllBook();
-    BaseResponse deleteBook(String nfcCode);
+    BaseResponse deleteBook(String nfcCode, Authentication auth);
     BaseResponse selectMyBook(Authentication auth);
     public String createNfcCode();
     @Transactional
