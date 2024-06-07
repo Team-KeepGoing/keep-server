@@ -71,17 +71,10 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public BaseResponse rentDevice(String deviceName, String email) {
-        Device device = deviceRepository.findByDeviceName(deviceName);
-        if (device == null) {
-            throw DeviceException.notFoundDevice();
-        }
+        Device device = findDeviceByName(deviceName);
+        validateDeviceAvailability(device);
+        rentDeviceToUser(device);
 
-        if (device.isStatus()) {
-            throw DeviceException.deviceAlreadyRented();
-        }
-
-        device.setStatus(true);
-        deviceRepository.save(device);
         return new BaseResponse(HttpStatus.OK, "기기 대여 성공", entityToDto(device));
     }
 
@@ -110,5 +103,21 @@ public class DeviceServiceImpl implements DeviceService {
             throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
         }
         deviceRepository.deleteById(id);
+    }
+
+    private Device findDeviceByName(String deviceName) {
+        return deviceRepository.findByDeviceName(deviceName)
+                .orElseThrow(DeviceException::notFoundDevice);
+    }
+
+    private void validateDeviceAvailability(Device device) {
+        if (device.isStatus()) {
+            throw DeviceException.deviceAlreadyRented();
+        }
+    }
+
+    private void rentDeviceToUser(Device device) {
+        device.setStatus(true);
+        deviceRepository.save(device);
     }
 }
