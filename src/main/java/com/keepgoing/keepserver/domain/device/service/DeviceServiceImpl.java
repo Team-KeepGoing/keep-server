@@ -72,12 +72,17 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public BaseResponse rentDevice(String deviceName, String email) {
         Device device = deviceRepository.findByDeviceName(deviceName);
-        if (device != null && !device.isStatus()) {
-            device.setStatus(true);
-            deviceRepository.save(device);
-            return new BaseResponse(HttpStatus.OK, "기기 대여 성공", entityToDto(device));
+        if (device == null) {
+            throw DeviceException.notFoundDevice();
         }
-        return new BaseResponse(HttpStatus.BAD_REQUEST, "기기 대여 실패");
+
+        if (device.isStatus()) {
+            throw DeviceException.deviceAlreadyRented();
+        }
+
+        device.setStatus(true);
+        deviceRepository.save(device);
+        return new BaseResponse(HttpStatus.OK, "기기 대여 성공", entityToDto(device));
     }
 
     private List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
