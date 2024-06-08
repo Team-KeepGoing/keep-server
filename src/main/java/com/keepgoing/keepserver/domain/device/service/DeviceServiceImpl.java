@@ -68,8 +68,10 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public BaseResponse rentDevice(String deviceName, String email) {
+        User user = findUserByEmail(email);
         Device device = findDeviceByName(deviceName);
         validateDeviceAvailability(device);
+        device.setBorrower(user);
         rentDeviceToUser(device);
 
         return new BaseResponse(HttpStatus.OK, "기기 대여 성공", entityToDto(device));
