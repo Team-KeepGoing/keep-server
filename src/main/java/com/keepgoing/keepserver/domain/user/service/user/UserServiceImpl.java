@@ -1,13 +1,18 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
+import com.keepgoing.keepserver.domain.device.entity.Device;
+import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
+import com.keepgoing.keepserver.domain.device.service.DeviceServiceImpl;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
+import com.keepgoing.keepserver.domain.user.payload.request.UserProfileDto;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
 import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
 import com.keepgoing.keepserver.global.exception.BusinessException;
+import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import com.keepgoing.keepserver.global.exception.error.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +22,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
 
     private final JwtUtils jwtUtils;
+    private final DeviceServiceImpl deviceService;
 
     @Override
     @Transactional
@@ -54,6 +62,15 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Override
+    public UserProfileDto provideUserInfo(String userEmail) {
+        User user = userRepository.findByEmailEquals(userEmail).orElseThrow(DeviceException::userNotFound);
+        List<DeviceResponseDto> borrowedDevicesDto = getBorrowedDevicesForUser(user);
+        hideUserPassword(user);
+
+        return new UserProfileDto(user, borrowedDevicesDto);
+    }
+
     /* 인증 및 JWT 토큰 생성 */
     public JwtResponse authenticateAndGenerateJWT(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(
@@ -64,5 +81,14 @@ public class UserServiceImpl implements UserService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.isTeacher());
+    }
+
+    private List<DeviceResponseDto> getBorrowedDevicesForUser(User user) {
+        List<Device> borrowedDevices = deviceService.findDevicesBorrowedByUser(user);
+        return deviceService.convertDevicesToDtos(borrowedDevices);
+    }
+
+    private void hideUserPassword(User user) {
+        user.hidePassword("");
     }
 }
