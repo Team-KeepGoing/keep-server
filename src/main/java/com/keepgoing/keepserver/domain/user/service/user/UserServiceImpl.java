@@ -65,10 +65,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileDto provideUserInfo(String userEmail) {
         User user = userRepository.findByEmailEquals(userEmail).orElseThrow(DeviceException::userNotFound);
-        List<Device> borrowedDevices = deviceService.findDevicesBorrowedByUser(user);
-        List<DeviceResponseDto> borrowedDevicesDto = deviceService.convertDevicesToDtos(borrowedDevices);
-
-        user.hidePassword("");
+        List<DeviceResponseDto> borrowedDevicesDto = getBorrowedDevicesForUser(user);
+        hideUserPassword(user);
 
         return new UserProfileDto(user, borrowedDevicesDto);
     }
@@ -83,5 +81,14 @@ public class UserServiceImpl implements UserService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.isTeacher());
+    }
+
+    private List<DeviceResponseDto> getBorrowedDevicesForUser(User user) {
+        List<Device> borrowedDevices = deviceService.findDevicesBorrowedByUser(user);
+        return deviceService.convertDevicesToDtos(borrowedDevices);
+    }
+
+    private void hideUserPassword(User user) {
+        user.hidePassword("");
     }
 }
