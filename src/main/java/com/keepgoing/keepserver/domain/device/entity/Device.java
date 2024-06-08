@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.device.entity;
 
+import com.keepgoing.keepserver.domain.user.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -33,6 +34,13 @@ public class Device {
     */
     @Column(nullable = false)
     private boolean status;
+
+    /*
+        대여자 id
+    */
+    @ManyToOne
+    @JoinColumn(name = "borrower_id")
+    private User borrower;
 
     @Builder
     public Device(String deviceName, boolean status, String imgUrl) {
