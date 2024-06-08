@@ -59,14 +59,11 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public BaseResponse myDevices(Authentication authentication) {
-        String userName = userRepository.findByEmail(authentication.getName())
-                .orElseThrow(DeviceException::userNotFound).getEmail();
-
-        List<Device> devices = deviceRepository.findByDeviceNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
-
+        User user = findUserByEmail(authentication.getName());
+        List<Device> devices = findDevicesBorrowedByUser(user);
         List<DeviceResponseDto> deviceResponseDtos = convertDevicesToDtos(devices);
 
-        return new BaseResponse(HttpStatus.OK, "기기 불러오기 성공", deviceResponseDtos);
+        return new BaseResponse(HttpStatus.OK, "유저가 대여한 기기 목록 조회 성공", deviceResponseDtos);
     }
 
     @Override
@@ -90,6 +87,10 @@ public class DeviceServiceImpl implements DeviceService {
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new DeviceException(DeviceError.USER_NOT_FOUND));
+    }
+
+    private List<Device> findDevicesBorrowedByUser(User user) {
+        return deviceRepository.findByBorrower(user);
     }
 
     private void validateTeacher(User user) {
