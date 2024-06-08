@@ -77,7 +77,7 @@ public class DeviceServiceImpl implements DeviceService {
         return new BaseResponse(HttpStatus.OK, "기기 대여 성공", entityToDto(device));
     }
 
-    private List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
+    public List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
         List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>();
         for (Device device : devices) {
             DeviceResponseDto dto = entityToDto(device);
@@ -91,7 +91,7 @@ public class DeviceServiceImpl implements DeviceService {
                 () -> new DeviceException(DeviceError.USER_NOT_FOUND));
     }
 
-    private List<Device> findDevicesBorrowedByUser(User user) {
+    public List<Device> findDevicesBorrowedByUser(User user) {
         return deviceRepository.findByBorrower(user);
     }
 
