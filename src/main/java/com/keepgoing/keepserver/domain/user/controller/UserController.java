@@ -6,7 +6,6 @@ import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserProfileDto;
 import com.keepgoing.keepserver.domain.user.payload.response.ApiResponse;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
-import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.service.user.UserService;
 import com.keepgoing.keepserver.domain.user.service.user.UserServiceImpl;
 import com.keepgoing.keepserver.global.exception.BusinessException;
