@@ -32,10 +32,10 @@ public class Device {
         기기 대여 상태
     */
     @Column(nullable = false)
-    private int status;  /* 1 대여 가능, 2 대여 불가능 */
+    private boolean status;
 
     @Builder
-    public Device(String deviceName, int status, String imgUrl) {
+    public Device(String deviceName, boolean status, String imgUrl) {
         this.deviceName = deviceName;
         this.status = status;
         this.imgUrl = imgUrl;

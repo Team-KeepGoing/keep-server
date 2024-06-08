@@ -3,9 +3,7 @@ package com.keepgoing.keepserver.domain.device.payload.response;
 import lombok.Builder;
 
 @Builder
-public record DeviceResponseDto(
+public record MyDevicesDto (
         Long id,
-        String deviceName,
-        String imgUrl,
-        boolean status) {
+        String deviceName ) {
 }

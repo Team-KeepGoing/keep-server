@@ -3,6 +3,7 @@ package com.keepgoing.keepserver.domain.device.service;
 import com.keepgoing.keepserver.domain.device.entity.Device;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
+import com.keepgoing.keepserver.domain.device.payload.response.MyDevicesDto;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import org.springframework.security.core.Authentication;
 
@@ -17,13 +18,14 @@ public interface DeviceService {
     BaseResponse deleteDevice(Long id, Authentication authentication);
 
     BaseResponse findAll();
+    BaseResponse rentDevice(String deviceName, String email);
 
     default DeviceResponseDto entityToDto(Device entity) {
         return DeviceResponseDto.builder()
                 .id(entity.getId())
                 .deviceName((entity.getDeviceName()))
                 .imgUrl(entity.getImgUrl())
-                .status(entity.getStatus())
+                .status(entity.isStatus())
                 .build();
     }
 

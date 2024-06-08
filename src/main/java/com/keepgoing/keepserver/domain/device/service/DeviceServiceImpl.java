@@ -59,14 +59,32 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public BaseResponse myDevices(Authentication authentication) {
-        String userName = userRepository.findByEmail(authentication.getName()).orElseThrow(DeviceException::userNotFound).getEmail();
+        String userName = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(DeviceException::userNotFound).getEmail();
+
         List<Device> devices = deviceRepository.findByDeviceNameContaining(userName, (Sort.by(Sort.Direction.DESC, "id")));
 
-        List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>(devices.stream()
-                .map(this::entityToDto)
-                .toList());
+        List<DeviceResponseDto> deviceResponseDtos = convertDevicesToDtos(devices);
 
         return new BaseResponse(HttpStatus.OK, "기기 불러오기 성공", deviceResponseDtos);
+    }
+
+    @Override
+    public BaseResponse rentDevice(String deviceName, String email) {
+        Device device = findDeviceByName(deviceName);
+        validateDeviceAvailability(device);
+        rentDeviceToUser(device);
+
+        return new BaseResponse(HttpStatus.OK, "기기 대여 성공", entityToDto(device));
+    }
+
+    private List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
+        List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>();
+        for (Device device : devices) {
+            DeviceResponseDto dto = entityToDto(device);
+            deviceResponseDtos.add(dto);
+        }
+        return deviceResponseDtos;
     }
 
     private User findUserByEmail(String email) {
@@ -85,5 +103,21 @@ public class DeviceServiceImpl implements DeviceService {
             throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
         }
         deviceRepository.deleteById(id);
+    }
+
+    private Device findDeviceByName(String deviceName) {
+        return deviceRepository.findByDeviceName(deviceName)
+                .orElseThrow(DeviceException::notFoundDevice);
+    }
+
+    private void validateDeviceAvailability(Device device) {
+        if (device.isStatus()) {
+            throw DeviceException.deviceAlreadyRented();
+        }
+    }
+
+    private void rentDeviceToUser(Device device) {
+        device.setStatus(true);
+        deviceRepository.save(device);
     }
 }

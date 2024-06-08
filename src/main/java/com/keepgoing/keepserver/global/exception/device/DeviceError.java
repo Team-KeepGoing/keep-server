@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum DeviceError implements ErrorProperty {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
-    DEVICE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 기기를 찾을 수 없습니다.");
+    DEVICE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 기기를 찾을 수 없습니다."),
+    DEVICE_ALREADY_RENTED(HttpStatus.BAD_REQUEST, "기기가 이미 대여 중입니다.");
     private final HttpStatus status;
     private final String message;
 }
