@@ -2,6 +2,7 @@ package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.Device;
 import com.keepgoing.keepserver.domain.device.entity.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
@@ -16,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,28 +24,25 @@ import java.util.List;
 public class DeviceServiceImpl implements DeviceService {
     private final UserRepository userRepository;
     private final DeviceRepository deviceRepository;
+    private final DeviceMapper deviceMapper;
 
     @Override
     public BaseResponse findAll() {
         List<Device> devices = deviceRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
-
-        List<DeviceResponseDto> dtos = devices.stream()
-                .map(this::entityToDto)
-                .toList();
-
+        List<DeviceResponseDto> dtos = deviceMapper.convertDevicesToDtos(devices);
         return new BaseResponse(HttpStatus.OK, "모든 기기 불러오기 성공", dtos);
     }
 
     @Override
     public BaseResponse deviceCreate(DeviceDto deviceDto) {
-        deviceRepository.save(dtoToEntity(deviceDto));
+        deviceRepository.save(deviceMapper.dtoToEntity(deviceDto));
         return new BaseResponse(HttpStatus.OK, "기기 생성 성공");
     }
 
     @Override
     public BaseResponse deviceRead(Long id) {
         Device device = deviceRepository.findById(id).orElseThrow(DeviceException::notFoundDevice);
-        return new BaseResponse(HttpStatus.OK, "기기 조회 성공", entityToDto(device));
+        return new BaseResponse(HttpStatus.OK, "기기 조회 성공", deviceMapper.entityToDto(device));
     }
 
     @Override
@@ -60,7 +57,7 @@ public class DeviceServiceImpl implements DeviceService {
     public BaseResponse myDevices(Authentication authentication) {
         User user = findUserByEmail(authentication.getName());
         List<Device> devices = findDevicesBorrowedByUser(user);
-        List<DeviceResponseDto> deviceResponseDtos = convertDevicesToDtos(devices);
+        List<DeviceResponseDto> deviceResponseDtos = deviceMapper.convertDevicesToDtos(devices);
         return new BaseResponse(HttpStatus.OK, "유저가 대여한 기기 목록 조회 성공", deviceResponseDtos);
     }
 
@@ -70,16 +67,7 @@ public class DeviceServiceImpl implements DeviceService {
         Device device = findDeviceByName(deviceName);
         validateDeviceAvailability(device);
         rentDeviceToUser(device, user);
-        return new BaseResponse(HttpStatus.OK, "기기 대여 성공", entityToDto(device));
-    }
-
-    public List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
-        List<DeviceResponseDto> deviceResponseDtos = new ArrayList<>();
-        for (Device device : devices) {
-            DeviceResponseDto dto = entityToDto(device);
-            deviceResponseDtos.add(dto);
-        }
-        return deviceResponseDtos;
+        return new BaseResponse(HttpStatus.OK, "기기 대여 성공", deviceMapper.entityToDto(device));
     }
 
     private User findUserByEmail(String email) {
