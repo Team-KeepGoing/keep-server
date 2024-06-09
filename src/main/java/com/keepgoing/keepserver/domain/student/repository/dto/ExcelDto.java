@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.excel.dto;
+package com.keepgoing.keepserver.domain.student.repository.dto;
 
 
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package com.keepgoing.keepserver.domain.excel.controller;
+package com.keepgoing.keepserver.domain.student.controller;
 
-import com.keepgoing.keepserver.domain.excel.service.ExcelService;
+import com.keepgoing.keepserver.domain.student.service.ExcelService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
