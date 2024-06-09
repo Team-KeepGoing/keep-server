@@ -1,6 +1,7 @@
 package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.Device;
+import com.keepgoing.keepserver.domain.device.entity.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
@@ -44,7 +45,6 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public BaseResponse deviceRead(Long id) {
         Device device = deviceRepository.findById(id).orElseThrow(DeviceException::notFoundDevice);
-
         return new BaseResponse(HttpStatus.OK, "기기 조회 성공", entityToDto(device));
     }
 
@@ -53,7 +53,6 @@ public class DeviceServiceImpl implements DeviceService {
         User user = findUserByEmail(authentication.getName());
         validateTeacher(user);
         deleteDeviceById(id);
-
         return new BaseResponse(HttpStatus.OK, "기기 삭제 성공");
     }
 
@@ -62,7 +61,6 @@ public class DeviceServiceImpl implements DeviceService {
         User user = findUserByEmail(authentication.getName());
         List<Device> devices = findDevicesBorrowedByUser(user);
         List<DeviceResponseDto> deviceResponseDtos = convertDevicesToDtos(devices);
-
         return new BaseResponse(HttpStatus.OK, "유저가 대여한 기기 목록 조회 성공", deviceResponseDtos);
     }
 
@@ -71,9 +69,7 @@ public class DeviceServiceImpl implements DeviceService {
         User user = findUserByEmail(email);
         Device device = findDeviceByName(deviceName);
         validateDeviceAvailability(device);
-        device.setBorrower(user);
-        rentDeviceToUser(device);
-
+        rentDeviceToUser(device, user);
         return new BaseResponse(HttpStatus.OK, "기기 대여 성공", entityToDto(device));
     }
 
@@ -87,8 +83,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     private User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(
-                () -> new DeviceException(DeviceError.USER_NOT_FOUND));
+        return userRepository.findByEmail(email).orElseThrow(() -> new DeviceException(DeviceError.USER_NOT_FOUND));
     }
 
     public List<Device> findDevicesBorrowedByUser(User user) {
@@ -114,13 +109,14 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     private void validateDeviceAvailability(Device device) {
-        if (device.isStatus()) {
-            throw DeviceException.deviceAlreadyRented();
+        if (device.getStatus() != DeviceStatus.AVAILABLE) {
+            throw new DeviceException(DeviceError.DEVICE_NOT_AVAILABLE);
         }
     }
 
-    private void rentDeviceToUser(Device device) {
-        device.setStatus(true);
+    private void rentDeviceToUser(Device device, User user) {
+        device.setBorrower(user);
+        device.setStatus(DeviceStatus.RENTED);
         deviceRepository.save(device);
     }
 }
