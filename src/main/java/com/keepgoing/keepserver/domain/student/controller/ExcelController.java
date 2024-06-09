@@ -14,7 +14,7 @@ import java.io.IOException;
 public class ExcelController {
     private final ExcelService excelService;
     @PostMapping("/upload")
-    public BaseResponse uploadExcel(@RequestParam("file") MultipartFile file) throws IOException {
+    public BaseResponse uploadExcel(@RequestPart(value = "excel") MultipartFile file) throws IOException {
         return excelService.uploadExcel(file);
     }
 }
