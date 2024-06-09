@@ -25,8 +25,8 @@ public class DeviceController {
     }
 
     @Operation(summary = "기자재 생성", description = "기자재를 생성합니다.")
-    @GetMapping("/create")
-    public BaseResponse deviceCreate(DeviceDto deviceDto){
+    @PostMapping("/create")
+    public BaseResponse deviceCreate(@RequestBody DeviceDto deviceDto){
         return deviceService.deviceCreate(deviceDto);
     }
 
