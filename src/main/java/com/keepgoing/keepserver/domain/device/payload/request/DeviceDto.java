@@ -8,5 +8,5 @@ public record DeviceDto (
         String deviceName,
         String imgUrl,
         boolean status
-){
+) {
 }
