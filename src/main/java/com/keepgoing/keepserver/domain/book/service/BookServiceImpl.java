@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class BookServiceImpl implements BookService {
     private final UserRepository userRepository;
 
     @Override
-    public BaseResponse bookRegister(Book book) {
+    public BaseResponse bookRegister(Book book, MultipartFile multipartFile) {
         String nfcCode = createNfcCode();
         book.setRegistrationDate(new Date());
         book.setNfcCode(nfcCode);

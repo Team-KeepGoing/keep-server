@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -19,8 +20,8 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping("/register")
-    public BaseResponse bookRegistration(@RequestPart(value = "book") Book book) {
-        return bookService.bookRegister(book);
+    public BaseResponse bookRegistration(@RequestPart(value = "book") Book book, MultipartFile multipartFile) {
+        return bookService.bookRegister(book,multipartFile);
     }
 
     @GetMapping("/all")
