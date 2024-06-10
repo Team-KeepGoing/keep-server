@@ -6,6 +6,7 @@ import com.keepgoing.keepserver.domain.student.repository.dto.StudentDto;
 import com.keepgoing.keepserver.domain.student.repository.dto.StudentFindDto;
 import com.keepgoing.keepserver.domain.student.repository.dto.StudentRequestDto;
 import com.keepgoing.keepserver.global.common.BaseResponse;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -71,6 +72,7 @@ public class StudentService {
         return new BaseResponse(HttpStatus.OK, "학생 정보", studentFormat(st,num));
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public BaseResponse editStudent(StudentFindDto find, StudentRequestDto studentDto) {
         Student studentEntity = studentRepository.findStudentByNameAndGroupAndGroupNum(find.getName(), find.getGroup(), find.getGrade());
 
