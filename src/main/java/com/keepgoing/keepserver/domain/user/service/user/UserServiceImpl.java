@@ -13,7 +13,6 @@ import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
 import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
 import com.keepgoing.keepserver.global.exception.BusinessException;
-import com.keepgoing.keepserver.global.exception.device.DeviceError;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import com.keepgoing.keepserver.global.exception.error.ErrorCode;
 import jakarta.transaction.Transactional;
@@ -81,10 +80,6 @@ public class UserServiceImpl implements UserService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.isTeacher());
-    }
-
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new DeviceException(DeviceError.USER_NOT_FOUND));
     }
 
     private List<DeviceResponseDto> getBorrowedDevicesForUser(User user) {
