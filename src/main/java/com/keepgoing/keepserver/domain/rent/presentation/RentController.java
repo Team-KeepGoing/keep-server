@@ -19,4 +19,10 @@ public class RentController {
     public BaseResponse rentDevice(@RequestParam String deviceName, @RequestParam String email) {
         return rentService.rentDevice(deviceName, email);
     }
+
+    @Operation(summary = "도서 대여", description = "기자재를 대여합니다.")
+    @PostMapping("/book")
+    public BaseResponse rentBook(@RequestParam String bookName, @RequestParam String email) {
+        return rentService.rentBook(bookName, email);
+    }
 }
