@@ -2,27 +2,38 @@ package com.keepgoing.keepserver.global.util;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
-import java.util.Random;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 @Getter
 @Setter
+@Component
 public class GenerateCertCharacter {
     private int certCharLength = 8;
-    private final char[] characterTable = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-            'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-            'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+    private final SecureRandom random;
 
-    public String excuteGenerate() {
-        Random random = new Random(System.currentTimeMillis());
-        int tablelength = characterTable.length;
-        StringBuffer buf = new StringBuffer();
-
-        for (int i = 0; i < certCharLength; i++) {
-            buf.append(characterTable[random.nextInt(tablelength)]);
+    public GenerateCertCharacter() {
+        try {
+            random = SecureRandom.getInstanceStrong();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
 
-        return buf.toString();
+    }
+
+    private final String characterTable = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+    public String executeGenerate() {
+        int tablelength = characterTable.length();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < certCharLength; i++) {
+            sb.append(characterTable.charAt(random.nextInt(tablelength)));
+        }
+
+        return sb.toString();
     }
 
 }
