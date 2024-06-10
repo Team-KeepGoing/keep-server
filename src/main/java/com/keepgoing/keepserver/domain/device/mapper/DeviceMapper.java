@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class DeviceMapper {
-
     public DeviceResponseDto entityToDto(Device entity) {
         return DeviceResponseDto.builder()
                 .id(entity.getId())

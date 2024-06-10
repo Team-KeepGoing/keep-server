@@ -2,12 +2,12 @@ package com.keepgoing.keepserver.domain.book.service;
 
 import com.keepgoing.keepserver.domain.book.consts.BookState;
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDTO;
-import com.keepgoing.keepserver.global.common.S3.S3Uploader;
-import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
+import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
+import com.keepgoing.keepserver.global.common.S3.S3Uploader;
+import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
