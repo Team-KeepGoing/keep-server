@@ -3,7 +3,7 @@ package com.keepgoing.keepserver.domain.book.service;
 import com.keepgoing.keepserver.domain.book.consts.BookState;
 import com.keepgoing.keepserver.domain.book.entity.Book;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
-import com.keepgoing.keepserver.domain.book.repository.dto.BookRequestDTO;
+import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDTO;
 import com.keepgoing.keepserver.global.common.S3.S3Uploader;
 import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,7 +47,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BaseResponse selectAllBook() {
-        return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", (ArrayList<Book>) bookRepository.findAll());
+        return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", bookRepository.findAll());
     }
 
     @Override
@@ -70,7 +69,7 @@ public class BookServiceImpl implements BookService {
     public BaseResponse selectMyBook(Authentication auth) {
         //noinspection OptionalGetWithoutIsPresent
         String user = userRepository.findByEmail(auth.getName()).get().getEmail();
-        List<Book> books = bookRepository.findByNameContaining(user);
+        List<Book> books = bookRepository.findByBookNameContaining(user);
 
         return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books.toString());
     }
@@ -91,7 +90,7 @@ public class BookServiceImpl implements BookService {
 
         if (bookRequest.getState() != null) book.setState(bookRequest.getState());
         if (bookRequest.getImageUrl() != null) book.setImageUrl(bookRequest.getImageUrl());
-        if (bookRequest.getName() != null) book.setName(bookRequest.getName());
+        if (bookRequest.getName() != null) book.setBookName(bookRequest.getName());
         bookRepository.save(book);
         return new BaseResponse(HttpStatus.OK, "책 정보 수정 성공");
     }
