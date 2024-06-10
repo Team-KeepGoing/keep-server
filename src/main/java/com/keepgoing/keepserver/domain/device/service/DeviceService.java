@@ -15,5 +15,4 @@ public interface DeviceService {
     BaseResponse deleteDevice(Long id, Authentication authentication);
 
     BaseResponse findAll();
-    BaseResponse rentDevice(String deviceName, String email);
 }

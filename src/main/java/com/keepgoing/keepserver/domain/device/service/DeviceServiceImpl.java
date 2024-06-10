@@ -1,13 +1,12 @@
 package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.entity.Device;
-import com.keepgoing.keepserver.domain.device.entity.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
+import com.keepgoing.keepserver.domain.user.service.user.UserServiceImpl;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.device.DeviceError;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
@@ -22,7 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DeviceServiceImpl implements DeviceService {
-    private final UserRepository userRepository;
+    private final UserServiceImpl userService;
     private final DeviceRepository deviceRepository;
     private final DeviceMapper deviceMapper;
 
@@ -47,7 +46,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
-        User user = findUserByEmail(authentication.getName());
+        User user = userService.findUserByEmail(authentication.getName());
         validateTeacher(user);
         deleteDeviceById(id);
         return new BaseResponse(HttpStatus.OK, "기기 삭제 성공");
@@ -55,23 +54,10 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public BaseResponse myDevices(Authentication authentication) {
-        User user = findUserByEmail(authentication.getName());
+        User user = userService.findUserByEmail(authentication.getName());
         List<Device> devices = findDevicesBorrowedByUser(user);
         List<DeviceResponseDto> deviceResponseDtos = deviceMapper.convertDevicesToDtos(devices);
         return new BaseResponse(HttpStatus.OK, "유저가 대여한 기기 목록 조회 성공", deviceResponseDtos);
-    }
-
-    @Override
-    public BaseResponse rentDevice(String deviceName, String email) {
-        User user = findUserByEmail(email);
-        Device device = findDeviceByName(deviceName);
-        validateDeviceAvailability(device);
-        rentDeviceToUser(device, user);
-        return new BaseResponse(HttpStatus.OK, "기기 대여 성공", deviceMapper.entityToDto(device));
-    }
-
-    private User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new DeviceException(DeviceError.USER_NOT_FOUND));
     }
 
     public List<Device> findDevicesBorrowedByUser(User user) {
@@ -89,22 +75,5 @@ public class DeviceServiceImpl implements DeviceService {
             throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
         }
         deviceRepository.deleteById(id);
-    }
-
-    private Device findDeviceByName(String deviceName) {
-        return deviceRepository.findByDeviceName(deviceName)
-                .orElseThrow(DeviceException::notFoundDevice);
-    }
-
-    private void validateDeviceAvailability(Device device) {
-        if (device.getStatus() != DeviceStatus.AVAILABLE) {
-            throw new DeviceException(DeviceError.DEVICE_NOT_AVAILABLE);
-        }
-    }
-
-    private void rentDeviceToUser(Device device, User user) {
-        device.setBorrower(user);
-        device.setStatus(DeviceStatus.RENTED);
-        deviceRepository.save(device);
     }
 }
