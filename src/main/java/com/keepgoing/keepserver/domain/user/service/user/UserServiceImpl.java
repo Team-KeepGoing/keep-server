@@ -1,6 +1,7 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
 import com.keepgoing.keepserver.domain.device.entity.Device;
+import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.service.DeviceServiceImpl;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
@@ -30,13 +31,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder encoder;
-
     private final AuthenticationManager authenticationManager;
-
     private final JwtUtils jwtUtils;
     private final DeviceServiceImpl deviceService;
+    private final DeviceMapper deviceMapper;
 
     @Override
     @Transactional
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(ErrorCode.EMAIL_BAD_REQUEST);
         }
         User user = User.registerUser(
-                signupRequest.getEmail(),encoder.encode(signupRequest.getPassword()),
+                signupRequest.getEmail(), encoder.encode(signupRequest.getPassword()),
                 signupRequest.getName(), signupRequest.isTeacher()
         );
         userRepository.save(user);
@@ -54,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUserData(UserInfoRequest request, String email) {
         User user = userRepository.findByEmailEquals(email)
-                .orElseThrow(()-> new BusinessException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
 
         user.fixUserData(
                 request.getEmail(),
@@ -85,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
     private List<DeviceResponseDto> getBorrowedDevicesForUser(User user) {
         List<Device> borrowedDevices = deviceService.findDevicesBorrowedByUser(user);
-        return deviceService.convertDevicesToDtos(borrowedDevices);
+        return deviceMapper.convertDevicesToDtos(borrowedDevices);
     }
 
     private void hideUserPassword(User user) {

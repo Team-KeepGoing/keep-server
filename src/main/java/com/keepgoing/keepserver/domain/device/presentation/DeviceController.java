@@ -25,8 +25,8 @@ public class DeviceController {
     }
 
     @Operation(summary = "기자재 생성", description = "기자재를 생성합니다.")
-    @GetMapping("/create")
-    public BaseResponse deviceCreate(DeviceDto deviceDto){
+    @PostMapping("/create")
+    public BaseResponse deviceCreate(@RequestBody DeviceDto deviceDto){
         return deviceService.deviceCreate(deviceDto);
     }
 
@@ -46,11 +46,5 @@ public class DeviceController {
     @DeleteMapping("/delete/{id}")
     public BaseResponse deleteDevice(@PathVariable Long id, Authentication authentication){
         return deviceService.deleteDevice(id, authentication);
-    }
-
-    @Operation(summary = "기자재 대여", description = "기자재를 대여합니다.")
-    @PostMapping("/rent")
-    public BaseResponse rentDevice(@RequestParam String deviceName, @RequestParam String email) {
-        return deviceService.rentDevice(deviceName, email);
     }
 }

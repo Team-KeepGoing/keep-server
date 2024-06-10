@@ -2,6 +2,7 @@ package com.keepgoing.keepserver.domain.book.entity;
 
 
 import com.keepgoing.keepserver.domain.book.consts.BookState;
+import com.keepgoing.keepserver.domain.user.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,7 +21,7 @@ public class Book {
     private long id;
 
     @Column(nullable = false)
-    private String name;
+    private String bookName;
 
     @Column(updatable = false, nullable = false)
     private String nfcCode;
@@ -37,13 +38,17 @@ public class Book {
 
     private String imageUrl; //책 이미지 링크
 
+    @ManyToOne
+    @JoinColumn(name = "borrower_id")
+    private User borrower;
+
     @Builder
-    public Book(String name, String nfcCode, String writer, Date registrationDate, BookState state, String image) {
-        this.name = name;
+    public Book(String bookName, String nfcCode, String writer, Date registrationDate, BookState state, String imageUrl) {
+        this.bookName = bookName;
         this.nfcCode = nfcCode;
         this.writer = writer;
         this.registrationDate = registrationDate;
         this.state = state;
-        this.imageUrl = image;
+        this.imageUrl = imageUrl;
     }
 }

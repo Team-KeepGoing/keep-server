@@ -1,8 +1,7 @@
-package com.keepgoing.keepserver.domain.book.repository.dto;
+package com.keepgoing.keepserver.domain.book.entity.dto;
 
 import com.keepgoing.keepserver.domain.book.consts.BookState;
 import lombok.Getter;
-
 
 @Getter
 public class BookRequestDTO {
@@ -10,5 +9,4 @@ public class BookRequestDTO {
     private String nfcCode;
     private String imageUrl;
     private BookState state;
-
 }

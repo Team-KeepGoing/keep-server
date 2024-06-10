@@ -32,8 +32,9 @@ public class Device {
     /*
         기기 대여 상태
     */
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean status;
+    private DeviceStatus status;
 
     /*
         대여자 id
@@ -43,7 +44,7 @@ public class Device {
     private User borrower;
 
     @Builder
-    public Device(String deviceName, boolean status, String imgUrl) {
+    public Device(String deviceName, DeviceStatus status, String imgUrl) {
         this.deviceName = deviceName;
         this.status = status;
         this.imgUrl = imgUrl;

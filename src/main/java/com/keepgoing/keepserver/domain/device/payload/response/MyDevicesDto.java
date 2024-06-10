@@ -5,5 +5,6 @@ import lombok.Builder;
 @Builder
 public record MyDevicesDto (
         Long id,
-        String deviceName ) {
+        String deviceName
+) {
 }

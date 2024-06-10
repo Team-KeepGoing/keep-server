@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.book.presentation;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.repository.dto.BookRequestDTO;
+import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDTO;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.domain.book.service.BookService;
 import lombok.RequiredArgsConstructor;
