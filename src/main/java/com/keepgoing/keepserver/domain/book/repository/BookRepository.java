@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
-@Transactional
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
     Book findBookByNfcCode(String NfcCode);
