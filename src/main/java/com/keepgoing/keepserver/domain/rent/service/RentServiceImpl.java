@@ -29,18 +29,18 @@ public class RentServiceImpl implements RentService{
         return new BaseResponse(HttpStatus.OK, "기기 대여 성공", deviceMapper.entityToDto(device));
     }
 
-    public Device findDeviceByName(String deviceName) {
+    private Device findDeviceByName(String deviceName) {
         return deviceRepository.findByDeviceName(deviceName)
                 .orElseThrow(DeviceException::notFoundDevice);
     }
 
-    public void validateDeviceAvailability(Device device) {
+    private void validateDeviceAvailability(Device device) {
         if (device.getStatus() != DeviceStatus.AVAILABLE) {
             throw new DeviceException(DeviceError.DEVICE_NOT_AVAILABLE);
         }
     }
 
-    public void rentDeviceToUser(Device device, User user) {
+    private void rentDeviceToUser(Device device, User user) {
         device.setBorrower(user);
         device.setStatus(DeviceStatus.RENTED);
         deviceRepository.save(device);
