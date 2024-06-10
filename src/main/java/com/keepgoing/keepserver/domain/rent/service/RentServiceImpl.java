@@ -4,8 +4,8 @@ import com.keepgoing.keepserver.domain.device.entity.Device;
 import com.keepgoing.keepserver.domain.device.entity.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
+import com.keepgoing.keepserver.domain.device.service.DeviceServiceImpl;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.domain.user.service.user.UserServiceImpl;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.device.DeviceError;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
@@ -16,13 +16,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RentServiceImpl implements RentService{
-    private final UserServiceImpl userService;
+    private final DeviceServiceImpl deviceService;
     private final DeviceRepository deviceRepository;
     private final DeviceMapper deviceMapper;
 
     @Override
     public BaseResponse rentDevice(String deviceName, String email) {
-        User user = userService.findUserByEmail(email);
+        User user = deviceService.findUserByEmail(email);
         Device device = findDeviceByName(deviceName);
         validateDeviceAvailability(device);
         rentDeviceToUser(device, user);
