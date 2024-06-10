@@ -4,4 +4,5 @@ import com.keepgoing.keepserver.global.common.BaseResponse;
 
 public interface RentService {
     BaseResponse rentDevice(String deviceName, String email);
+    BaseResponse rentBook(String bookName, String email);
 }
