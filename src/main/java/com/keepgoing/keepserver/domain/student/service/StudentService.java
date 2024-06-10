@@ -66,9 +66,9 @@ public class StudentService {
         return new BaseResponse(HttpStatus.OK, "엑셀 업로딩 성공", studentList);
     }
 
-    public BaseResponse findByStudent(StudentFindDto studentDto) {
+    public BaseResponse findByStudent(StudentFindDto studentDto, int num) {
         Student st = studentRepository.findStudentByNameAndGroupAndGroupNum(studentDto.getName(), studentDto.getGroup(), studentDto.getGrade());
-        return new BaseResponse(HttpStatus.OK, "학생 정보", st);
+        return new BaseResponse(HttpStatus.OK, "학생 정보", studentFormat(st,num));
     }
 
     public BaseResponse editStudent(StudentFindDto find, StudentRequestDto studentDto) {

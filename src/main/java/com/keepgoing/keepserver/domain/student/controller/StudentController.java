@@ -15,8 +15,8 @@ import java.io.IOException;
 public class StudentController {
     private final StudentService studentService;
     @GetMapping("/find")
-    public BaseResponse findStudent(@RequestBody StudentFindDto studentFindDto) {
-        return studentService.findByStudent(studentFindDto);
+    public BaseResponse findStudent(@RequestBody StudentFindDto studentFindDto, int num) {
+        return studentService.findByStudent(studentFindDto, num);
     }
 
     @PatchMapping("/edit")
