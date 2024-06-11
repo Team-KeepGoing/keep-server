@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.student.repository.dto;
 
+import com.keepgoing.keepserver.domain.student.consts.StudentFindType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,5 +11,5 @@ public class StudentFindDto {
     int grade;
     int group;
     int groupNum;
-    int num;
+    StudentFindType type;
 }
