@@ -15,14 +15,19 @@ import java.io.IOException;
 public class StudentController {
     private final StudentService studentService;
     @GetMapping("/find")
-    public BaseResponse findStudent(@RequestBody StudentFindDto studentFindDto, int num) {
-        return studentService.findByStudent(studentFindDto, num);
+    public BaseResponse findStudentName(@RequestBody StudentFindDto studentFindDto) {
+        return studentService.findByStudentsName(studentFindDto);
     }
 
+    @GetMapping("/all")
+    public BaseResponse findAll(){
+        return studentService.findAll();
+    }
+
+
     @PatchMapping("/edit")
-    public BaseResponse editStudent(@RequestBody StudentFindDto studentFindDto,
-                                                    @RequestBody StudentRequestDto studentRequestDto) {
-        return studentService.editStudent(studentFindDto,studentRequestDto);
+    public BaseResponse editStudent(@RequestBody StudentRequestDto studentRequestDto) {
+        return studentService.editStudent(studentRequestDto);
     }
 
     @PostMapping("/upload")

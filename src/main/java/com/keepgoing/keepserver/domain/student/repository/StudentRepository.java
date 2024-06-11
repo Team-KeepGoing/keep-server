@@ -4,5 +4,7 @@ import com.keepgoing.keepserver.domain.student.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    Student findStudentByNameAndGroupAndGroupNum(String Name, int group, int groupNum);
+    Student findStudentsByGradeAndGroupAndGroupNum(int grade, int group, int groupNum);
+    Student findStudentsByStudentName(String name);
+    Student findStudentsByStudentNameAndGroupAndGroupNum(String name, int group,int groupNum);
 }

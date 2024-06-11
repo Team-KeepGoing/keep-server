@@ -3,12 +3,11 @@ package com.keepgoing.keepserver.domain.student.repository.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
-public class StudentFindDto {
+@Getter
+public class StudentResponseDto {
     String studentName;
-    int grade;
-    int group;
-    int groupNum;
-    int num;
+    String format;
+    String phoneNum;
+    String mail;
 }
