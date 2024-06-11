@@ -4,10 +4,12 @@ import com.keepgoing.keepserver.domain.device.entity.Device;
 import com.keepgoing.keepserver.domain.device.entity.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class DeviceMapper {
     public static DeviceResponseDto entityToDto(Device entity) {
         return DeviceResponseDto.builder()
