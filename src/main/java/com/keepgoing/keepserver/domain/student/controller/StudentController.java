@@ -25,8 +25,8 @@ public class StudentController {
     }
 
 
-    @PatchMapping("/edit")
-    public BaseResponse editStudent(@RequestBody StudentRequestDto studentRequestDto) {
+    @PatchMapping("/edit/{id}")
+    public BaseResponse editStudent(@RequestBody StudentRequestDto studentRequestDto, @PathVariable String id) {
         return studentService.editStudent(studentRequestDto);
     }
 
