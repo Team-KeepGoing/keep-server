@@ -1,5 +1,9 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
+import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.entity.dto.BookResponseDto;
+import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
+import com.keepgoing.keepserver.domain.book.service.BookServiceImpl;
 import com.keepgoing.keepserver.domain.device.entity.Device;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
@@ -36,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private final JwtUtils jwtUtils;
     private final DeviceServiceImpl deviceService;
     private final DeviceMapper deviceMapper;
+    private final BookServiceImpl bookService;
+    private final BookMapper bookMapper;
 
     @Override
     @Transactional
@@ -65,9 +71,10 @@ public class UserServiceImpl implements UserService {
     public UserProfileDto provideUserInfo(String userEmail) {
         User user = userRepository.findByEmailEquals(userEmail).orElseThrow(DeviceException::userNotFound);
         List<DeviceResponseDto> borrowedDevicesDto = getBorrowedDevicesForUser(user);
+        List<BookResponseDto> borrowedBooksDto = getBorrowedBooksForUser(user);
         hideUserPassword(user);
 
-        return new UserProfileDto(user, borrowedDevicesDto);
+        return new UserProfileDto(user, borrowedDevicesDto, borrowedBooksDto);
     }
 
     /* 인증 및 JWT 토큰 생성 */
@@ -85,6 +92,11 @@ public class UserServiceImpl implements UserService {
     private List<DeviceResponseDto> getBorrowedDevicesForUser(User user) {
         List<Device> borrowedDevices = deviceService.findDevicesBorrowedByUser(user);
         return deviceMapper.convertDevicesToDtos(borrowedDevices);
+    }
+
+    private List<BookResponseDto> getBorrowedBooksForUser(User user) {
+        List<Book> borrowedBooks = bookService.findBooksBorrowedByUser(user);
+        return bookMapper.convertBooksToDtos(borrowedBooks);
     }
 
     private void hideUserPassword(User user) {

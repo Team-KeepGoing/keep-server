@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class DeviceMapper {
-    public DeviceResponseDto entityToDto(Device entity) {
+    public static DeviceResponseDto entityToDto(Device entity) {
         return DeviceResponseDto.builder()
                 .id(entity.getId())
                 .deviceName(entity.getDeviceName())
@@ -20,7 +20,7 @@ public class DeviceMapper {
                 .build();
     }
 
-    public Device dtoToEntity(DeviceDto dto) {
+    public static Device dtoToEntity(DeviceDto dto) {
         return Device.builder()
                 .deviceName(dto.deviceName())
                 .imgUrl(dto.imgUrl())
@@ -28,9 +28,9 @@ public class DeviceMapper {
                 .build();
     }
 
-    public List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
+    public static List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
         return devices.stream()
-                .map(this::entityToDto)
+                .map(DeviceMapper::entityToDto)
                 .collect(Collectors.toList());
     }
 }
