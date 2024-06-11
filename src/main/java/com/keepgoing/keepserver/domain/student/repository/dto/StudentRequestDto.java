@@ -6,10 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StudentRequestDto {
-    private String name;
+    private String studentName;
     private int grade;
     private int group;
     private int groupNum;
-    private int phoneNum;
+    private String phoneNum;
     private String address;
+    private String mail;
 }
