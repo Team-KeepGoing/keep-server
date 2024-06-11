@@ -6,8 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StudentFindDto {
-    String name;
+    String studentName;
     int grade;
     int group;
     int groupNum;
+    int num;
 }

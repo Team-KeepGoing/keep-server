@@ -15,8 +15,8 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "student_name", nullable = false)
+    private String studentName;
 
     @Column(nullable = false)
     private int grade;
@@ -28,8 +28,11 @@ public class Student {
     private int groupNum;
 
     @Column(nullable = false)
-    private int phoneNum;
+    private String phoneNum;
 
     @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
+    private String mail;
 }
