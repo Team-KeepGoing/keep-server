@@ -4,6 +4,7 @@ import com.keepgoing.keepserver.domain.book.consts.BookState;
 import com.keepgoing.keepserver.domain.book.entity.Book;
 import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDTO;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
+import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.common.S3.S3Uploader;
@@ -93,8 +94,8 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
         return new BaseResponse(HttpStatus.OK, "책 정보 수정 성공");
     }
+
+    public List<Book> findBooksBorrowedByUser(User user) {
+        return bookRepository.findByBorrower(user);
+    }
 }
-
-
-
-
