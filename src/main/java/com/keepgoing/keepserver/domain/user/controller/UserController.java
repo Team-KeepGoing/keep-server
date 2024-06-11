@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 
-    @Operation(summary = "프로필", description = "토큰을 이용하여 유저 정보와 대여한 기자재 목록을 조회합니다.")
+    @Operation(summary = "프로필", description = "토큰을 이용하여 유저 정보와 대여한 기자재 및 도서 목록을 조회합니다.")
     @GetMapping("/userinfo")
     public UserProfileDto provideUserInfo(Authentication authentication) {
         String userEmail = authentication.getName();
