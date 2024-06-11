@@ -1,11 +1,9 @@
 package com.keepgoing.keepserver.domain.student.service;
 
+import com.keepgoing.keepserver.domain.student.consts.StudentFindType;
 import com.keepgoing.keepserver.domain.student.entity.Student;
 import com.keepgoing.keepserver.domain.student.repository.StudentRepository;
-import com.keepgoing.keepserver.domain.student.repository.dto.StudentDto;
-import com.keepgoing.keepserver.domain.student.repository.dto.StudentFindDto;
-import com.keepgoing.keepserver.domain.student.repository.dto.StudentRequestDto;
-import com.keepgoing.keepserver.domain.student.repository.dto.StudentResponseDto;
+import com.keepgoing.keepserver.domain.student.repository.dto.*;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -71,18 +69,21 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public BaseResponse findAll() {
-        return new BaseResponse(HttpStatus.OK, "전체 학생 정보",studentRepository.findAll());
+        ArrayList<StudentResponseDto> lst = new ArrayList<>();
+        for (Student student : studentRepository.findAll()) {
+            studentFormat(student, StudentFindType.WEB);
+        }
+        return new BaseResponse(HttpStatus.OK, "전체 학생 정보", lst);
     }
 
     public BaseResponse findByStudentsName(StudentFindDto studentDto) {
         Student st;
-        if (studentDto.getStudentName()!=null){
+        if (studentDto.getStudentName() != null) {
             st = studentRepository.findStudentsByStudentName(studentDto.getStudentName());
-        }else{
+        } else {
             st = studentRepository.findStudentsByGradeAndGroupAndGroupNum(studentDto.getGrade(), studentDto.getGroup(), studentDto.getGroupNum());
         }
-        return new BaseResponse(HttpStatus.OK, "학생 정보", studentFormat(st, studentDto.getNum()));
-
+        return new BaseResponse(HttpStatus.OK, "학생 정보", studentFormat(st, studentDto.getType()));
     }
 
 
@@ -101,30 +102,26 @@ public class StudentServiceImpl implements StudentService {
         return new BaseResponse(HttpStatus.OK, "학생 정보 수정 성공");
     }
 
-    public StudentResponseDto studentFormat(Student student, int num) {
-        StudentResponseDto studentResponseDto = new StudentResponseDto();
-
+    public StudentResponseDto studentFormat(Student student, StudentFindType num) {
         int grade = student.getGrade();
         int group = student.getGroup();
         int groupNum = student.getGroupNum();
 
-        studentResponseDto.setStudentName(student.getStudentName());
-        studentResponseDto.setPhoneNum(student.getPhoneNum());
-        studentResponseDto.setMail(student.getMail());
 
-        // 형식 1: 2학년 3반 4번 <iOS>
-        String format1 = String.format("%d학년 %d반 %d번", grade, group, groupNum);
+        String formats = switch (num) {
+            // 형식 1: 2학년 3반 4번 <iOS>
+            case IOS -> String.format("%d학년 %d반 %d번", grade, group, groupNum);
 
-        // 형식 2: 학년반번호 (2304) <web>
-        String format2 = String.format("%d%d%02d", grade, group, groupNum);
-        if (num == 1) {
-            studentResponseDto.setFormat(format1);
-            return studentResponseDto;
-        } else if (num == 2) {
-            studentResponseDto.setFormat(format2);
-            return studentResponseDto;
-        } else return null;
+            // 형식 2: 학년반번호 (2304) <web>
+            case WEB -> String.format("%d%d%02d", grade, group, groupNum);
+        };
+
+        return StudentResponseDto.builder()
+                .id(student.getId())
+                .mail(student.getMail())
+                .phoneNum(student.getPhoneNum())
+                .studentName(student.getStudentName())
+                .format(formats)
+                .build();
     }
-
-
 }
