@@ -24,6 +24,7 @@ public class DeviceMapper {
         return Device.builder()
                 .deviceName(dto.deviceName())
                 .imgUrl(dto.imgUrl())
+                .regDate(dto.regDate())
                 .status(DeviceStatus.AVAILABLE)
                 .build();
     }
