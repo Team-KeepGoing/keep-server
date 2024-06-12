@@ -1,4 +1,5 @@
 package com.keepgoing.keepserver.domain.student.controller;
+
 import com.keepgoing.keepserver.domain.student.repository.dto.StudentFindDto;
 import com.keepgoing.keepserver.domain.student.repository.dto.StudentRequestDto;
 import com.keepgoing.keepserver.domain.student.service.StudentService;
@@ -14,13 +15,19 @@ import java.io.IOException;
 @RequestMapping("/student")
 public class StudentController {
     private final StudentService studentService;
-    @GetMapping("/find")
+
+    @GetMapping("/findName")
     public BaseResponse findStudentName(@RequestBody StudentFindDto studentFindDto) {
-        return studentService.findByStudentsName(studentFindDto);
+        return studentService.findByStudentName(studentFindDto);
+    }
+
+    @GetMapping("/findNum")
+    public BaseResponse findStudentNum(@RequestBody StudentFindDto studentFindDto) {
+        return studentService.findByStudentNum(studentFindDto);
     }
 
     @GetMapping("/all")
-    public BaseResponse findAll(){
+    public BaseResponse findAll() {
         return studentService.findAll();
     }
 

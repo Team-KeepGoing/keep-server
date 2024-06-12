@@ -71,25 +71,44 @@ public class StudentServiceImpl implements StudentService {
     public BaseResponse findAll() {
         ArrayList<StudentResponseDto> lst = new ArrayList<>();
         for (Student student : studentRepository.findAll()) {
-            studentFormat(student, StudentFindType.WEB);
+            lst.add(studentFormat(student, StudentFindType.WEB));
         }
         return new BaseResponse(HttpStatus.OK, "전체 학생 정보", lst);
     }
 
-    public BaseResponse findByStudentsName(StudentFindDto studentDto) {
-        Student st;
-        if (studentDto.getStudentName() != null) {
-            st = studentRepository.findStudentsByStudentName(studentDto.getStudentName());
-        } else {
-            st = studentRepository.findStudentsByGradeAndGroupAndGroupNum(studentDto.getGrade(), studentDto.getGroup(), studentDto.getGroupNum());
+    public BaseResponse findByStudentName(StudentFindDto studentDto) {
+        try {
+            List<Student> stLst = studentRepository.findStudentsByStudentName(studentDto.getStudentName());
+            if (stLst != null) {
+                List<StudentResponseDto> stLstF = new ArrayList<>();
+                for (Student student : stLst) {
+                    stLstF.add(studentFormat(student, studentDto.getType()));
+                }
+                return new BaseResponse(HttpStatus.OK, "학생 정보 - 이름사용", stLstF);
+            } else return new BaseResponse(HttpStatus.BAD_REQUEST, "학생 정보가 없습니다");
+
+        } catch (Exception e) {
+            return new BaseResponse(HttpStatus.BAD_REQUEST, "학생 정보가 없습니다");
+
         }
-        return new BaseResponse(HttpStatus.OK, "학생 정보", studentFormat(st, studentDto.getType()));
+    }
+
+    public BaseResponse findByStudentNum(StudentFindDto studentDto) {
+        try {
+            Student st = studentRepository.findStudentByGradeAndGroupAndGroupNum(studentDto.getGrade(), studentDto.getGroup(), studentDto.getGroupNum());
+            if (st != null) {
+                StudentResponseDto stResponse = studentFormat(st, studentDto.getType());
+                return new BaseResponse(HttpStatus.OK, "학생 정보 - 번호사용", stResponse);
+            } else return new BaseResponse(HttpStatus.BAD_REQUEST, "학생 정보가 없습니다");
+        } catch (Exception e) {
+            return new BaseResponse(HttpStatus.BAD_REQUEST, "잘못된 형식입니다.");
+        }
     }
 
 
     @Transactional(rollbackOn = Exception.class)
     public BaseResponse editStudent(StudentRequestDto studentDto) {
-        Student studentEntity = studentRepository.findStudentsByGradeAndGroupAndGroupNum(studentDto.getGrade(), studentDto.getGroup(), studentDto.getGroupNum());
+        Student studentEntity = studentRepository.findStudentByGradeAndGroupAndGroupNum(studentDto.getGrade(), studentDto.getGroup(), studentDto.getGroupNum());
 
         if (studentDto.getStudentName() != null) studentEntity.setStudentName(studentDto.getStudentName());
         if (studentDto.getGrade() != 0) studentEntity.setGrade(studentDto.getGrade());
@@ -98,6 +117,7 @@ public class StudentServiceImpl implements StudentService {
         if (studentDto.getPhoneNum() != null) studentEntity.setPhoneNum(studentDto.getPhoneNum());
         if (studentDto.getMail() != null) studentEntity.setMail(studentDto.getMail());
         if (studentDto.getAddress() != null) studentEntity.setAddress(studentDto.getAddress());
+
         studentRepository.save(studentEntity);
         return new BaseResponse(HttpStatus.OK, "학생 정보 수정 성공");
     }
@@ -106,7 +126,6 @@ public class StudentServiceImpl implements StudentService {
         int grade = student.getGrade();
         int group = student.getGroup();
         int groupNum = student.getGroupNum();
-
 
         String formats = switch (num) {
             // 형식 1: 2학년 3반 4번 <iOS>

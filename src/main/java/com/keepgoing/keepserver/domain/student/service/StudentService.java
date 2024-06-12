@@ -7,9 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-
-public interface StudentService{
-    BaseResponse findByStudentsName(StudentFindDto studentFindDto);
+public interface StudentService {
+    BaseResponse findByStudentName(StudentFindDto studentFindDto);
+    BaseResponse findByStudentNum(StudentFindDto studentFindDto);
     BaseResponse editStudent(StudentRequestDto studentRequestDto);
     BaseResponse uploadExcel(MultipartFile multipartFile) throws IOException;
     BaseResponse findAll();
