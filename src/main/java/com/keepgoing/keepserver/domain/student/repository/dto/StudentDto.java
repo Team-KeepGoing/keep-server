@@ -16,17 +16,19 @@ public class StudentDto {
     private String address;
     private String mail;
 
+    public String format() {
+        final String FORMAT_PATTERN = "%d%d%02d";
+        return String.format(FORMAT_PATTERN, this.grade, this.group, this.groupNum);
+    }
+
     public Student toEntity() {
         return Student.builder()
                 .studentName(this.studentName)
-                .grade(this.grade)
-                .group(this.group)
-                .groupNum(this.groupNum)
+                .studentId(format())
                 .phoneNum(this.phoneNum)
                 .address(this.address)
                 .mail(this.mail)
                 .build();
     }
-
 
 }
