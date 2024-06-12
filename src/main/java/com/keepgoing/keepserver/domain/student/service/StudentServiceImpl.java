@@ -25,27 +25,14 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
-    public BaseResponse uploadExcel(MultipartFile file) throws IOException {
+    private List<Student> processExcelFile(MultipartFile file) throws IOException {
         List<Student> studentList = new ArrayList<>();
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-
-        if (extension == null || !extension.equals("xlsx") && !extension.equals("xls")) {
-            return new BaseResponse(HttpStatus.BAD_REQUEST, "엑셀 파일이 아닙니다.");
-        }
-        Workbook workbook;
-
-        if (extension.equals("xlsx")) {
-            workbook = new XSSFWorkbook(file.getInputStream());
-        } else {
-            workbook = new HSSFWorkbook(file.getInputStream());
-        }
-
+        Workbook workbook = getWorkbook(file);
         Sheet sheet = workbook.getSheetAt(0);
 
         for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
             try {
                 Row row = sheet.getRow(i);
-
                 StudentDto excelDto = new StudentDto();
 
                 excelDto.setGrade((int) row.getCell(0).getNumericCellValue());
@@ -59,11 +46,33 @@ public class StudentServiceImpl implements StudentService {
                 Student student = excelDto.toEntity();
                 studentList.add(student);
             } catch (Exception e) {
-                return new BaseResponse(HttpStatus.BAD_REQUEST, "엑셀 파일이 아닙니다");
+                throw new RuntimeException("엑셀 파일이 잘못되었습니다.");
             }
         }
-        studentRepository.saveAll(studentList);
-        return new BaseResponse(HttpStatus.OK, "엑셀 업로딩 성공", studentList);
+        return studentList;
+    }
+
+    private Workbook getWorkbook(MultipartFile file) throws IOException {
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (extension == null || !extension.equals("xlsx") && !extension.equals("xls")) {
+            throw new RuntimeException("엑셀 파일이 아닙니다.");
+        }
+
+        if (extension.equals("xlsx")) {
+            return new XSSFWorkbook(file.getInputStream());
+        } else {
+            return new HSSFWorkbook(file.getInputStream());
+        }
+    }
+
+    public BaseResponse uploadExcel(MultipartFile file) {
+        try {
+            List<Student> studentList = processExcelFile(file);
+            studentRepository.saveAll(studentList);
+            return new BaseResponse(HttpStatus.OK, "엑셀 업로딩 성공", studentList);
+        } catch (Exception e) {
+            return new BaseResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @Override
@@ -75,29 +84,49 @@ public class StudentServiceImpl implements StudentService {
         return new BaseResponse(HttpStatus.OK, "전체 학생 정보", lst);
     }
 
+    private List<Student> findStudentsByStudentName(String studentName) {
+        return studentRepository.findStudentsByStudentName(studentName);
+    }
+
+    private List<StudentResponseDto> convertToResponseDto(List<Student> students) {
+        List<StudentResponseDto> responseDto = new ArrayList<>();
+        for (Student student : students) {
+            responseDto.add(studentFormat(student));
+        }
+        return responseDto;
+    }
+
     public BaseResponse findByStudentName(StudentFindDto studentDto) {
         try {
-            List<Student> stLst = studentRepository.findStudentsByStudentName(studentDto.getStudentName());
-            if (stLst != null) {
-                List<StudentResponseDto> stLstF = new ArrayList<>();
-                for (Student student : stLst) {
-                    stLstF.add(studentFormat(student));
-                }
-                return new BaseResponse(HttpStatus.OK, "학생 정보 - 이름사용", stLstF);
-            } else return new BaseResponse(HttpStatus.BAD_REQUEST, "학생 정보가 없습니다");
-
+            List<Student> students = findStudentsByStudentName(studentDto.getStudentName());
+            if (!students.isEmpty()) {
+                List<StudentResponseDto> responseDto = convertToResponseDto(students);
+                return new BaseResponse(HttpStatus.OK, "학생 정보 - 이름사용", responseDto);
+            } else {
+                return new BaseResponse(HttpStatus.BAD_REQUEST, "학생 정보가 없습니다");
+            }
         } catch (Exception e) {
             return new BaseResponse(HttpStatus.BAD_REQUEST, "잘못된 형식입니다.");
-
         }
+    }
+
+    private Student findStudentByStudentId(String studentId) {
+        return studentRepository.findStudentByStudentId(studentId);
+    }
+
+    private StudentResponseDto convertToResponseDto(Student student) {
+        return studentFormat(student);
     }
 
     public BaseResponse findByStudentNum(StudentFindDto studentDto) {
         try {
-            Student st = studentRepository.findStudentByStudentId(studentDto.getStudentId());
-            if (st != null) {
-                return new BaseResponse(HttpStatus.OK, "학생 정보 - 번호사용", studentFormat(st));
-            } else return new BaseResponse(HttpStatus.BAD_REQUEST, "학생 정보가 없습니다");
+            Student student = findStudentByStudentId(studentDto.getStudentId());
+            if (student != null) {
+                StudentResponseDto responseDto = convertToResponseDto(student);
+                return new BaseResponse(HttpStatus.OK, "학생 정보 - 번호사용", responseDto);
+            } else {
+                return new BaseResponse(HttpStatus.BAD_REQUEST, "학생 정보가 없습니다");
+            }
         } catch (Exception e) {
             return new BaseResponse(HttpStatus.BAD_REQUEST, "잘못된 형식입니다.");
         }
