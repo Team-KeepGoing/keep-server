@@ -1,7 +1,8 @@
 package com.keepgoing.keepserver.domain.book.service;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDTO;
+import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDto;
+import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.Authentication;
@@ -18,7 +19,7 @@ public interface BookService {
     BaseResponse selectMyBook(Authentication auth);
     String createNfcCode();
     @Transactional(rollbackFor = Exception.class)
-    BaseResponse editBook(String nfcCode, BookRequestDTO bookRequest) throws IOException;
+    BaseResponse editBook(String nfcCode, BookRequestDto bookRequest) throws IOException;
 }
 
 
