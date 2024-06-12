@@ -4,9 +4,9 @@ import com.keepgoing.keepserver.domain.book.consts.BookState;
 import lombok.Getter;
 
 @Getter
-public class BookRequestDTO {
-    private String name;
-    private String nfcCode;
+public class BookDto {
+    private long id;
+    private String bookName;
     private String imageUrl;
     private BookState state;
 }
