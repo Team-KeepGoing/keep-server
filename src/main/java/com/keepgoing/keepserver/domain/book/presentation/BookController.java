@@ -1,18 +1,25 @@
 package com.keepgoing.keepserver.domain.book.presentation;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDTO;
+import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDto;
+import com.keepgoing.keepserver.domain.user.entity.user.User;
+import com.keepgoing.keepserver.domain.user.payload.request.UserProfileDto;
+import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
+import com.keepgoing.keepserver.domain.user.service.user.UserService;
+import com.keepgoing.keepserver.domain.user.service.user.UserServiceImpl;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.domain.book.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @Tag(name = "책", description = " 관련 api 입니다.")
@@ -49,7 +56,7 @@ public class BookController {
     @Operation(summary = "책 정보 수정하기", description = "nfc코드를 통해 책 정보를 수정합니다. 파라미터는 전체 코드가 아닌, 수정할 내용만 넘기셔도 됩니다.")
     @PatchMapping("/edit/{nfcCode}")
     public BaseResponse editBookByNfcCode(@PathVariable(value = "nfcCode") String nfcCode,
-                                          @RequestBody BookRequestDTO bookRequest) throws IOException {
+                                          @RequestBody BookRequestDto bookRequest) throws IOException {
         return bookService.editBook(nfcCode, bookRequest);
     }
 }

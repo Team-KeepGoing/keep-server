@@ -2,7 +2,7 @@ package com.keepgoing.keepserver.domain.book.service;
 
 import com.keepgoing.keepserver.domain.book.consts.BookState;
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDTO;
+import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDto;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
@@ -10,7 +10,6 @@ import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.common.S3.S3Uploader;
 import com.keepgoing.keepserver.global.exception.book.BookException;
 import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -20,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -57,7 +57,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional(rollbackOn = Exception.class)
     public BaseResponse deleteBook(String nfcCode, Authentication auth) {
         if (nfcCode == null || nfcCode.isEmpty()) {
             return new BaseResponse(HttpStatus.NOT_FOUND, "Invalid NFC code");
@@ -65,19 +64,25 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findBookByNfcCode(nfcCode);
         if (book == null) {
             return new BaseResponse(HttpStatus.NOT_FOUND, "책을 찾을 수 없습니다");
-        } else {
-            bookRepository.delete(bookRepository.findBookByNfcCode(nfcCode));
-            return new BaseResponse(HttpStatus.OK, "책 삭제 성공");
         }
+
+        bookRepository.delete(bookRepository.findBookByNfcCode(nfcCode));
+        return new BaseResponse(HttpStatus.OK, "책 삭제 성공");
     }
 
     @Override
     public BaseResponse selectMyBook(Authentication auth) {
-        //noinspection OptionalGetWithoutIsPresent
-        String user = userRepository.findByEmail(auth.getName()).get().getEmail();
-        List<Book> books = bookRepository.findByBookNameContaining(user);
+        if (auth == null) // requires auth
+            throw BookException.userNotFound();
 
-        return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books.toString());
+        Optional<User> userOptional = userRepository.findByEmail(auth.getName());
+        if (userOptional.isPresent()) {
+            List<Book> books = bookRepository.findByBorrower(userOptional.get());
+            return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books);
+        } else {
+            return new BaseResponse(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+        }
+
     }
 
     @Override
@@ -90,8 +95,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional(rollbackOn = Exception.class)
-    public BaseResponse editBook(String nfcCode, BookRequestDTO bookRequest) {
+    public BaseResponse editBook(String nfcCode, BookRequestDto bookRequest) {
         Book book = bookRepository.findBookByNfcCode(nfcCode);
 
         if (bookRequest.getState() != null) book.setState(bookRequest.getState());
