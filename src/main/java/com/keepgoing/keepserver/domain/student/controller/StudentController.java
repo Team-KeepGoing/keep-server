@@ -16,12 +16,12 @@ import java.io.IOException;
 public class StudentController {
     private final StudentService studentService;
 
-    @GetMapping("/findName")
+    @GetMapping("/find-name")
     public BaseResponse findStudentName(@RequestBody StudentFindDto studentFindDto) {
         return studentService.findByStudentName(studentFindDto);
     }
 
-    @GetMapping("/findNum")
+    @GetMapping("/find-studentId")
     public BaseResponse findStudentNum(@RequestBody StudentFindDto studentFindDto) {
         return studentService.findByStudentNum(studentFindDto);
     }
