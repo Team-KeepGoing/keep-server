@@ -3,7 +3,10 @@ package com.keepgoing.keepserver.domain.device.entity;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import static com.keepgoing.keepserver.domain.device.entity.DeviceStatus.AVAILABLE;
 
 @Entity
 @Setter
@@ -34,7 +37,19 @@ public class Device {
     */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private DeviceStatus status;
+    private DeviceStatus status = AVAILABLE;
+
+    /*
+        기기 등록일
+    */
+    @Column(nullable = false)
+    private String regDate;
+
+    /*
+        기기 대여 시작일
+    */
+    @Column
+    private DateTime rentDate;
 
     /*
         대여자 id
@@ -44,9 +59,12 @@ public class Device {
     private User borrower;
 
     @Builder
-    public Device(String deviceName, DeviceStatus status, String imgUrl) {
+    public Device(String deviceName, DeviceStatus status, String imgUrl, String regDate, DateTime rentDate, User borrower) {
         this.deviceName = deviceName;
         this.status = status;
         this.imgUrl = imgUrl;
+        this.regDate = regDate;
+        this.rentDate = rentDate;
+        this.borrower = borrower;
     }
 }
