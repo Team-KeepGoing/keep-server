@@ -132,7 +132,6 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    @Transactional(rollbackOn = Exception.class)
     public BaseResponse editStudent(StudentRequestDto studentDto) {
         Student studentEntity = studentRepository.findStudentByStudentId(studentDto.getStudentId());
         if (studentDto.getStudentName() != null) studentEntity.setStudentName(studentDto.getStudentName());

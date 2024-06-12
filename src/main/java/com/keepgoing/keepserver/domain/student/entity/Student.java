@@ -9,7 +9,6 @@ import lombok.*;
 @Builder
 @Table(name = "student")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
