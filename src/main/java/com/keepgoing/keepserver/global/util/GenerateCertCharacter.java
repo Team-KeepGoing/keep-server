@@ -11,6 +11,8 @@ import java.security.SecureRandom;
 @Setter
 @Component
 public class GenerateCertCharacter {
+    private final String characterTable = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
     private int certCharLength = 8;
     private final SecureRandom random;
 
@@ -23,14 +25,12 @@ public class GenerateCertCharacter {
 
     }
 
-    private final String characterTable = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
     public String executeGenerate() {
-        int tablelength = characterTable.length();
+        int tableLength = characterTable.length();
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < certCharLength; i++) {
-            sb.append(characterTable.charAt(random.nextInt(tablelength)));
+            sb.append(characterTable.charAt(random.nextInt(tableLength)));
         }
 
         return sb.toString();
