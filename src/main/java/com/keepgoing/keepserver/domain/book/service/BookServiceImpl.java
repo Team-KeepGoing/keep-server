@@ -8,6 +8,7 @@ import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.common.S3.S3Uploader;
+import com.keepgoing.keepserver.global.exception.book.BookException;
 import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,18 +29,23 @@ public class BookServiceImpl implements BookService {
     private final S3Uploader s3Uploader;
     private final GenerateCertCharacter generateCertCharacter;
 
+    private String uploadBook(MultipartFile file) {
+        try {
+            return s3Uploader.upload(file, "picture");
+        } catch (IOException e) {
+            throw BookException.imageUploadFailed();
+        }
+    }
+
     @Override
     public BaseResponse bookRegister(Book book, MultipartFile multipartFile) {
-        try {
-            book.setImageUrl(s3Uploader.upload(multipartFile, "picture"));
-        } catch (IOException e) {
-            return new BaseResponse(HttpStatus.INTERNAL_SERVER_ERROR, "사진 업로드중 오류.");
-        }
+        String imageUrl = uploadBook(multipartFile);
+
+        book.setImageUrl(imageUrl);
         String nfcCode = createNfcCode();
         book.setRegistrationDate(new Date());
         book.setNfcCode(nfcCode);
         book.setState(BookState.AVAILABLE);
-
 
         bookRepository.save(book);
         return new BaseResponse(HttpStatus.OK, "책 생성 성공");
