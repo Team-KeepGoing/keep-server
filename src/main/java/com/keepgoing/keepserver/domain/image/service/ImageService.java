@@ -18,7 +18,7 @@ public class ImageService {
 
     public ImageDTO uploadImage(MultipartFile multipartFile) {
         try {
-            return ImageDTO.builder().imgUrl(s3Uploader.upload(multipartFile, "picture")).build();
+            return new ImageDTO(s3Uploader.upload(multipartFile, "picture"));
         } catch (IOException e) {
             throw new BusinessException(ErrorCode.FILE_ERROR);
         }
