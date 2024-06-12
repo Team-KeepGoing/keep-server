@@ -16,7 +16,6 @@ public class StudentDto {
     private String address;
     private String mail;
 
-
     public Student toEntity() {
         return Student.builder()
                 .studentName(this.studentName)
