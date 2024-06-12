@@ -1,16 +1,23 @@
 package com.keepgoing.keepserver.domain.book.presentation;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDTO;
+import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDto;
+import com.keepgoing.keepserver.domain.user.entity.user.User;
+import com.keepgoing.keepserver.domain.user.payload.request.UserProfileDto;
+import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
+import com.keepgoing.keepserver.domain.user.service.user.UserService;
+import com.keepgoing.keepserver.domain.user.service.user.UserServiceImpl;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.domain.book.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,7 +48,7 @@ public class BookController {
 
     @PatchMapping("/edit/{nfcCode}")
     public BaseResponse editBookByNfcCode(@PathVariable(value = "nfcCode") String nfcCode,
-                                          @RequestBody BookRequestDTO bookRequest) throws IOException {
+                                          @RequestBody BookRequestDto bookRequest) throws IOException {
         return bookService.editBook(nfcCode, bookRequest);
     }
 }
