@@ -10,9 +10,4 @@ class KeepServerApplicationTests {
     void contextLoads() {
     }
 
-    @Test
-    void log() {
-        System.out.println("--------")
-    }
-
 }

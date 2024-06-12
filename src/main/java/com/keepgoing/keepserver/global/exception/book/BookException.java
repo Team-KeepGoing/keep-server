@@ -7,6 +7,7 @@ public class BookException extends BusinessException {
 
     private static final BookException BOOK_NOT_FOUND_EXCEPTION = new BookException(BookError.BOOK_NOT_FOUND_EXCEPTION);
     private static final BookException BOOK_NOT_AVAILABLE = new BookException(BookError.BOOK_NOT_AVAILABLE);
+    private static final BookException IMAGE_UPLOAD_FAILED = new BookException(BookError.IMAGE_UPLOAD_FAILED);
 
     public BookException(BookError error) {
         super(error);
@@ -21,5 +22,8 @@ public class BookException extends BusinessException {
     }
     public static BookException bookNotAvailable() {
         return BOOK_NOT_AVAILABLE;
+    }
+    public static BookException imageUploadFailed() {
+        return IMAGE_UPLOAD_FAILED;
     }
 }

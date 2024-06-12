@@ -7,9 +7,7 @@ import lombok.Setter;
 @Setter
 public class StudentRequestDto {
     private String studentName;
-    private int grade;
-    private int group;
-    private int groupNum;
+    private String studentId;
     private String phoneNum;
     private String address;
     private String mail;

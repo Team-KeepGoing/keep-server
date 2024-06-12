@@ -15,17 +15,11 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "student_name", nullable = false)
+    @Column(nullable = false)
     private String studentName;
 
     @Column(nullable = false)
-    private int grade;
-
-    @Column(name = "student_group", nullable = false)
-    private int group;
-
-    @Column(nullable = false)
-    private int groupNum;
+    private String studentId;
 
     @Column(nullable = false)
     private String phoneNum;

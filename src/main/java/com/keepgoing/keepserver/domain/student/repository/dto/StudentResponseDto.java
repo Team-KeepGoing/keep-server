@@ -8,7 +8,7 @@ import lombok.Data;
 public class StudentResponseDto {
     long id;
     String studentName;
-    String format;
+    String studentId;
     String phoneNum;
     String mail;
 }

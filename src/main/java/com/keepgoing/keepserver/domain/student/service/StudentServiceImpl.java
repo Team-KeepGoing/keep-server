@@ -1,6 +1,5 @@
 package com.keepgoing.keepserver.domain.student.service;
 
-import com.keepgoing.keepserver.domain.student.consts.StudentFindType;
 import com.keepgoing.keepserver.domain.student.entity.Student;
 import com.keepgoing.keepserver.domain.student.repository.StudentRepository;
 import com.keepgoing.keepserver.domain.student.repository.dto.*;
@@ -26,27 +25,14 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
-    public BaseResponse uploadExcel(MultipartFile file) throws IOException {
+    private List<Student> processExcelFile(MultipartFile file) throws IOException {
         List<Student> studentList = new ArrayList<>();
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-
-        if (extension == null || !extension.equals("xlsx") && !extension.equals("xls")) {
-            return new BaseResponse(HttpStatus.BAD_REQUEST, "엑셀 파일이 아닙니다.");
-        }
-        Workbook workbook;
-
-        if (extension.equals("xlsx")) {
-            workbook = new XSSFWorkbook(file.getInputStream());
-        } else {
-            workbook = new HSSFWorkbook(file.getInputStream());
-        }
-
+        Workbook workbook = getWorkbook(file);
         Sheet sheet = workbook.getSheetAt(0);
 
         for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
             try {
                 Row row = sheet.getRow(i);
-
                 StudentDto excelDto = new StudentDto();
 
                 excelDto.setGrade((int) row.getCell(0).getNumericCellValue());
@@ -60,68 +46,113 @@ public class StudentServiceImpl implements StudentService {
                 Student student = excelDto.toEntity();
                 studentList.add(student);
             } catch (Exception e) {
-                return new BaseResponse(HttpStatus.BAD_REQUEST, "엑셀 파일이 아닙니다");
+                throw new RuntimeException("엑셀 파일이 잘못되었습니다.");
             }
         }
-        studentRepository.saveAll(studentList);
-        return new BaseResponse(HttpStatus.OK, "엑셀 업로딩 성공", studentList);
+        return studentList;
+    }
+
+    private Workbook getWorkbook(MultipartFile file) throws IOException {
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (extension == null || !extension.equals("xlsx") && !extension.equals("xls")) {
+            throw new RuntimeException("엑셀 파일이 아닙니다.");
+        }
+
+        if (extension.equals("xlsx")) {
+            return new XSSFWorkbook(file.getInputStream());
+        } else {
+            return new HSSFWorkbook(file.getInputStream());
+        }
+    }
+
+    public BaseResponse createManyUserByExcel(MultipartFile file) {
+        try {
+            List<Student> studentList = processExcelFile(file);
+            studentRepository.saveAll(studentList);
+            return new BaseResponse(HttpStatus.OK, "엑셀 업로딩 성공", studentList);
+        } catch (Exception e) {
+            return new BaseResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @Override
     public BaseResponse findAll() {
         ArrayList<StudentResponseDto> lst = new ArrayList<>();
         for (Student student : studentRepository.findAll()) {
-            studentFormat(student, StudentFindType.WEB);
+            lst.add(studentFormat(student));
         }
         return new BaseResponse(HttpStatus.OK, "전체 학생 정보", lst);
     }
 
-    public BaseResponse findByStudentsName(StudentFindDto studentDto) {
-        Student st;
-        if (studentDto.getStudentName() != null) {
-            st = studentRepository.findStudentsByStudentName(studentDto.getStudentName());
-        } else {
-            st = studentRepository.findStudentsByGradeAndGroupAndGroupNum(studentDto.getGrade(), studentDto.getGroup(), studentDto.getGroupNum());
-        }
-        return new BaseResponse(HttpStatus.OK, "학생 정보", studentFormat(st, studentDto.getType()));
+    private List<Student> findStudentsByStudentName(String studentName) {
+        return studentRepository.findStudentsByStudentName(studentName);
     }
 
+    private List<StudentResponseDto> convertToResponseDto(List<Student> students) {
+        List<StudentResponseDto> responseDto = new ArrayList<>();
+        for (Student student : students) {
+            responseDto.add(studentFormat(student));
+        }
+        return responseDto;
+    }
 
-    @Transactional(rollbackOn = Exception.class)
+    public BaseResponse findByStudentName(StudentFindDto studentDto) {
+        try {
+            List<Student> students = findStudentsByStudentName(studentDto.getStudentName());
+            if (!students.isEmpty()) {
+                List<StudentResponseDto> responseDto = convertToResponseDto(students);
+                return new BaseResponse(HttpStatus.OK, "학생 정보 - 이름사용", responseDto);
+            } else {
+                return new BaseResponse(HttpStatus.BAD_REQUEST, "학생 정보가 없습니다");
+            }
+        } catch (Exception e) {
+            return new BaseResponse(HttpStatus.BAD_REQUEST, "잘못된 형식입니다.");
+        }
+    }
+
+    private Student findStudentByStudentId(String studentId) {
+        return studentRepository.findStudentByStudentId(studentId);
+    }
+
+    private StudentResponseDto convertToResponseDto(Student student) {
+        return studentFormat(student);
+    }
+
+    public BaseResponse findByStudentNum(StudentFindDto studentDto) {
+        try {
+            Student student = findStudentByStudentId(studentDto.getStudentId());
+            if (student != null) {
+                StudentResponseDto responseDto = convertToResponseDto(student);
+                return new BaseResponse(HttpStatus.OK, "학생 정보 - 번호사용", responseDto);
+            } else {
+                return new BaseResponse(HttpStatus.BAD_REQUEST, "학생 정보가 없습니다");
+            }
+        } catch (Exception e) {
+            return new BaseResponse(HttpStatus.BAD_REQUEST, "잘못된 형식입니다.");
+        }
+    }
+
     public BaseResponse editStudent(StudentRequestDto studentDto) {
-        Student studentEntity = studentRepository.findStudentsByGradeAndGroupAndGroupNum(studentDto.getGrade(), studentDto.getGroup(), studentDto.getGroupNum());
-
+        Student studentEntity = studentRepository.findStudentByStudentId(studentDto.getStudentId());
         if (studentDto.getStudentName() != null) studentEntity.setStudentName(studentDto.getStudentName());
-        if (studentDto.getGrade() != 0) studentEntity.setGrade(studentDto.getGrade());
-        if (studentDto.getGroup() != 0) studentEntity.setGroup(studentDto.getGroup());
-        if (studentDto.getGroupNum() != 0) studentEntity.setGroupNum(studentDto.getGroupNum());
+        if (studentDto.getStudentId() != null) studentEntity.setStudentId(studentDto.getStudentId());
         if (studentDto.getPhoneNum() != null) studentEntity.setPhoneNum(studentDto.getPhoneNum());
         if (studentDto.getMail() != null) studentEntity.setMail(studentDto.getMail());
         if (studentDto.getAddress() != null) studentEntity.setAddress(studentDto.getAddress());
+
         studentRepository.save(studentEntity);
         return new BaseResponse(HttpStatus.OK, "학생 정보 수정 성공");
     }
 
-    public StudentResponseDto studentFormat(Student student, StudentFindType num) {
-        int grade = student.getGrade();
-        int group = student.getGroup();
-        int groupNum = student.getGroupNum();
-
-
-        String formats = switch (num) {
-            // 형식 1: 2학년 3반 4번 <iOS>
-            case IOS -> String.format("%d학년 %d반 %d번", grade, group, groupNum);
-
-            // 형식 2: 학년반번호 (2304) <web>
-            case WEB -> String.format("%d%d%02d", grade, group, groupNum);
-        };
+    public StudentResponseDto studentFormat(Student student) {
+        String studentId = student.getStudentId();
 
         return StudentResponseDto.builder()
                 .id(student.getId())
+                .studentId(String.valueOf(studentId))
                 .mail(student.getMail())
                 .phoneNum(student.getPhoneNum())
                 .studentName(student.getStudentName())
-                .format(formats)
                 .build();
     }
 }
