@@ -39,7 +39,7 @@ public class StudentController {
 
     @PostMapping("/upload")
     public BaseResponse uploadExcel(@RequestPart(value = "excel") MultipartFile file) throws IOException {
-        return studentService.uploadExcel(file);
+        return studentService.createManyUserByExcel(file);
     }
 
 }

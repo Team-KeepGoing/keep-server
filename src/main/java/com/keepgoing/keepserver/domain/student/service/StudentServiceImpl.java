@@ -65,7 +65,7 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    public BaseResponse uploadExcel(MultipartFile file) {
+    public BaseResponse createManyUserByExcel(MultipartFile file) {
         try {
             List<Student> studentList = processExcelFile(file);
             studentRepository.saveAll(studentList);

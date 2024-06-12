@@ -11,6 +11,6 @@ public interface StudentService {
     BaseResponse findByStudentName(StudentFindDto studentFindDto);
     BaseResponse findByStudentNum(StudentFindDto studentFindDto);
     BaseResponse editStudent(StudentRequestDto studentRequestDto);
-    BaseResponse uploadExcel(MultipartFile multipartFile) throws IOException;
+    BaseResponse createManyUserByExcel(MultipartFile multipartFile) throws IOException;
     BaseResponse findAll();
 }
