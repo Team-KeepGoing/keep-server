@@ -11,15 +11,15 @@ public class JwtResponse {
     private String token;
     private Long id;
     private String email;
-    private String password;
+    private String name;
     private boolean teacher;
 
-    public static JwtResponse setJwtResponse(String token, Long id, String email, String password, boolean teacher) {
+    public static JwtResponse setJwtResponse(String token, Long id, String email, String name, boolean teacher) {
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.token = token;
         jwtResponse.id = id;
         jwtResponse.email = email;
-        jwtResponse.password = password;
+        jwtResponse.name = name;
         jwtResponse.teacher = teacher;
         return jwtResponse;
     }
