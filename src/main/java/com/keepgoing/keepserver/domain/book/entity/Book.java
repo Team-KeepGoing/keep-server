@@ -8,7 +8,6 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -30,7 +29,7 @@ public class Book {
     /*
         NFC 코드
     */
-    @Column(updatable = false, nullable = false)
+    @Column(updatable = false)
     private String nfcCode;
 
     /*
@@ -43,7 +42,7 @@ public class Book {
         도서 등록일
     */
     @Column(updatable = false, nullable = false)
-    private Date registrationDate;
+    private LocalDateTime registrationDate;
 
     /*
         도서 대여 여부
@@ -71,7 +70,7 @@ public class Book {
     private User borrower;
 
     @Builder
-    public Book(String bookName, String nfcCode, String writer, Date registrationDate, BookState state, String imageUrl, LocalDateTime rentDate, User borrower) {
+    public Book(String bookName, String nfcCode, String writer, LocalDateTime registrationDate, BookState state, String imageUrl, LocalDateTime rentDate, User borrower) {
         this.bookName = bookName;
         this.nfcCode = nfcCode;
         this.writer = writer;

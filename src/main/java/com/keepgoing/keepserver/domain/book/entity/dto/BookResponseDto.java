@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 public record BookResponseDto(
         Long id,
         String bookName,
+        String writer,
         String imageUrl,
+        LocalDateTime registrationDate,
         LocalDateTime rentDate,
         BookState state
 ) {
