@@ -45,7 +45,7 @@ public class Device {
         기기 등록일
     */
     @Column(nullable = false)
-    private String regDate;
+    private LocalDateTime regDate;
 
     /*
         기기 대여 시작일
@@ -61,7 +61,7 @@ public class Device {
     private User borrower;
 
     @Builder
-    public Device(String deviceName, DeviceStatus status, String imgUrl, String regDate, LocalDateTime rentDate, User borrower) {
+    public Device(String deviceName, DeviceStatus status, String imgUrl, LocalDateTime regDate, LocalDateTime rentDate, User borrower) {
         this.deviceName = deviceName;
         this.status = status;
         this.imgUrl = imgUrl;
