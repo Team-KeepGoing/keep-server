@@ -10,6 +10,7 @@ public record DeviceResponseDto (
         Long id,
         String deviceName,
         String imgUrl,
+        LocalDateTime regDate,
         LocalDateTime rentDate,
         DeviceStatus status
 ) {

@@ -6,6 +6,7 @@ import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class DeviceMapper {
         return Device.builder()
                 .deviceName(dto.deviceName())
                 .imgUrl(dto.imgUrl())
-                .regDate(dto.regDate())
+                .regDate(LocalDateTime.now())
                 .rentDate(dto.rentDate())
                 .status(DeviceStatus.AVAILABLE)
                 .build();
