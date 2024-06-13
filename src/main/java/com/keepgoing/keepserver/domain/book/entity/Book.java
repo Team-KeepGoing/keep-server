@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -34,21 +35,27 @@ public class Book {
 
     @Column(updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
-    private BookState state; //대여 불가능시 '1' 대여 가능시 '0'
+    private BookState state; // 대여 불가능시 '1' 대여 가능시 '0'
 
-    private String imageUrl; //책 이미지 링크
+    private String imageUrl; // 책 이미지 링크
+
+    @Column
+    private LocalDateTime rentDate; // 기기 대여 시작일
 
     @ManyToOne
     @JoinColumn(name = "borrower_id")
     private User borrower;
 
     @Builder
-    public Book(String bookName, String nfcCode, String writer, Date registrationDate, BookState state, String imageUrl) {
+    public Book(String bookName, String nfcCode, String writer, Date registrationDate, BookState state, String imageUrl, LocalDateTime rentDate, User borrower) {
         this.bookName = bookName;
         this.nfcCode = nfcCode;
         this.writer = writer;
         this.registrationDate = registrationDate;
         this.state = state;
         this.imageUrl = imageUrl;
+        this.rentDate = rentDate;
+        this.borrower = borrower;
     }
 }
+
