@@ -1,6 +1,8 @@
 package com.keepgoing.keepserver.domain.book.mapper;
 
+import com.keepgoing.keepserver.domain.book.consts.BookState;
 import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.entity.dto.BookDto;
 import com.keepgoing.keepserver.domain.book.entity.dto.BookResponseDto;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,15 @@ public class BookMapper {
                 .imageUrl(entity.getImageUrl())
                 .rentDate(entity.getRentDate())
                 .state(entity.getState())
+                .build();
+    }
+
+    public static Book dtoToEntity(BookDto dto) {
+        return Book.builder()
+                .bookName(dto.getBookName())
+                .imageUrl(dto.getImageUrl())
+                .rentDate(dto.getRentDate())
+                .state(BookState.AVAILABLE)
                 .build();
     }
 
