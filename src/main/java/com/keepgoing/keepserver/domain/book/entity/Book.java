@@ -54,6 +54,7 @@ public class Book {
     /*
         책 이미지 url
     */
+    @Column
     private String imageUrl;
 
     /*
