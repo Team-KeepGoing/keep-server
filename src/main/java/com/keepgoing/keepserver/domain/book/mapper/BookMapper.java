@@ -6,6 +6,7 @@ import com.keepgoing.keepserver.domain.book.entity.dto.BookDto;
 import com.keepgoing.keepserver.domain.book.entity.dto.BookResponseDto;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,9 @@ public class BookMapper {
         return Book.builder()
                 .bookName(dto.getBookName())
                 .imageUrl(dto.getImageUrl())
+                .registrationDate(LocalDateTime.now())
                 .rentDate(dto.getRentDate())
+                .writer(dto.getWriter())
                 .state(BookState.AVAILABLE)
                 .nfcCode(dto.getNfcCode())
                 .build();
