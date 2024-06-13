@@ -17,6 +17,7 @@ public class DeviceMapper {
                 .id(entity.getId())
                 .deviceName(entity.getDeviceName())
                 .imgUrl(entity.getImgUrl())
+                .regDate(entity.getRegDate())
                 .rentDate(entity.getRentDate())
                 .status(entity.getStatus())
                 .build();
