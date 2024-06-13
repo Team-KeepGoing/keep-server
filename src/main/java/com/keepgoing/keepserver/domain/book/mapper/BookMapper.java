@@ -27,6 +27,7 @@ public class BookMapper {
                 .imageUrl(dto.getImageUrl())
                 .rentDate(dto.getRentDate())
                 .state(BookState.AVAILABLE)
+                .nfcCode(dto.getNfcCode())
                 .build();
     }
 
