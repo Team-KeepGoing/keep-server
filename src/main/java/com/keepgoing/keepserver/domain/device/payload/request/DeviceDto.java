@@ -1,14 +1,15 @@
 package com.keepgoing.keepserver.domain.device.payload.request;
 
-import com.keepgoing.keepserver.domain.device.entity.DeviceStatus;
-import lombok.Builder;
+import com.keepgoing.keepserver.domain.device.enums.DeviceStatus;
 
-@Builder
+import java.time.LocalDateTime;
+
 public record DeviceDto (
         Long id,
         String deviceName,
         String imgUrl,
         String regDate,
+        LocalDateTime rentDate,
         DeviceStatus status
 ) {
 }

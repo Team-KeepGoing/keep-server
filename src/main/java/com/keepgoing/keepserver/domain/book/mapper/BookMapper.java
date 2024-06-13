@@ -14,6 +14,7 @@ public class BookMapper {
                 .id(entity.getId())
                 .bookName(entity.getBookName())
                 .imageUrl(entity.getImageUrl())
+                .rentDate(entity.getRentDate())
                 .state(entity.getState())
                 .build();
     }

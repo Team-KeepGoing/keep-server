@@ -5,7 +5,7 @@ import com.keepgoing.keepserver.domain.book.entity.Book;
 import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.device.entity.Device;
-import com.keepgoing.keepserver.domain.device.entity.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.enums.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.device.service.DeviceServiceImpl;
@@ -18,6 +18,8 @@ import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +62,7 @@ public class RentServiceImpl implements RentService{
     private void rentDeviceToUser(Device device, User user) {
         device.setBorrower(user);
         device.setStatus(DeviceStatus.RENTED);
+        device.setRentDate(LocalDateTime.now());
         deviceRepository.save(device);
     }
 
@@ -77,6 +80,7 @@ public class RentServiceImpl implements RentService{
     private void rentBookToUser(Book book, User user) {
         book.setBorrower(user);
         book.setState(BookState.RENTED);
+        book.setRentDate(LocalDateTime.now());
         bookRepository.save(book);
     }
 }
