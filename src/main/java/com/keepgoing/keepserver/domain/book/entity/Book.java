@@ -21,27 +21,51 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    /*
+        책 제목
+    */
     @Column(nullable = false)
     private String bookName;
 
+    /*
+        NFC 코드
+    */
     @Column(updatable = false, nullable = false)
     private String nfcCode;
 
+    /*
+        작가
+    */
     @Column(nullable = false)
     private String writer;
 
+    /*
+        도서 등록일
+    */
     @Column(updatable = false, nullable = false)
     private Date registrationDate;
 
+    /*
+        도서 대여 여부
+    */
     @Column(updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
-    private BookState state; // 대여 불가능시 '1' 대여 가능시 '0'
+    private BookState state;
 
-    private String imageUrl; // 책 이미지 링크
+    /*
+        책 이미지 url
+    */
+    private String imageUrl;
 
+    /*
+        기기 대여 시작일
+    */
     @Column
-    private LocalDateTime rentDate; // 기기 대여 시작일
+    private LocalDateTime rentDate;
 
+    /*
+        책 대여자
+    */
     @ManyToOne
     @JoinColumn(name = "borrower_id")
     private User borrower;
