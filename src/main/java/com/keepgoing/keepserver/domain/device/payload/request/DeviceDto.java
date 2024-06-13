@@ -8,6 +8,7 @@ public record DeviceDto (
         Long id,
         String deviceName,
         String imgUrl,
+        String regDate,
         LocalDateTime rentDate,
         DeviceStatus status
 ) {
