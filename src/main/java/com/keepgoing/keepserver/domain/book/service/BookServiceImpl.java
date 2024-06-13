@@ -1,23 +1,20 @@
 package com.keepgoing.keepserver.domain.book.service;
 
-import com.keepgoing.keepserver.domain.book.consts.BookState;
 import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.entity.dto.BookDto;
 import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDto;
+import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
-import com.keepgoing.keepserver.global.common.S3.S3Uploader;
 import com.keepgoing.keepserver.global.exception.book.BookException;
 import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,28 +23,13 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final S3Uploader s3Uploader;
     private final GenerateCertCharacter generateCertCharacter;
-
-    private String uploadBook(MultipartFile file) {
-        try {
-            return s3Uploader.upload(file, "picture");
-        } catch (IOException e) {
-            throw BookException.imageUploadFailed();
-        }
-    }
+    private final BookMapper bookMapper;
 
     @Override
-    public BaseResponse bookRegister(Book book, MultipartFile multipartFile) {
-        String imageUrl = uploadBook(multipartFile);
-
-        book.setImageUrl(imageUrl);
+    public BaseResponse bookRegister(BookDto bookDto) {
         String nfcCode = createNfcCode();
-        book.setRegistrationDate(new Date());
-        book.setNfcCode(nfcCode);
-        book.setState(BookState.AVAILABLE);
-
-        bookRepository.save(book);
+        bookRepository.save(bookMapper.dtoToEntity(bookDto));
         return new BaseResponse(HttpStatus.OK, "책 생성 성공");
     }
 
