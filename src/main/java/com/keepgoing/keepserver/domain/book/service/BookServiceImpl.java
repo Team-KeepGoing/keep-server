@@ -29,6 +29,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BaseResponse bookRegister(BookDto bookDto) {
         String nfcCode = createNfcCode();
+        bookDto.setNfcCode(nfcCode);
         bookRepository.save(bookMapper.dtoToEntity(bookDto));
         return new BaseResponse(HttpStatus.OK, "책 생성 성공");
     }
