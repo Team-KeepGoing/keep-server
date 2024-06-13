@@ -43,7 +43,6 @@ public class S3Uploader {
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(
                 new PutObjectRequest(bucket, fileName, uploadFile)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)    // PublicRead 권한으로 업로드 됨
         );
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
