@@ -8,18 +8,18 @@ import org.springframework.http.HttpStatus;
 public class BaseResponse {
 
     private HttpStatus httpStatus;
-    private String massage;
+    private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object data;
 
-    public BaseResponse(HttpStatus httpStatus, String massage) {
+    public BaseResponse(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
-        this.massage = massage;
+        this.message = message;
     }
 
-    public BaseResponse(HttpStatus httpStatus, String massage, Object data){
+    public BaseResponse(HttpStatus httpStatus, String message, Object data){
         this.httpStatus = httpStatus;
-        this.massage = massage;
+        this.message = message;
         this.data = data;
     }
 }
