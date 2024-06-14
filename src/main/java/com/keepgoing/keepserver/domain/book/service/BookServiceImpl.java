@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,11 +35,13 @@ public class BookServiceImpl implements BookService {
         return new BaseResponse(HttpStatus.OK, "책 생성 성공");
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BaseResponse selectAllBook() {
         return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", bookRepository.findAll());
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public BaseResponse deleteBook(String nfcCode, Authentication auth) {
         if (nfcCode == null || nfcCode.isEmpty()) {
@@ -77,6 +80,7 @@ public class BookServiceImpl implements BookService {
         return newNfcCode;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public BaseResponse editBook(String nfcCode, BookRequestDto bookRequest) {
         Book book = bookRepository.findBookByNfcCode(nfcCode);

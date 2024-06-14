@@ -4,8 +4,7 @@ import com.keepgoing.keepserver.domain.student.entity.Student;
 import com.keepgoing.keepserver.domain.student.repository.StudentRepository;
 import com.keepgoing.keepserver.domain.student.repository.dto.*;
 import com.keepgoing.keepserver.global.common.BaseResponse;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -14,6 +13,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
@@ -75,6 +75,7 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BaseResponse findAll() {
         ArrayList<StudentResponseDto> lst = new ArrayList<>();
@@ -96,6 +97,7 @@ public class StudentServiceImpl implements StudentService {
         return responseDto;
     }
 
+    @Transactional(readOnly = true)
     public BaseResponse findByStudentName(StudentFindDto studentDto) {
         try {
             List<Student> students = findStudentsByStudentName(studentDto.getStudentName());
@@ -118,6 +120,7 @@ public class StudentServiceImpl implements StudentService {
         return studentFormat(student);
     }
 
+    @Transactional(readOnly = true)
     public BaseResponse findByStudentNum(StudentFindDto studentDto) {
         try {
             Student student = findStudentByStudentId(studentDto.getStudentId());
@@ -132,13 +135,10 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse editStudent(StudentRequestDto studentDto) {
         Student studentEntity = studentRepository.findStudentByStudentId(studentDto.getStudentId());
-        if (studentDto.getStudentName() != null) studentEntity.setStudentName(studentDto.getStudentName());
-        if (studentDto.getStudentId() != null) studentEntity.setStudentId(studentDto.getStudentId());
-        if (studentDto.getPhoneNum() != null) studentEntity.setPhoneNum(studentDto.getPhoneNum());
-        if (studentDto.getMail() != null) studentEntity.setMail(studentDto.getMail());
-        if (studentDto.getAddress() != null) studentEntity.setAddress(studentDto.getAddress());
+        studentEntity.updateInstance(studentDto);
 
         studentRepository.save(studentEntity);
         return new BaseResponse(HttpStatus.OK, "학생 정보 수정 성공");
