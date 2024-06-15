@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.student.entity;
 
+import com.keepgoing.keepserver.domain.student.repository.dto.StudentRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
@@ -29,4 +30,12 @@ public class Student {
 
     @Column(nullable = false)
     private String mail;
+
+    public void updateInstance(StudentRequestDto studentDto) {
+        if (studentDto.getStudentName() != null) setStudentName(studentDto.getStudentName());
+        if (studentDto.getStudentId() != null) setStudentId(studentDto.getStudentId());
+        if (studentDto.getPhoneNum() != null) setPhoneNum(studentDto.getPhoneNum());
+        if (studentDto.getMail() != null) setMail(studentDto.getMail());
+        if (studentDto.getAddress() != null) setAddress(studentDto.getAddress());
+    }
 }
