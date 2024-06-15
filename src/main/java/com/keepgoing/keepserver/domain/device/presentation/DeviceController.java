@@ -1,6 +1,7 @@
 package com.keepgoing.keepserver.domain.device.presentation;
 
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
+import com.keepgoing.keepserver.domain.device.payload.request.DeviceEditRequest;
 import com.keepgoing.keepserver.domain.device.service.DeviceService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,5 +47,12 @@ public class DeviceController {
     @DeleteMapping("/delete/{id}")
     public BaseResponse deleteDevice(@PathVariable Long id, Authentication authentication){
         return deviceService.deleteDevice(id, authentication);
+    }
+
+    @Operation(summary = "기자재 수정", description = "기자재의 id를 통해 정보를 수정합니다. 책과 동일하게 파라미터는 수정할 내용만 넘기셔도 됩니다.")
+    @PatchMapping("/edit/{id}")
+    public BaseResponse editDevice(@PathVariable(value = "id") Long id,
+                                          @RequestBody DeviceEditRequest deviceEditRequest) {
+        return deviceService.editDevice(id, deviceEditRequest);
     }
 }
