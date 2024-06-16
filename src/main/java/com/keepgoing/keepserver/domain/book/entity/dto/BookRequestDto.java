@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class BookRequestDto {
     private String name;
+    private String writer;
     private String nfcCode;
     private String imageUrl;
     private BookState state;

@@ -86,6 +86,7 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findBookByNfcCode(nfcCode);
 
         if (bookRequest.getState() != null) book.setState(bookRequest.getState());
+        if (bookRequest.getWriter() != null) book.setWriter(bookRequest.getWriter());
         if (bookRequest.getImageUrl() != null) book.setImageUrl(bookRequest.getImageUrl());
         if (bookRequest.getName() != null) book.setBookName(bookRequest.getName());
         bookRepository.save(book);
