@@ -37,8 +37,8 @@ public class StudentController {
 
     @Operation(summary = "학생 정보 수정하기", description = "id를 통해 학생 정보를 수정합니다. 파라미터는 전체 코드가 아닌, 수정할 내용만 넘기셔도 됩니다.")
     @PatchMapping("/edit/{id}")
-    public BaseResponse editStudent(@RequestBody StudentRequestDto studentRequestDto, @PathVariable String id) {
-        return studentService.editStudent(studentRequestDto);
+    public BaseResponse editStudent(@RequestBody StudentRequestDto studentRequestDto, @PathVariable Long id) {
+        return studentService.editStudent(studentRequestDto, id);
     }
 
     @Operation(summary = "학생 등록하기", description = "형식에 맞는 엑셀 파일 업로드 시 업로딩됩니다")

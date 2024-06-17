@@ -14,7 +14,7 @@ public interface StudentService {
     @Transactional(readOnly = true)
     BaseResponse findByStudentNum(StudentFindDto studentFindDto);
     @Transactional(rollbackFor = Exception.class)
-    BaseResponse editStudent(StudentRequestDto studentRequestDto);
+    BaseResponse editStudent(StudentRequestDto studentRequestDto,Long id);
     BaseResponse createManyUserByExcel(MultipartFile multipartFile) throws IOException;
     @Transactional(readOnly = true)
     BaseResponse findAll();
