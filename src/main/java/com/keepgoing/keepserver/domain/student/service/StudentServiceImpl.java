@@ -132,11 +132,11 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    public BaseResponse editStudent(StudentRequestDto studentDto) {
-        Student studentEntity = studentRepository.findStudentByStudentId(studentDto.getStudentId());
+    public BaseResponse editStudent(StudentRequestDto studentDto,Long id) {
+        Student studentEntity = studentRepository.findStudentById(id);
         if (studentDto.getStudentName() != null) studentEntity.setStudentName(studentDto.getStudentName());
-        if (studentDto.getStudentId() != null) studentEntity.setStudentId(studentDto.getStudentId());
         if (studentDto.getPhoneNum() != null) studentEntity.setPhoneNum(studentDto.getPhoneNum());
+        if (studentDto.getStudentId() != null) studentEntity.setStudentId(studentDto.getStudentId());
         if (studentDto.getMail() != null) studentEntity.setMail(studentDto.getMail());
         if (studentDto.getAddress() != null) studentEntity.setAddress(studentDto.getAddress());
 
