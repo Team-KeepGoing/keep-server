@@ -15,5 +15,5 @@ import java.util.List;
 public class UserProfileDto {
     private User user;
     private List<DeviceResponseDto> borrowedDevices;
-    private List<BookResponseDto> brrowedBooks;
+    private List<BookResponseDto> borrowedBooks;
 }

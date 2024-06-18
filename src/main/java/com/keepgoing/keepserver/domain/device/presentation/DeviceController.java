@@ -37,13 +37,13 @@ public class DeviceController {
         return deviceService.deviceRead(id);
     }
 
-    @Operation(summary = "나의 기자재 대여 현황", description = "내가 대여 중인 기자재의 정보를 확인합니다.")
+    @Operation(summary = "나의 기자재 대여 현황", description = "토큰을 통해 내가 대여 중인 기자재의 정보를 확인합니다.")
     @GetMapping("/my")
     public BaseResponse myDevices(Authentication authentication){
         return deviceService.myDevices(authentication);
     }
 
-    @Operation(summary = "기자재 삭제" , description = "선택한 기자재를 삭제합니다.")
+    @Operation(summary = "기자재 삭제" , description = "선택한 기자재를 삭제합니다. 교사만 수정 가능 합니다. 토큰도 함께 보내주세요.")
     @DeleteMapping("/delete/{id}")
     public BaseResponse deleteDevice(@PathVariable Long id, Authentication authentication){
         return deviceService.deleteDevice(id, authentication);
