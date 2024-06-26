@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.rent.service;
+package com.keepgoing.keepserver.domain.Return.service;
 
 import com.keepgoing.keepserver.domain.book.consts.BookState;
 import com.keepgoing.keepserver.domain.book.entity.Book;
@@ -19,11 +19,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
-public class RentServiceImpl implements RentService{
+public class ReturnServiceImpl implements ReturnService {
     private final DeviceServiceImpl deviceService;
     private final DeviceRepository deviceRepository;
     private final DeviceMapper deviceMapper;
@@ -31,21 +29,21 @@ public class RentServiceImpl implements RentService{
     private final BookMapper bookMapper;
 
     @Override
-    public BaseResponse rentDevice(String deviceName, String email) {
+    public BaseResponse returnDevice(String deviceName, String email) {
         User user = deviceService.findUserByEmail(email);
         Device device = findDeviceByName(deviceName);
-        validateDeviceAvailability(device);
-        rentDeviceToUser(device, user);
-        return new BaseResponse(HttpStatus.OK, "기기 대여 성공", deviceMapper.entityToDto(device));
+        validateDeviceBorrower(device, user);
+        returnDeviceFromUser(device);
+        return new BaseResponse(HttpStatus.OK, "기기 반납 성공", deviceMapper.entityToDto(device));
     }
 
     @Override
-    public BaseResponse rentBook(String nfcCode, String email) {
+    public BaseResponse returnBook(String nfcCode, String email) {
         User user = deviceService.findUserByEmail(email);
         Book book = findBookByNfcCodeContaining(nfcCode);
-        validateBookAvailability(book);
-        rentBookToUser(book, user);
-        return new BaseResponse(HttpStatus.OK, "도서 대여 성공", bookMapper.entityToDto(book));
+        validateBookBorrower(book, user);
+        returnBookFromUser(book);
+        return new BaseResponse(HttpStatus.OK, "도서 반납 성공", bookMapper.entityToDto(book));
     }
 
     private Device findDeviceByName(String deviceName) {
@@ -53,16 +51,16 @@ public class RentServiceImpl implements RentService{
                 .orElseThrow(DeviceException::notFoundDevice);
     }
 
-    private void validateDeviceAvailability(Device device) {
-        if (device.getStatus() != DeviceStatus.AVAILABLE) {
-            throw new DeviceException(DeviceError.DEVICE_NOT_AVAILABLE);
+    private void validateDeviceBorrower(Device device, User user) {
+        if (!device.getBorrower().equals(user)) {
+            throw new DeviceException(DeviceError.INVALID_BORROWER);
         }
     }
 
-    private void rentDeviceToUser(Device device, User user) {
-        device.setBorrower(user);
-        device.setStatus(DeviceStatus.RENTED);
-        device.setRentDate(LocalDateTime.now());
+    private void returnDeviceFromUser(Device device) {
+        device.setBorrower(null);
+        device.setStatus(DeviceStatus.AVAILABLE);
+        device.setRentDate(null);
         deviceRepository.save(device);
     }
 
@@ -71,16 +69,16 @@ public class RentServiceImpl implements RentService{
                 .orElseThrow(BookException::notFoundBook);
     }
 
-    private void validateBookAvailability(Book book) {
-        if (book.getState() != BookState.AVAILABLE) {
-            throw new BookException(BookError.BOOK_NOT_AVAILABLE);
+    private void validateBookBorrower(Book book, User user) {
+        if (!book.getBorrower().equals(user)) {
+            throw new BookException(BookError.INVALID_BORROWER);
         }
     }
 
-    private void rentBookToUser(Book book, User user) {
-        book.setBorrower(user);
-        book.setState(BookState.RENTED);
-        book.setRentDate(LocalDateTime.now());
+    private void returnBookFromUser(Book book) {
+        book.setBorrower(null);
+        book.setState(BookState.AVAILABLE);
+        book.setRentDate(null);
         bookRepository.save(book);
     }
 }
