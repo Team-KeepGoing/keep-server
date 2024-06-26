@@ -23,7 +23,7 @@ public class ReturnController {
 
     @Operation(summary = "도서 반납", description = "책 제목과 이메일을 통해 도서를 반납합니다.")
     @PostMapping("/book")
-    public BaseResponse returnBook(@RequestParam String bookName, @RequestParam String email) {
-        return returnService.returnBook(bookName, email);
+    public BaseResponse returnBook(@RequestParam String nfcCode, @RequestParam String email) {
+        return returnService.returnBook(nfcCode, email);
     }
 }
