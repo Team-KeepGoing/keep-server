@@ -38,9 +38,9 @@ public class ReturnServiceImpl implements ReturnService {
     }
 
     @Override
-    public BaseResponse returnBook(String bookName, String email) {
+    public BaseResponse returnBook(String nfcCode, String email) {
         User user = deviceService.findUserByEmail(email);
-        Book book = findBookByName(bookName);
+        Book book = findBookByNfcCodeContaining(nfcCode);
         validateBookBorrower(book, user);
         returnBookFromUser(book);
         return new BaseResponse(HttpStatus.OK, "도서 반납 성공", bookMapper.entityToDto(book));
@@ -64,8 +64,8 @@ public class ReturnServiceImpl implements ReturnService {
         deviceRepository.save(device);
     }
 
-    private Book findBookByName(String bookName) {
-        return bookRepository.findByBookName(bookName)
+    private Book findBookByNfcCodeContaining(String nfcCode) {
+        return bookRepository.findBookByNfcCodeContaining(nfcCode)
                 .orElseThrow(BookException::notFoundBook);
     }
 
