@@ -40,9 +40,9 @@ public class RentServiceImpl implements RentService{
     }
 
     @Override
-    public BaseResponse rentBook(String bookName, String email) {
+    public BaseResponse rentBook(String nfcCode, String email) {
         User user = deviceService.findUserByEmail(email);
-        Book book = findBookByName(bookName);
+        Book book = findBookByNfcCodeContaining(nfcCode);
         validateBookAvailability(book);
         rentBookToUser(book, user);
         return new BaseResponse(HttpStatus.OK, "도서 대여 성공", bookMapper.entityToDto(book));
@@ -66,8 +66,8 @@ public class RentServiceImpl implements RentService{
         deviceRepository.save(device);
     }
 
-    private Book findBookByName(String bookName) {
-        return bookRepository.findByBookName(bookName)
+    private Book findBookByNfcCodeContaining(String nfcCode) {
+        return bookRepository.findBookByNfcCodeContaining(nfcCode)
                 .orElseThrow(BookException::notFoundBook);
     }
 
