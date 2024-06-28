@@ -22,7 +22,7 @@ public class BookMapper {
                 .build();
     }
 
-    public static Book dtoToEntity(BookDto dto) {
+    public Book dtoToEntity(BookDto dto) {
         return Book.builder()
                 .bookName(dto.getBookName())
                 .imageUrl(dto.getImageUrl())
