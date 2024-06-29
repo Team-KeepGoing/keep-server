@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.global.dto.response;
+package com.keepgoing.keepserver.global.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

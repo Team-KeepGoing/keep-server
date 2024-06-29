@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.device.payload.response;
 
-import com.keepgoing.keepserver.domain.device.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.entity.enums.DeviceStatus;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

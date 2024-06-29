@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.user.payload.request;
 
-import com.keepgoing.keepserver.domain.book.entity.dto.BookResponseDto;
+import com.keepgoing.keepserver.domain.book.payload.response.BookResponseDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import lombok.AllArgsConstructor;

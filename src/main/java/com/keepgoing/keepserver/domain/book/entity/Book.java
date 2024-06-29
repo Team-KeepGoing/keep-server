@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.book.entity;
 
 
-import com.keepgoing.keepserver.domain.book.consts.BookState;
+import com.keepgoing.keepserver.domain.book.entity.enums.BookState;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.Return.service;
+package com.keepgoing.keepserver.domain.returns.service;
 
 import com.keepgoing.keepserver.global.common.BaseResponse;
 

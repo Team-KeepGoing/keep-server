@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.global.dto.response;
+package com.keepgoing.keepserver.global.response;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;

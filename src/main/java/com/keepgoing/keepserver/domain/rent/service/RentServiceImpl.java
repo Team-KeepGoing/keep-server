@@ -1,11 +1,11 @@
 package com.keepgoing.keepserver.domain.rent.service;
 
-import com.keepgoing.keepserver.domain.book.consts.BookState;
+import com.keepgoing.keepserver.domain.book.entity.enums.BookState;
 import com.keepgoing.keepserver.domain.book.entity.Book;
 import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.device.entity.Device;
-import com.keepgoing.keepserver.domain.device.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.entity.enums.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.device.service.DeviceServiceImpl;

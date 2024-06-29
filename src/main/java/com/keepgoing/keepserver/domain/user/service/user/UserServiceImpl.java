@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookResponseDto;
+import com.keepgoing.keepserver.domain.book.payload.response.BookResponseDto;
 import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
 import com.keepgoing.keepserver.domain.book.service.BookServiceImpl;
 import com.keepgoing.keepserver.domain.device.entity.Device;
