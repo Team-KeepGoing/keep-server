@@ -1,6 +1,6 @@
-package com.keepgoing.keepserver.domain.Return.presentation;
+package com.keepgoing.keepserver.domain.returns.presentation;
 
-import com.keepgoing.keepserver.domain.Return.service.ReturnService;
+import com.keepgoing.keepserver.domain.returns.service.ReturnService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
