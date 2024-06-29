@@ -1,6 +1,6 @@
-package com.keepgoing.keepserver.domain.book.entity.dto;
+package com.keepgoing.keepserver.domain.book.payload.response;
 
-import com.keepgoing.keepserver.domain.book.consts.BookState;
+import com.keepgoing.keepserver.domain.book.entity.enums.BookState;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

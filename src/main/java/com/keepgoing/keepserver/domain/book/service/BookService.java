@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.book.service;
 
-import com.keepgoing.keepserver.domain.book.entity.dto.BookDto;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDto;
+import com.keepgoing.keepserver.domain.book.payload.request.BookDto;
+import com.keepgoing.keepserver.domain.book.payload.request.BookRequestDto;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;

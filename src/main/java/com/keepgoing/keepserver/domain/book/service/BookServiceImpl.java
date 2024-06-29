@@ -1,8 +1,8 @@
 package com.keepgoing.keepserver.domain.book.service;
 
 import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookDto;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDto;
+import com.keepgoing.keepserver.domain.book.payload.request.BookDto;
+import com.keepgoing.keepserver.domain.book.payload.request.BookRequestDto;
 import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
 import com.keepgoing.keepserver.domain.book.repository.BookRepository;
 import com.keepgoing.keepserver.domain.user.entity.user.User;

@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.device.entity;
 
-import com.keepgoing.keepserver.domain.device.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.entity.enums.DeviceStatus;
 import com.keepgoing.keepserver.domain.user.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-import static com.keepgoing.keepserver.domain.device.enums.DeviceStatus.AVAILABLE;
+import static com.keepgoing.keepserver.domain.device.entity.enums.DeviceStatus.AVAILABLE;
 
 @Entity
 @Setter
