@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.user.security;
+package com.keepgoing.keepserver.global.config;
 
 import com.keepgoing.keepserver.domain.user.security.jwt.AuthEntryPointJwt;
 import com.keepgoing.keepserver.domain.user.security.jwt.AuthTokenFilter;
@@ -66,7 +66,8 @@ public class WebSecurityConfig {
                                 .requestMatchers("device/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                                 .anyRequest().permitAll()
-                ).cors((a)-> a.configurationSource(corsConfigurationSource()));
+                ).cors((a)-> a.configurationSource(corsConfigurationSource()))
+                .requiresChannel(channel -> channel.anyRequest().requiresSecure()); // HTTPS로 리다이렉트
 
         http.authenticationProvider(authenticationProvider());
 
