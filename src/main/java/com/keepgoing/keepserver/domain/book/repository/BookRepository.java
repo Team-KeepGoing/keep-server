@@ -12,6 +12,5 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Book findBookByNfcCode(String NfcCode);
     Optional<Book> findBookByNfcCodeContaining(String NfcCode);
-    Optional<Book> findByBookName(String bookName);
     List<Book> findByBorrower(User borrower);
 }
