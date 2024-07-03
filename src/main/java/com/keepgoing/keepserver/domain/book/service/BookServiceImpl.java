@@ -29,8 +29,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BaseResponse bookRegister(BookDto bookDto) {
         String nfcCode = createNfcCode();
-        bookDto.setNfcCode(nfcCode);
-        bookRepository.save(bookMapper.dtoToEntity(bookDto));
+        bookRepository.save(bookMapper.dtoToEntity(bookDto, nfcCode));
         return new BaseResponse(HttpStatus.OK, "책 생성 성공");
     }
 
@@ -81,9 +80,9 @@ public class BookServiceImpl implements BookService {
     public BaseResponse editBook(String nfcCode, BookRequestDto bookRequest) {
         Book book = bookRepository.findBookByNfcCode(nfcCode);
 
-        if (bookRequest.getState() != null) book.setState(bookRequest.getState());
-        if (bookRequest.getImageUrl() != null) book.setImageUrl(bookRequest.getImageUrl());
-        if (bookRequest.getName() != null) book.setBookName(bookRequest.getName());
+        if (bookRequest.state() != null) book.setState(bookRequest.state());
+        if (bookRequest.imageUrl() != null) book.setImageUrl(bookRequest.imageUrl());
+        if (bookRequest.name() != null) book.setBookName(bookRequest.name());
         bookRepository.save(book);
         return new BaseResponse(HttpStatus.OK, "책 정보 수정 성공");
     }

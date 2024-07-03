@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.book.mapper;
 
-import com.keepgoing.keepserver.domain.book.entity.enums.BookState;
 import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.entity.enums.BookState;
 import com.keepgoing.keepserver.domain.book.payload.request.BookDto;
 import com.keepgoing.keepserver.domain.book.payload.response.BookResponseDto;
 import org.springframework.stereotype.Component;
@@ -22,15 +22,15 @@ public class BookMapper {
                 .build();
     }
 
-    public Book dtoToEntity(BookDto dto) {
+    public Book dtoToEntity(BookDto dto, String nfcCode) {
         return Book.builder()
-                .bookName(dto.getBookName())
-                .imageUrl(dto.getImageUrl())
+                .bookName(dto.bookName())
+                .imageUrl(dto.imageUrl())
                 .registrationDate(LocalDateTime.now())
-                .rentDate(dto.getRentDate())
-                .writer(dto.getWriter())
+                .rentDate(dto.rentDate())
+                .writer(dto.writer())
                 .state(BookState.AVAILABLE)
-                .nfcCode(dto.getNfcCode())
+                .nfcCode(nfcCode)
                 .build();
     }
 
