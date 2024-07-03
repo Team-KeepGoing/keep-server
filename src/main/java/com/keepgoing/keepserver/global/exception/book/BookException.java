@@ -27,7 +27,7 @@ public class BookException extends BusinessException {
     public static BookException imageUploadFailed() {
         return IMAGE_UPLOAD_FAILED;
     }
-    public static BookException invalidborrower() {
+    public static BookException invalidBorrower() {
         return INVALID_BORROWER;
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/return")
 @RequiredArgsConstructor
 public class ReturnController {
+
     private final ReturnService returnService;
 
     @Operation(summary = "기자재 반납", description = "기자재 이름과 이메일을 통해 기자재를 반납합니다.")

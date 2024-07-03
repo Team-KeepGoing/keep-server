@@ -72,7 +72,8 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new DeviceException(DeviceError.USER_NOT_FOUND));
+        return userRepository.findByEmail(email)
+                .orElseThrow(DeviceException::userNotFound);
     }
 
     private Device findDeviceById(Long id) {
