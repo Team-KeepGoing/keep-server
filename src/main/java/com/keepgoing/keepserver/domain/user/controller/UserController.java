@@ -25,12 +25,10 @@ public class UserController {
 
     private final UserService userService;
 
-    private final UserServiceImpl userServiceImpl;
-
     @Operation(summary = "로그인", description = "로그인을 진행합니다.")
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok().body(userServiceImpl.authenticateAndGenerateJWT(loginRequest.getEmail(), loginRequest.getPassword()));
+        return ResponseEntity.ok().body(userService.authenticateAndGenerateJWT(loginRequest.getEmail(), loginRequest.getPassword()));
     }
 
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
@@ -40,7 +38,7 @@ public class UserController {
         /* 유저 등록 */
         userService.registerUser(signupRequest);
 
-        JwtResponse jwtResponse = userServiceImpl.authenticateAndGenerateJWT(signupRequest.getEmail(), signupRequest.getPassword());
+        JwtResponse jwtResponse = userService.authenticateAndGenerateJWT(signupRequest.getEmail(), signupRequest.getPassword());
         ApiResponse<JwtResponse> response = ApiResponse.setApiResponse(true, "회원 가입이 완료 되었습니다!", jwtResponse);
 
         return ResponseEntity.ok().body(response);
@@ -57,7 +55,7 @@ public class UserController {
     @PutMapping("/userfix")
     public void updateUserData(@RequestBody UserInfoRequest request, Authentication authentication) {
         String userName = authentication.getName();
-        userServiceImpl.updateUserData(request, userName);
+        userService.updateUserData(request, userName);
         ResponseEntity.ok().body("");
     }
 }
