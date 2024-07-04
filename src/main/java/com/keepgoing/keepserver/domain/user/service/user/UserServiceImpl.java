@@ -12,6 +12,7 @@ import com.keepgoing.keepserver.domain.user.entity.user.User;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserProfileDto;
+import com.keepgoing.keepserver.domain.user.payload.response.ApiResponse;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
 import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
@@ -21,6 +22,7 @@ import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import com.keepgoing.keepserver.global.exception.error.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -45,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void registerUser(SignupRequest signupRequest) throws BusinessException {
+    public ApiResponse<JwtResponse> registerUser(SignupRequest signupRequest) throws BusinessException {
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
             throw new BusinessException(ErrorCode.EMAIL_BAD_REQUEST);
         }
@@ -54,27 +56,40 @@ public class UserServiceImpl implements UserService {
                 signupRequest.getName(), signupRequest.isTeacher()
         );
         userRepository.save(user);
+
+        JwtResponse jwtResponse = authenticateAndGenerateJWT(signupRequest.getEmail(), signupRequest.getPassword());
+        ApiResponse<JwtResponse> response = ApiResponse.setApiResponse(true, "회원 가입이 완료 되었습니다!", jwtResponse);
+
+        return response;
     }
 
     @Transactional
-    public void updateUserData(UserInfoRequest request, String email) {
-        User user = userRepository.findByEmailEquals(email)
+    public ResponseEntity<String> updateUserData(UserInfoRequest request, Authentication authentication) {
+        String userEmail = getNameByAuthentication(authentication);
+        User user = userRepository.findByEmailEquals(userEmail)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
 
         user.fixUserData(
                 request.getEmail(),
                 request.getName()
         );
+
+        return ResponseEntity.ok().body("");
     }
 
     @Override
-    public UserProfileDto provideUserInfo(String userEmail) {
+    public UserProfileDto provideUserInfo(Authentication authentication) {
+        String userEmail = getNameByAuthentication(authentication);
         User user = userRepository.findByEmailEquals(userEmail).orElseThrow(DeviceException::userNotFound);
         List<DeviceResponseDto> borrowedDevicesDto = getBorrowedDevicesForUser(user);
         List<BookResponseDto> borrowedBooksDto = getBorrowedBooksForUser(user);
         hideUserPassword(user);
 
         return new UserProfileDto(user, borrowedDevicesDto, borrowedBooksDto);
+    }
+
+    private String getNameByAuthentication(Authentication authentication) {
+        return authentication.getName();
     }
 
     /* 인증 및 JWT 토큰 생성 */
