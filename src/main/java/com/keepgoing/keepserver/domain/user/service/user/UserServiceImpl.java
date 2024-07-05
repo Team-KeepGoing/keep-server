@@ -20,7 +20,6 @@ import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
 import com.keepgoing.keepserver.global.exception.BusinessException;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import com.keepgoing.keepserver.global.exception.error.ErrorCode;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +28,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -48,48 +48,29 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public ApiResponse<JwtResponse> registerUser(SignupRequest signupRequest) throws BusinessException {
-        if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new BusinessException(ErrorCode.EMAIL_BAD_REQUEST);
-        }
-        User user = User.registerUser(
-                signupRequest.getEmail(), encoder.encode(signupRequest.getPassword()),
-                signupRequest.getName(), signupRequest.isTeacher()
-        );
+        validateEmail(signupRequest.getEmail());
+        User user = createUser(signupRequest);
         userRepository.save(user);
-
         JwtResponse jwtResponse = authenticateAndGenerateJWT(signupRequest.getEmail(), signupRequest.getPassword());
-        ApiResponse<JwtResponse> response = ApiResponse.setApiResponse(true, "회원 가입이 완료 되었습니다!", jwtResponse);
-
-        return response;
+        return ApiResponse.setApiResponse(true, "회원 가입이 완료 되었습니다!", jwtResponse);
     }
 
     @Transactional
     public ResponseEntity<String> updateUserData(UserInfoRequest request, Authentication authentication) {
-        String userEmail = getNameByAuthentication(authentication);
-        User user = userRepository.findByEmailEquals(userEmail)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
-
-        user.fixUserData(
-                request.getEmail(),
-                request.getName()
-        );
-
+        String userEmail = getEmailFromAuthentication(authentication);
+        User user = findUserByEmail(userEmail);
+        updateUser(user, request);
         return ResponseEntity.ok().body("");
     }
 
     @Override
     public UserProfileDto provideUserInfo(Authentication authentication) {
         String userEmail = getNameByAuthentication(authentication);
-        User user = userRepository.findByEmailEquals(userEmail).orElseThrow(DeviceException::userNotFound);
+        User user = findUserByEmail(userEmail);
         List<DeviceResponseDto> borrowedDevicesDto = getBorrowedDevicesForUser(user);
         List<BookResponseDto> borrowedBooksDto = getBorrowedBooksForUser(user);
         hideUserPassword(user);
-
         return new UserProfileDto(user, borrowedDevicesDto, borrowedBooksDto);
-    }
-
-    private String getNameByAuthentication(Authentication authentication) {
-        return authentication.getName();
     }
 
     /* 인증 및 JWT 토큰 생성 */
@@ -116,5 +97,37 @@ public class UserServiceImpl implements UserService {
 
     private void hideUserPassword(User user) {
         user.hidePassword("");
+    }
+
+    private String getNameByAuthentication(Authentication authentication) {
+        return authentication.getName();
+    }
+
+    private void validateEmail(String email) throws BusinessException {
+        if (userRepository.existsByEmail(email)) {
+            throw new BusinessException(ErrorCode.EMAIL_BAD_REQUEST);
+        }
+    }
+
+    private User createUser(SignupRequest signupRequest) {
+        return User.registerUser(
+                signupRequest.getEmail(),
+                encoder.encode(signupRequest.getPassword()),
+                signupRequest.getName(),
+                signupRequest.isTeacher()
+        );
+    }
+
+    private String getEmailFromAuthentication(Authentication authentication) {
+        return getNameByAuthentication(authentication);
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmailEquals(email)
+                .orElseThrow(DeviceException::userNotFound);
+    }
+
+    private void updateUser(User user, UserInfoRequest request) {
+        user.fixUserData(request.getEmail(), request.getName());
     }
 }
