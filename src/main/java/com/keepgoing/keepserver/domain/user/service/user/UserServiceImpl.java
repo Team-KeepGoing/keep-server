@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         return ApiResponse.setApiResponse(true, "회원 가입이 완료 되었습니다!", jwtResponse);
     }
 
+    @Override
     @Transactional
     public ResponseEntity<String> updateUserData(UserInfoRequest request, Authentication authentication) {
         String userEmail = getEmailFromAuthentication(authentication);
