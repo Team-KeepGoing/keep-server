@@ -25,39 +25,27 @@ public class UserController {
 
     private final UserService userService;
 
-    private final UserServiceImpl userServiceImpl;
-
     @Operation(summary = "로그인", description = "로그인을 진행합니다.")
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok().body(userServiceImpl.authenticateAndGenerateJWT(loginRequest.getEmail(), loginRequest.getPassword()));
+        return ResponseEntity.ok().body(userService.authenticateAndGenerateJWT(loginRequest.getEmail(), loginRequest.getPassword()));
     }
 
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     @PostMapping("/signup")
     public ResponseEntity<?> registerAndAuthenticateUser(@RequestBody SignupRequest signupRequest) throws BusinessException {
-
-        /* 유저 등록 */
-        userService.registerUser(signupRequest);
-
-        JwtResponse jwtResponse = userServiceImpl.authenticateAndGenerateJWT(signupRequest.getEmail(), signupRequest.getPassword());
-        ApiResponse<JwtResponse> response = ApiResponse.setApiResponse(true, "회원 가입이 완료 되었습니다!", jwtResponse);
-
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(userService.registerUser(signupRequest));
     }
 
     @Operation(summary = "프로필", description = "토큰을 이용하여 유저 정보와 대여한 기자재 및 도서 목록을 조회합니다.")
     @GetMapping("/userinfo")
     public UserProfileDto provideUserInfo(Authentication authentication) {
-        String userEmail = authentication.getName();
-        return userService.provideUserInfo(userEmail);
+        return userService.provideUserInfo(authentication);
     }
 
     @Operation(summary = "프로필 수정", description = "유저 정보를 수정합니다.")
     @PutMapping("/userfix")
-    public void updateUserData(@RequestBody UserInfoRequest request, Authentication authentication) {
-        String userName = authentication.getName();
-        userServiceImpl.updateUserData(request, userName);
-        ResponseEntity.ok().body("");
+    public ResponseEntity<String> updateUserData(@RequestBody UserInfoRequest request, Authentication authentication) {
+        return userService.updateUserData(request, authentication);
     }
 }
