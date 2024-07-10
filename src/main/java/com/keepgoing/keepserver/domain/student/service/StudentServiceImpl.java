@@ -4,7 +4,6 @@ import com.keepgoing.keepserver.domain.student.entity.Student;
 import com.keepgoing.keepserver.domain.student.repository.StudentRepository;
 import com.keepgoing.keepserver.domain.student.repository.dto.*;
 import com.keepgoing.keepserver.global.common.BaseResponse;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -14,6 +13,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -75,6 +75,7 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BaseResponse findAll() {
         ArrayList<StudentResponseDto> lst = new ArrayList<>();
@@ -96,6 +97,7 @@ public class StudentServiceImpl implements StudentService {
         return responseDto;
     }
 
+    @Transactional(readOnly = true)
     public BaseResponse findByStudentName(StudentFindDto studentDto) {
         try {
             List<Student> students = findStudentsByStudentName(studentDto.getStudentName());
@@ -118,6 +120,7 @@ public class StudentServiceImpl implements StudentService {
         return studentFormat(student);
     }
 
+    @Transactional(readOnly = true)
     public BaseResponse findByStudentNum(StudentFindDto studentDto) {
         try {
             Student student = findStudentByStudentId(studentDto.getStudentId());
@@ -132,6 +135,7 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse editStudent(StudentRequestDto studentDto, Long id) {
         Student studentEntity = studentRepository.findStudentById(id);
         if (studentDto.getStudentName() != null) studentEntity.setStudentName(studentDto.getStudentName());
@@ -153,6 +157,7 @@ public class StudentServiceImpl implements StudentService {
                 .mail(student.getMail())
                 .phoneNum(student.getPhoneNum())
                 .studentName(student.getStudentName())
+                .imgUrl(student.getImgUrl())
                 .build();
     }
 }
