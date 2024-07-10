@@ -165,6 +165,7 @@ public class StudentServiceImpl implements StudentService {
         if (studentDto.getStudentId() != null) studentEntity.setStudentId(studentDto.getStudentId());
         if (studentDto.getMail() != null) studentEntity.setMail(studentDto.getMail());
         if (studentDto.getAddress() != null) studentEntity.setAddress(studentDto.getAddress());
+        if (studentDto.getImgUrl() != null) studentEntity.setImgUrl(studentDto.getImgUrl());
 
         studentRepository.save(studentEntity);
         return new BaseResponse(HttpStatus.OK, "학생 정보 수정 성공");

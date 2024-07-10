@@ -9,6 +9,7 @@ public class StudentRequestDto {
     private String studentName;
     private String studentId;
     private String phoneNum;
+    private String imgUrl;
     private String address;
     private String mail;
 }
