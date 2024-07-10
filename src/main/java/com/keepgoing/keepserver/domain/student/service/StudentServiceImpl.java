@@ -85,6 +85,28 @@ public class StudentServiceImpl implements StudentService {
         return new BaseResponse(HttpStatus.OK, "전체 학생 정보", lst);
     }
 
+    @Override
+    @Transactional
+    public BaseResponse AddStudentImage(List<String> imageUrls) {
+        for (String imageUrl : imageUrls) {
+            String studentNum = extractStudentIDFromUrl(imageUrl);
+            Student student = studentRepository.findStudentByStudentId(studentNum);
+            if (student != null) {
+                student.setImgUrl(imageUrl);
+                studentRepository.save(student);
+            }
+        }
+        return new BaseResponse(HttpStatus.OK,"이미지 연결 성공");
+    }
+
+    private String extractStudentIDFromUrl(String url) {
+        String fileName = url.substring(url.lastIndexOf('/') + 1);
+        fileName = fileName.replace(".jpeg", "");
+        fileName = fileName.replace(".jpg", "");
+        return fileName;
+    }
+
+
     private List<Student> findStudentsByStudentName(String studentName) {
         return studentRepository.findStudentsByStudentName(studentName);
     }
