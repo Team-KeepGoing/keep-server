@@ -47,7 +47,7 @@ public class Book {
     /*
         도서 대여 여부
     */
-    @Column(updatable = false, nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private BookState state;
 
