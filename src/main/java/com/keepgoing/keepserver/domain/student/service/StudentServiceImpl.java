@@ -1,10 +1,12 @@
 package com.keepgoing.keepserver.domain.student.service;
 
-import com.keepgoing.keepserver.domain.student.entity.Student;
-import com.keepgoing.keepserver.domain.student.repository.StudentRepository;
-import com.keepgoing.keepserver.domain.student.repository.dto.*;
+import com.keepgoing.keepserver.domain.student.domain.entity.Student;
+import com.keepgoing.keepserver.domain.student.domain.repository.StudentRepository;
+import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentDto;
+import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentFindDto;
+import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentRequestDto;
+import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentResponseDto;
 import com.keepgoing.keepserver.global.common.BaseResponse;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

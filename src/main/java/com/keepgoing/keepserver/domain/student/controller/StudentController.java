@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.student.controller;
 
-import com.keepgoing.keepserver.domain.student.repository.dto.StudentFindDto;
-import com.keepgoing.keepserver.domain.student.repository.dto.StudentRequestDto;
+import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentFindDto;
+import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentRequestDto;
 import com.keepgoing.keepserver.domain.student.service.StudentService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;

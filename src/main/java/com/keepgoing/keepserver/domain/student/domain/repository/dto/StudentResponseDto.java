@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.student.repository.dto;
+package com.keepgoing.keepserver.domain.student.domain.repository.dto;
 
 import lombok.Builder;
 import lombok.Data;
