@@ -1,12 +1,12 @@
 package com.keepgoing.keepserver.domain.book.service;
 
-import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.domain.entity.Book;
 import com.keepgoing.keepserver.domain.book.payload.request.BookDto;
 import com.keepgoing.keepserver.domain.book.payload.request.BookRequestDto;
 import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
-import com.keepgoing.keepserver.domain.book.repository.BookRepository;
-import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
+import com.keepgoing.keepserver.domain.book.domain.repository.BookRepository;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.book.BookException;
 import com.keepgoing.keepserver.global.util.GenerateCertCharacter;

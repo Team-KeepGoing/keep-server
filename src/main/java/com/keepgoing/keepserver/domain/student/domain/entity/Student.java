@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.student.entity;
+package com.keepgoing.keepserver.domain.student.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

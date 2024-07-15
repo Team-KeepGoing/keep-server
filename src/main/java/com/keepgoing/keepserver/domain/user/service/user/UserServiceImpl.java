@@ -1,20 +1,20 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
-import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.domain.entity.Book;
 import com.keepgoing.keepserver.domain.book.payload.response.BookResponseDto;
 import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
 import com.keepgoing.keepserver.domain.book.service.BookServiceImpl;
-import com.keepgoing.keepserver.domain.device.entity.Device;
+import com.keepgoing.keepserver.domain.device.domain.entity.Device;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.service.DeviceServiceImpl;
-import com.keepgoing.keepserver.domain.user.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserProfileDto;
 import com.keepgoing.keepserver.domain.user.payload.response.ApiResponse;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
-import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
+import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
 import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
 import com.keepgoing.keepserver.global.exception.BusinessException;

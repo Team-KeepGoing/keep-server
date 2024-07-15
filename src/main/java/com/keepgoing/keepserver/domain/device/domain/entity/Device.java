@@ -1,14 +1,12 @@
-package com.keepgoing.keepserver.domain.device.entity;
+package com.keepgoing.keepserver.domain.device.domain.entity;
 
-import com.keepgoing.keepserver.domain.device.entity.enums.DeviceStatus;
-import com.keepgoing.keepserver.domain.user.entity.user.User;
+import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-
-import static com.keepgoing.keepserver.domain.device.entity.enums.DeviceStatus.AVAILABLE;
 
 @Entity
 @Setter
@@ -39,7 +37,7 @@ public class Device {
     */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private DeviceStatus status = AVAILABLE;
+    private DeviceStatus status = DeviceStatus.AVAILABLE;
 
     /*
         기기 등록일

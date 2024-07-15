@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.user.entity.user;
+package com.keepgoing.keepserver.domain.user.domain.entity.user;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

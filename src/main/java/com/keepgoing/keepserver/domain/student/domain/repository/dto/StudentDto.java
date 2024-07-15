@@ -1,7 +1,7 @@
-package com.keepgoing.keepserver.domain.student.repository.dto;
+package com.keepgoing.keepserver.domain.student.domain.repository.dto;
 
 
-import com.keepgoing.keepserver.domain.student.entity.Student;
+import com.keepgoing.keepserver.domain.student.domain.entity.Student;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

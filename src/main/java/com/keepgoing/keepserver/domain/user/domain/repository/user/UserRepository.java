@@ -1,6 +1,6 @@
-package com.keepgoing.keepserver.domain.user.repository.user;
+package com.keepgoing.keepserver.domain.user.domain.repository.user;
 
-import com.keepgoing.keepserver.domain.user.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

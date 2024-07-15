@@ -1,8 +1,8 @@
-package com.keepgoing.keepserver.domain.book.entity;
+package com.keepgoing.keepserver.domain.book.domain.entity;
 
 
-import com.keepgoing.keepserver.domain.book.entity.enums.BookState;
-import com.keepgoing.keepserver.domain.user.entity.user.User;
+import com.keepgoing.keepserver.domain.book.domain.entity.enums.BookState;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
