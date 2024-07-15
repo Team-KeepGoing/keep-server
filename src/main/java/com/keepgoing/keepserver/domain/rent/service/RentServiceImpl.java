@@ -1,15 +1,15 @@
 package com.keepgoing.keepserver.domain.rent.service;
 
-import com.keepgoing.keepserver.domain.book.entity.enums.BookState;
-import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.domain.entity.enums.BookState;
+import com.keepgoing.keepserver.domain.book.domain.entity.Book;
 import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
-import com.keepgoing.keepserver.domain.book.repository.BookRepository;
-import com.keepgoing.keepserver.domain.device.entity.Device;
-import com.keepgoing.keepserver.domain.device.entity.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.book.domain.repository.BookRepository;
+import com.keepgoing.keepserver.domain.device.domain.entity.Device;
+import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
-import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
+import com.keepgoing.keepserver.domain.device.domain.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.device.service.DeviceServiceImpl;
-import com.keepgoing.keepserver.domain.user.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.book.BookError;
 import com.keepgoing.keepserver.global.exception.book.BookException;
