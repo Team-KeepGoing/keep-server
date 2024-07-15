@@ -29,4 +29,7 @@ public class Student {
 
     @Column(nullable = false)
     private String mail;
+
+    @Column
+    private String imgUrl;
 }

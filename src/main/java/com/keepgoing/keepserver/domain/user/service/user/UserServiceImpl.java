@@ -12,6 +12,7 @@ import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.payload.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.payload.request.UserProfileDto;
+import com.keepgoing.keepserver.domain.user.payload.response.ApiResponse;
 import com.keepgoing.keepserver.domain.user.payload.response.JwtResponse;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.jwt.JwtUtils;
@@ -19,14 +20,15 @@ import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
 import com.keepgoing.keepserver.global.exception.BusinessException;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import com.keepgoing.keepserver.global.exception.error.ErrorCode;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,35 +47,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void registerUser(SignupRequest signupRequest) throws BusinessException {
-        if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new BusinessException(ErrorCode.EMAIL_BAD_REQUEST);
-        }
-        User user = User.registerUser(
-                signupRequest.getEmail(), encoder.encode(signupRequest.getPassword()),
-                signupRequest.getName(), signupRequest.isTeacher()
-        );
+    public ApiResponse<JwtResponse> registerUser(SignupRequest signupRequest) throws BusinessException {
+        validateEmail(signupRequest.getEmail());
+        User user = createUser(signupRequest);
         userRepository.save(user);
-    }
-
-    @Transactional
-    public void updateUserData(UserInfoRequest request, String email) {
-        User user = userRepository.findByEmailEquals(email)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
-
-        user.fixUserData(
-                request.getEmail(),
-                request.getName()
-        );
+        JwtResponse jwtResponse = authenticateAndGenerateJWT(signupRequest.getEmail(), signupRequest.getPassword());
+        return ApiResponse.setApiResponse(true, "회원 가입이 완료 되었습니다!", jwtResponse);
     }
 
     @Override
-    public UserProfileDto provideUserInfo(String userEmail) {
-        User user = userRepository.findByEmailEquals(userEmail).orElseThrow(DeviceException::userNotFound);
+    @Transactional
+    public ResponseEntity<String> updateUserData(UserInfoRequest request, Authentication authentication) {
+        String userEmail = getEmailFromAuthentication(authentication);
+        User user = findUserByEmail(userEmail);
+        updateUser(user, request);
+        return ResponseEntity.ok().body("");
+    }
+
+    @Override
+    public UserProfileDto provideUserInfo(Authentication authentication) {
+        String userEmail = getNameByAuthentication(authentication);
+        User user = findUserByEmail(userEmail);
         List<DeviceResponseDto> borrowedDevicesDto = getBorrowedDevicesForUser(user);
         List<BookResponseDto> borrowedBooksDto = getBorrowedBooksForUser(user);
         hideUserPassword(user);
-
         return new UserProfileDto(user, borrowedDevicesDto, borrowedBooksDto);
     }
 
@@ -101,5 +98,37 @@ public class UserServiceImpl implements UserService {
 
     private void hideUserPassword(User user) {
         user.hidePassword("");
+    }
+
+    private String getNameByAuthentication(Authentication authentication) {
+        return authentication.getName();
+    }
+
+    private void validateEmail(String email) throws BusinessException {
+        if (userRepository.existsByEmail(email)) {
+            throw new BusinessException(ErrorCode.EMAIL_BAD_REQUEST);
+        }
+    }
+
+    private User createUser(SignupRequest signupRequest) {
+        return User.registerUser(
+                signupRequest.getEmail(),
+                encoder.encode(signupRequest.getPassword()),
+                signupRequest.getName(),
+                signupRequest.isTeacher()
+        );
+    }
+
+    private String getEmailFromAuthentication(Authentication authentication) {
+        return getNameByAuthentication(authentication);
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmailEquals(email)
+                .orElseThrow(DeviceException::userNotFound);
+    }
+
+    private void updateUser(User user, UserInfoRequest request) {
+        user.fixUserData(request.getEmail(), request.getName());
     }
 }

@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -77,6 +78,7 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BaseResponse findAll() {
         ArrayList<StudentResponseDto> lst = new ArrayList<>();
@@ -85,6 +87,28 @@ public class StudentServiceImpl implements StudentService {
         }
         return new BaseResponse(HttpStatus.OK, "전체 학생 정보", lst);
     }
+
+    @Override
+    @Transactional
+    public BaseResponse AddStudentImage(List<String> imageUrls) {
+        for (String imageUrl : imageUrls) {
+            String studentNum = extractStudentIDFromUrl(imageUrl);
+            Student student = studentRepository.findStudentByStudentId(studentNum);
+            if (student != null) {
+                student.setImgUrl(imageUrl);
+                studentRepository.save(student);
+            }
+        }
+        return new BaseResponse(HttpStatus.OK,"이미지 연결 성공");
+    }
+
+    private String extractStudentIDFromUrl(String url) {
+        String fileName = url.substring(url.lastIndexOf('/') + 1);
+        fileName = fileName.replace(".jpeg", "");
+        fileName = fileName.replace(".jpg", "");
+        return fileName;
+    }
+
 
     private List<Student> findStudentsByStudentName(String studentName) {
         return studentRepository.findStudentsByStudentName(studentName);
@@ -98,6 +122,7 @@ public class StudentServiceImpl implements StudentService {
         return responseDto;
     }
 
+    @Transactional(readOnly = true)
     public BaseResponse findByStudentName(StudentFindDto studentDto) {
         try {
             List<Student> students = findStudentsByStudentName(studentDto.getStudentName());
@@ -120,6 +145,7 @@ public class StudentServiceImpl implements StudentService {
         return studentFormat(student);
     }
 
+    @Transactional(readOnly = true)
     public BaseResponse findByStudentNum(StudentFindDto studentDto) {
         try {
             Student student = findStudentByStudentId(studentDto.getStudentId());
@@ -134,6 +160,7 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse editStudent(StudentRequestDto studentDto, Long id) {
         Student studentEntity = studentRepository.findStudentById(id);
         if (studentDto.getStudentName() != null) studentEntity.setStudentName(studentDto.getStudentName());
@@ -141,6 +168,7 @@ public class StudentServiceImpl implements StudentService {
         if (studentDto.getStudentId() != null) studentEntity.setStudentId(studentDto.getStudentId());
         if (studentDto.getMail() != null) studentEntity.setMail(studentDto.getMail());
         if (studentDto.getAddress() != null) studentEntity.setAddress(studentDto.getAddress());
+        if (studentDto.getImgUrl() != null) studentEntity.setImgUrl(studentDto.getImgUrl());
 
         studentRepository.save(studentEntity);
         return new BaseResponse(HttpStatus.OK, "학생 정보 수정 성공");
@@ -155,6 +183,7 @@ public class StudentServiceImpl implements StudentService {
                 .mail(student.getMail())
                 .phoneNum(student.getPhoneNum())
                 .studentName(student.getStudentName())
+                .imgUrl(student.getImgUrl())
                 .build();
     }
 }
