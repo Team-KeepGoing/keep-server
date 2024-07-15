@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.book.mapper;
 
-import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.enums.BookState;
+import com.keepgoing.keepserver.domain.book.domain.entity.Book;
+import com.keepgoing.keepserver.domain.book.domain.entity.enums.BookState;
 import com.keepgoing.keepserver.domain.book.payload.request.BookDto;
 import com.keepgoing.keepserver.domain.book.payload.response.BookResponseDto;
 import org.springframework.stereotype.Component;

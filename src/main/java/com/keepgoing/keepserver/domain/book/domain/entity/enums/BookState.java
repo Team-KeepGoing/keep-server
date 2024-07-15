@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.book.entity.enums;
+package com.keepgoing.keepserver.domain.book.domain.entity.enums;
 
 public enum BookState {
     AVAILABLE,
