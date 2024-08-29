@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.student.controller;
 
-import com.keepgoing.keepserver.domain.student.repository.dto.StudentFindDto;
-import com.keepgoing.keepserver.domain.student.repository.dto.StudentRequestDto;
+import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentFindDto;
+import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentRequestDto;
 import com.keepgoing.keepserver.domain.student.service.StudentService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class StudentController {
     }
 
     @Operation(summary = "학반번호를 통한 학생검색", description = "내용에 학반번호(2304)만 넣으면 학생정보가 나옵니다")
-    @PostMapping("/find-studentId")
+    @PostMapping("/find-student-id")
     public BaseResponse findStudentNum(@RequestBody StudentFindDto studentFindDto) {
         return studentService.findByStudentNum(studentFindDto);
     }
@@ -37,14 +38,20 @@ public class StudentController {
 
     @Operation(summary = "학생 정보 수정하기", description = "id를 통해 학생 정보를 수정합니다. 파라미터는 전체 코드가 아닌, 수정할 내용만 넘기셔도 됩니다.")
     @PatchMapping("/edit/{id}")
-    public BaseResponse editStudent(@RequestBody StudentRequestDto studentRequestDto, @PathVariable String id) {
-        return studentService.editStudent(studentRequestDto);
+    public BaseResponse editStudent(@RequestBody StudentRequestDto studentRequestDto, @PathVariable Long id) {
+        return studentService.editStudent(studentRequestDto, id);
     }
 
     @Operation(summary = "학생 등록하기", description = "형식에 맞는 엑셀 파일 업로드 시 업로딩됩니다")
     @PostMapping("/upload")
     public BaseResponse createManyUserByExcel(@RequestPart(value = "excel") MultipartFile file) throws IOException {
         return studentService.createManyUserByExcel(file);
+    }
+
+    @Operation(summary = "학생 이미지 업로드하기", description = "이미지 url을 enter로 구분해서 json raw 파일로 보내면 번호에 맞게 매핑됩니다")
+    @PostMapping("/add-image")
+    public BaseResponse updateImages(@RequestBody List<String> imgUrls) {
+        return studentService.AddStudentImage(imgUrls);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.student.repository.dto;
+package com.keepgoing.keepserver.domain.student.domain.repository.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +9,7 @@ public class StudentRequestDto {
     private String studentName;
     private String studentId;
     private String phoneNum;
+    private String imgUrl;
     private String address;
     private String mail;
 }
