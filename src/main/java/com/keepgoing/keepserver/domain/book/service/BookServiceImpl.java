@@ -9,14 +9,13 @@ import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.book.BookException;
+import com.keepgoing.keepserver.global.util.DateRange;
 import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -54,26 +53,27 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BaseResponse selectMyBook(Authentication auth) {
-        if (auth == null) // requires auth
-            throw BookException.userNotFound();
+        User user = getUserByAuthentication(auth);
+        List<Book> books = bookRepository.findByBorrower(user);
+        return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books);
+    }
 
-        Optional<User> userOptional = userRepository.findByEmail(auth.getName());
-        if (userOptional.isPresent()) {
-            List<Book> books = bookRepository.findByBorrower(userOptional.get());
-            return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books);
-        } else {
-            return new BaseResponse(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-        }
+    @Override
+    public BaseResponse alertMyBook(Authentication auth, String dateString) {
+        User user = getUserByAuthentication(auth);
+        DateRange dateRange = DateRange.fromDateString(dateString, "yyyyMMdd");
 
+        List<Book> books = bookRepository.findByBorrowerAndRentDateBetween(user, dateRange.getStart(), dateRange.getEnd());
+        return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books);
     }
 
     @Override
     public String createNfcCode() {
-        String newNfcCode;
+        String nfcCode;
         do {
-            newNfcCode = generateCertCharacter.executeGenerate();
-        } while (bookRepository.findBookByNfcCode(newNfcCode) != null);
-        return newNfcCode;
+            nfcCode = generateCertCharacter.executeGenerate();
+        } while (bookRepository.findBookByNfcCode(nfcCode) != null);
+        return nfcCode;
     }
 
     @Override
@@ -90,4 +90,13 @@ public class BookServiceImpl implements BookService {
     public List<Book> findBooksBorrowedByUser(User user) {
         return bookRepository.findByBorrower(user);
     }
+    public User getUserByAuthentication(Authentication auth) {
+        if (auth == null) {
+            throw BookException.userNotFound();
+        }
+
+        return userRepository.findByEmail(auth.getName())
+                .orElseThrow(BookException::userNotFound);
+    }
+
 }
