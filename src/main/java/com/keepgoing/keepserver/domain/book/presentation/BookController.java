@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.book.presentation;
 
-import com.keepgoing.keepserver.domain.book.entity.dto.BookDto;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDto;
+import com.keepgoing.keepserver.domain.book.payload.request.BookDto;
+import com.keepgoing.keepserver.domain.book.payload.request.BookRequestDto;
 import com.keepgoing.keepserver.domain.book.service.BookService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;

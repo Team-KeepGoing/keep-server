@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.device.mapper;
 
-import com.keepgoing.keepserver.domain.device.entity.Device;
-import com.keepgoing.keepserver.domain.device.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.domain.entity.Device;
+import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import org.springframework.stereotype.Component;
@@ -12,17 +12,18 @@ import java.util.stream.Collectors;
 
 @Component
 public class DeviceMapper {
-    public static DeviceResponseDto entityToDto(Device entity) {
+    public DeviceResponseDto entityToDto(Device entity) {
         return DeviceResponseDto.builder()
                 .id(entity.getId())
                 .deviceName(entity.getDeviceName())
                 .imgUrl(entity.getImgUrl())
+                .regDate(entity.getRegDate())
                 .rentDate(entity.getRentDate())
                 .status(entity.getStatus())
                 .build();
     }
 
-    public static Device dtoToEntity(DeviceDto dto) {
+    public Device dtoToEntity(DeviceDto dto) {
         return Device.builder()
                 .deviceName(dto.deviceName())
                 .imgUrl(dto.imgUrl())
@@ -32,9 +33,9 @@ public class DeviceMapper {
                 .build();
     }
 
-    public static List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
+    public List<DeviceResponseDto> convertDevicesToDtos(List<Device> devices) {
         return devices.stream()
-                .map(DeviceMapper::entityToDto)
+                .map(this::entityToDto)
                 .collect(Collectors.toList());
     }
 }

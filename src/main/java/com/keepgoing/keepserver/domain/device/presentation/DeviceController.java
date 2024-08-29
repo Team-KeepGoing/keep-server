@@ -1,6 +1,7 @@
 package com.keepgoing.keepserver.domain.device.presentation;
 
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
+import com.keepgoing.keepserver.domain.device.payload.request.DeviceEditRequest;
 import com.keepgoing.keepserver.domain.device.service.DeviceService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,15 +37,22 @@ public class DeviceController {
         return deviceService.deviceRead(id);
     }
 
-    @Operation(summary = "나의 기자재 대여 현황", description = "내가 대여 중인 기자재의 정보를 확인합니다.")
+    @Operation(summary = "나의 기자재 대여 현황", description = "토큰을 통해 내가 대여 중인 기자재의 정보를 확인합니다.")
     @GetMapping("/my")
     public BaseResponse myDevices(Authentication authentication){
         return deviceService.myDevices(authentication);
     }
 
-    @Operation(summary = "기자재 삭제" , description = "선택한 기자재를 삭제합니다.")
+    @Operation(summary = "기자재 삭제" , description = "선택한 기자재를 삭제합니다. 교사만 수정 가능 합니다. 토큰도 함께 보내주세요.")
     @DeleteMapping("/delete/{id}")
     public BaseResponse deleteDevice(@PathVariable Long id, Authentication authentication){
         return deviceService.deleteDevice(id, authentication);
+    }
+
+    @Operation(summary = "기자재 수정", description = "기자재의 id를 통해 정보를 수정합니다. 책과 동일하게 파라미터는 수정할 내용만 넘기셔도 됩니다.")
+    @PatchMapping("/edit/{id}")
+    public BaseResponse editDevice(@PathVariable(value = "id") Long id,
+                                          @RequestBody DeviceEditRequest deviceEditRequest) {
+        return deviceService.editDevice(id, deviceEditRequest);
     }
 }

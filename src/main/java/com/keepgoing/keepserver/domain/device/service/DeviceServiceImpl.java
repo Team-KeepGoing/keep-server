@@ -1,12 +1,13 @@
 package com.keepgoing.keepserver.domain.device.service;
 
-import com.keepgoing.keepserver.domain.device.entity.Device;
+import com.keepgoing.keepserver.domain.device.domain.entity.Device;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
+import com.keepgoing.keepserver.domain.device.payload.request.DeviceEditRequest;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
-import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
-import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
+import com.keepgoing.keepserver.domain.device.domain.repository.DeviceRepository;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.device.DeviceError;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
@@ -60,8 +61,24 @@ public class DeviceServiceImpl implements DeviceService {
         return new BaseResponse(HttpStatus.OK, "유저가 대여한 기기 목록 조회 성공", deviceResponseDtos);
     }
 
+    @Override
+    public BaseResponse editDevice(Long id, DeviceEditRequest deviceEditRequest) {
+
+        Device device = findDeviceById(id);
+        updateDevice(device, deviceEditRequest);
+        deviceRepository.save(device);
+
+        return new BaseResponse(HttpStatus.OK, "해당 기기 정보 수정 성공");
+    }
+
     public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new DeviceException(DeviceError.USER_NOT_FOUND));
+        return userRepository.findByEmail(email)
+                .orElseThrow(DeviceException::userNotFound);
+    }
+
+    private Device findDeviceById(Long id) {
+        return deviceRepository.findById(id)
+                .orElseThrow(DeviceException::notFoundDevice);
     }
 
     public List<Device> findDevicesBorrowedByUser(User user) {
@@ -79,5 +96,11 @@ public class DeviceServiceImpl implements DeviceService {
             throw new DeviceException(DeviceError.DEVICE_NOT_FOUND_EXCEPTION);
         }
         deviceRepository.deleteById(id);
+    }
+
+    private void updateDevice(Device device, DeviceEditRequest request) {
+        if (request.deviceName() != null) device.setDeviceName(request.deviceName());
+        if (request.imgUrl() != null) device.setImgUrl(request.imgUrl());
+        if (request.status() != null) device.setStatus(request.status());
     }
 }

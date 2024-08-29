@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/rent")
 @RequiredArgsConstructor
 public class RentController {
+
     private final RentService rentService;
+
     @Operation(summary = "기자재 대여", description = "기자재를 대여합니다.")
     @PostMapping("/device")
     public BaseResponse rentDevice(@RequestParam String deviceName, @RequestParam String email) {
@@ -22,7 +24,7 @@ public class RentController {
 
     @Operation(summary = "도서 대여", description = "기자재를 대여합니다.")
     @PostMapping("/book")
-    public BaseResponse rentBook(@RequestParam String bookName, @RequestParam String email) {
-        return rentService.rentBook(bookName, email);
+    public BaseResponse rentBook(@RequestParam String nfcCode, @RequestParam String email) {
+        return rentService.rentBook(nfcCode, email);
     }
 }

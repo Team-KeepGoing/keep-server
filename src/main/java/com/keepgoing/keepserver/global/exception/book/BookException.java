@@ -8,6 +8,7 @@ public class BookException extends BusinessException {
     private static final BookException BOOK_NOT_FOUND_EXCEPTION = new BookException(BookError.BOOK_NOT_FOUND_EXCEPTION);
     private static final BookException BOOK_NOT_AVAILABLE = new BookException(BookError.BOOK_NOT_AVAILABLE);
     private static final BookException IMAGE_UPLOAD_FAILED = new BookException(BookError.IMAGE_UPLOAD_FAILED);
+    private static final BookException INVALID_BORROWER = new BookException(BookError.INVALID_BORROWER);
 
     public BookException(BookError error) {
         super(error);
@@ -25,5 +26,8 @@ public class BookException extends BusinessException {
     }
     public static BookException imageUploadFailed() {
         return IMAGE_UPLOAD_FAILED;
+    }
+    public static BookException invalidBorrower() {
+        return INVALID_BORROWER;
     }
 }

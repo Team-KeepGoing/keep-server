@@ -1,12 +1,12 @@
 package com.keepgoing.keepserver.domain.book.service;
 
-import com.keepgoing.keepserver.domain.book.entity.Book;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookDto;
-import com.keepgoing.keepserver.domain.book.entity.dto.BookRequestDto;
+import com.keepgoing.keepserver.domain.book.domain.entity.Book;
+import com.keepgoing.keepserver.domain.book.payload.request.BookDto;
+import com.keepgoing.keepserver.domain.book.payload.request.BookRequestDto;
 import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
-import com.keepgoing.keepserver.domain.book.repository.BookRepository;
-import com.keepgoing.keepserver.domain.user.entity.user.User;
-import com.keepgoing.keepserver.domain.user.repository.user.UserRepository;
+import com.keepgoing.keepserver.domain.book.domain.repository.BookRepository;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.book.BookException;
 import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,18 +29,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public BaseResponse bookRegister(BookDto bookDto) {
         String nfcCode = createNfcCode();
-        bookDto.setNfcCode(nfcCode);
-        bookRepository.save(bookMapper.dtoToEntity(bookDto));
+        bookRepository.save(bookMapper.dtoToEntity(bookDto, nfcCode));
         return new BaseResponse(HttpStatus.OK, "책 생성 성공");
     }
 
-    @Transactional(readOnly = true)
     @Override
     public BaseResponse selectAllBook() {
         return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", bookRepository.findAll());
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public BaseResponse deleteBook(String nfcCode, Authentication auth) {
         if (nfcCode == null || nfcCode.isEmpty()) {
@@ -80,15 +76,13 @@ public class BookServiceImpl implements BookService {
         return newNfcCode;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public BaseResponse editBook(String nfcCode, BookRequestDto bookRequest) {
         Book book = bookRepository.findBookByNfcCode(nfcCode);
 
-        if (bookRequest.getState() != null) book.setState(bookRequest.getState());
-        if (bookRequest.getWriter() != null) book.setWriter(bookRequest.getWriter());
-        if (bookRequest.getImageUrl() != null) book.setImageUrl(bookRequest.getImageUrl());
-        if (bookRequest.getName() != null) book.setBookName(bookRequest.getName());
+        if (bookRequest.state() != null) book.setState(bookRequest.state());
+        if (bookRequest.imageUrl() != null) book.setImageUrl(bookRequest.imageUrl());
+        if (bookRequest.name() != null) book.setBookName(bookRequest.name());
         bookRepository.save(book);
         return new BaseResponse(HttpStatus.OK, "책 정보 수정 성공");
     }

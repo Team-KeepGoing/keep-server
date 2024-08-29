@@ -1,15 +1,15 @@
 package com.keepgoing.keepserver.domain.rent.service;
 
-import com.keepgoing.keepserver.domain.book.consts.BookState;
-import com.keepgoing.keepserver.domain.book.entity.Book;
+import com.keepgoing.keepserver.domain.book.domain.entity.enums.BookState;
+import com.keepgoing.keepserver.domain.book.domain.entity.Book;
 import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
-import com.keepgoing.keepserver.domain.book.repository.BookRepository;
-import com.keepgoing.keepserver.domain.device.entity.Device;
-import com.keepgoing.keepserver.domain.device.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.book.domain.repository.BookRepository;
+import com.keepgoing.keepserver.domain.device.domain.entity.Device;
+import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
-import com.keepgoing.keepserver.domain.device.repository.DeviceRepository;
+import com.keepgoing.keepserver.domain.device.domain.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.device.service.DeviceServiceImpl;
-import com.keepgoing.keepserver.domain.user.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.book.BookError;
 import com.keepgoing.keepserver.global.exception.book.BookException;
@@ -36,16 +36,16 @@ public class RentServiceImpl implements RentService{
         Device device = findDeviceByName(deviceName);
         validateDeviceAvailability(device);
         rentDeviceToUser(device, user);
-        return new BaseResponse(HttpStatus.OK, "기기 대여 성공", deviceMapper.entityToDto(device));
+        return new BaseResponse(HttpStatus.OK, "대여가 완료 되었습니다.", deviceMapper.entityToDto(device));
     }
 
     @Override
-    public BaseResponse rentBook(String bookName, String email) {
+    public BaseResponse rentBook(String nfcCode, String email) {
         User user = deviceService.findUserByEmail(email);
-        Book book = findBookByName(bookName);
+        Book book = findBookByNfcCodeContaining(nfcCode);
         validateBookAvailability(book);
         rentBookToUser(book, user);
-        return new BaseResponse(HttpStatus.OK, "도서 대여 성공", bookMapper.entityToDto(book));
+        return new BaseResponse(HttpStatus.OK, "대여가 완료 되었습니다.", bookMapper.entityToDto(book));
     }
 
     private Device findDeviceByName(String deviceName) {
@@ -66,8 +66,8 @@ public class RentServiceImpl implements RentService{
         deviceRepository.save(device);
     }
 
-    private Book findBookByName(String bookName) {
-        return bookRepository.findByBookName(bookName)
+    private Book findBookByNfcCodeContaining(String nfcCode) {
+        return bookRepository.findBookByNfcCodeContaining(nfcCode)
                 .orElseThrow(BookException::notFoundBook);
     }
 

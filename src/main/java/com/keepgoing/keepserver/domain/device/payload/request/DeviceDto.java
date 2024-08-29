@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.device.payload.request;
 
-import com.keepgoing.keepserver.domain.device.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
 
 import java.time.LocalDateTime;
 

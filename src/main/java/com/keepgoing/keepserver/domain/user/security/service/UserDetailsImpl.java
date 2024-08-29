@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.user.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.keepgoing.keepserver.domain.user.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
