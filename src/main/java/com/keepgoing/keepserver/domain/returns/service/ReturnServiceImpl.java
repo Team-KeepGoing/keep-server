@@ -34,7 +34,7 @@ public class ReturnServiceImpl implements ReturnService {
         Device device = findDeviceByName(deviceName);
         validateDeviceBorrower(device, user);
         returnDeviceFromUser(device);
-        return new BaseResponse(HttpStatus.OK, "기기 반납 성공", deviceMapper.entityToDto(device));
+        return new BaseResponse(HttpStatus.OK, "반납이 완료 되었습니다.", deviceMapper.entityToDto(device));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ReturnServiceImpl implements ReturnService {
         Book book = findBookByNfcCodeContaining(nfcCode);
         validateBookBorrower(book, user);
         returnBookFromUser(book);
-        return new BaseResponse(HttpStatus.OK, "도서 반납 성공", bookMapper.entityToDto(book));
+        return new BaseResponse(HttpStatus.OK, "반납이 완료 되었습니다.", bookMapper.entityToDto(book));
     }
 
     private Device findDeviceByName(String deviceName) {

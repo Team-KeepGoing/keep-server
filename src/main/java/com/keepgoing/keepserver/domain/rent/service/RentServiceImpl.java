@@ -36,7 +36,7 @@ public class RentServiceImpl implements RentService{
         Device device = findDeviceByName(deviceName);
         validateDeviceAvailability(device);
         rentDeviceToUser(device, user);
-        return new BaseResponse(HttpStatus.OK, "기기 대여 성공", deviceMapper.entityToDto(device));
+        return new BaseResponse(HttpStatus.OK, "대여가 완료 되었습니다.", deviceMapper.entityToDto(device));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class RentServiceImpl implements RentService{
         Book book = findBookByNfcCodeContaining(nfcCode);
         validateBookAvailability(book);
         rentBookToUser(book, user);
-        return new BaseResponse(HttpStatus.OK, "도서 대여 성공", bookMapper.entityToDto(book));
+        return new BaseResponse(HttpStatus.OK, "대여가 완료 되었습니다.", bookMapper.entityToDto(book));
     }
 
     private Device findDeviceByName(String deviceName) {

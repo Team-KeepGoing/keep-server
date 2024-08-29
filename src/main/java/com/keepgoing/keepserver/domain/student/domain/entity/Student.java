@@ -33,3 +33,4 @@ public class Student {
     @Column
     private String imgUrl;
 }
+
