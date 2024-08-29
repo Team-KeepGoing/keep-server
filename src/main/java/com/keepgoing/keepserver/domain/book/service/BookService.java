@@ -11,6 +11,7 @@ public interface BookService {
     BaseResponse selectAllBook();
     BaseResponse deleteBook(String nfcCode, Authentication auth);
     BaseResponse selectMyBook(Authentication auth);
+    BaseResponse alertMyBook(Authentication auth, String date);
     String createNfcCode();
     BaseResponse editBook(String nfcCode, BookRequestDto bookRequest) throws IOException;
 }

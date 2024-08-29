@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 
 @Slf4j
@@ -44,6 +43,10 @@ public class BookController {
     public BaseResponse selectMyBook(Authentication auth){
         return bookService.selectMyBook(auth);
     }
+
+    @Operation(summary = "홈페이지 책 알림", description = "홈페이지 책 알림입니다. 대출일을(20240829) 보내시면 그 날에 대출한 나의 책 정보를 불러옵니다.")
+    @PostMapping("/alert/{date}")
+    public BaseResponse alertMyBook(Authentication auth, @PathVariable(value = "date") String date) { return bookService.alertMyBook(auth, date); }
 
     @Operation(summary = "책 정보 수정하기", description = "nfc코드를 통해 책 정보를 수정합니다. 파라미터는 전체 코드가 아닌, 수정할 내용만 넘기셔도 됩니다.")
     @PatchMapping("/edit/{nfcCode}")
