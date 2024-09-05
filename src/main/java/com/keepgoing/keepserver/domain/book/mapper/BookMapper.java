@@ -16,6 +16,8 @@ public class BookMapper {
         return BookResponseDto.builder()
                 .id(entity.getId())
                 .bookName(entity.getBookName())
+                .registrationDate(entity.getRegistrationDate())
+                .writer(entity.getWriter())
                 .imageUrl(entity.getImageUrl())
                 .rentDate(entity.getRentDate())
                 .state(entity.getState())
