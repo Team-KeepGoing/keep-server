@@ -63,7 +63,7 @@ public class BookServiceImpl implements BookService {
         User user = getUserByAuthentication(auth);
         DateRange dateRange = DateRange.fromDateString(dateString, "yyyyMMdd");
 
-        List<Book> books = bookRepository.findByBorrowerAndRentDateBetween(user, dateRange.getStart(), dateRange.getEnd());
+        List<Book> books = bookRepository.findByBorrowerAndRentDateBetween(user, dateRange.getSt(), dateRange.getEnd());
         return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books);
     }
 
