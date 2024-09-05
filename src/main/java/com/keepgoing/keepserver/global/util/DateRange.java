@@ -1,9 +1,12 @@
 package com.keepgoing.keepserver.global.util;
 
+import lombok.Getter;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Getter
 public class DateRange {
     private final LocalDateTime st;
     private final LocalDateTime end;
@@ -19,13 +22,6 @@ public class DateRange {
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.atTime(23, 59, 59);
         return new DateRange(startOfDay, endOfDay);
-    }
-    public LocalDateTime getStart() {
-        return st;
-    }
-
-    public LocalDateTime getEnd() {
-        return end;
     }
 }
 
