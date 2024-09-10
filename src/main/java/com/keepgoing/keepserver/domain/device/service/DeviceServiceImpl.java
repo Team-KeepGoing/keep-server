@@ -1,11 +1,11 @@
 package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.domain.entity.Device;
+import com.keepgoing.keepserver.domain.device.domain.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceEditRequest;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
-import com.keepgoing.keepserver.domain.device.domain.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;

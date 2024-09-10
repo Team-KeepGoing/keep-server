@@ -29,7 +29,7 @@ public class Device {
     /*
         기기 사진
     */
-    @Column(nullable = false)
+    @Column
     private String imgUrl;
 
     /*

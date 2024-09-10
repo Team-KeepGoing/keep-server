@@ -2,8 +2,8 @@ package com.keepgoing.keepserver.domain.device.mapper;
 
 import com.keepgoing.keepserver.domain.device.domain.entity.Device;
 import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
-import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
+import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
