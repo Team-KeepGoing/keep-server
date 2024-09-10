@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.user.payload.request;
+package com.keepgoing.keepserver.domain.user.dto.request;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,15 +1,21 @@
 package com.keepgoing.keepserver.domain.user.domain.entity.user;
 
+import com.keepgoing.keepserver.domain.notice.domain.entity.notice.Notice;
+import com.keepgoing.keepserver.domain.notice.domain.entity.notice.NoticeReception;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
+@ToString
 @Table(name = "users")
 public class User {
     @Id
@@ -40,9 +46,11 @@ public class User {
     @Column(nullable = false)
     private boolean teacher;
 
-    public void hidePassword(String password) {
-        this.password = password;
-    }
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+    private List<Notice> notices;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<NoticeReception> noticeReceptions;
 
     public static User registerUser(
             String email,
