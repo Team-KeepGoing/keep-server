@@ -1,0 +1,42 @@
+package com.keepgoing.keepserver.domain.notice.presentation;
+
+import com.keepgoing.keepserver.domain.notice.payload.req.noticeCreateDto;
+import com.keepgoing.keepserver.domain.notice.service.NoticeService;
+import com.keepgoing.keepserver.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+@Tag(name = "공지", description = "공지 관련 api 입니다.")
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/notice")
+@RequiredArgsConstructor
+@RestController
+public class NoticeController {
+    private final NoticeService noticeService;
+    @Operation(summary = "공지 등록", description = "공지 등록을 진행합니다.")
+    @PostMapping("/post")
+    public BaseResponse addNotice(@RequestBody noticeCreateDto noticeCreateDto, Authentication authentication) {
+        return noticeService.createNotice(noticeCreateDto,authentication);
+    }
+    @Operation(summary = "공지 수정", description = "등록된 공지를 수정합니다.")
+    @PatchMapping("/edit/{id}")
+    public BaseResponse editNotice(@PathVariable Long id, @RequestBody noticeCreateDto noticeCreateDto, Authentication authentication) {
+        return noticeService.updateNotice(id, noticeCreateDto,authentication);
+    }
+
+    @Operation(summary = "공지 삭제", description = "등록된 공지를 삭제합니다.")
+    @DeleteMapping("/{id}")
+    public BaseResponse deleteNotice(@PathVariable Long id, Authentication authentication){
+        return noticeService.deleteNotice(id,authentication);
+    }
+
+    @Operation(summary = "공지 불러오기", description = "본인이 쓴 공지를 불러옵니다.")
+    @GetMapping("/my")
+    public BaseResponse myNotice(Authentication authentication){
+        return noticeService.getNotice(authentication);
+    }
+
+}
