@@ -1,10 +1,10 @@
 package com.keepgoing.keepserver.domain.book.service;
 
 import com.keepgoing.keepserver.domain.book.domain.entity.Book;
+import com.keepgoing.keepserver.domain.book.domain.repository.BookRepository;
+import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
 import com.keepgoing.keepserver.domain.book.payload.request.BookDto;
 import com.keepgoing.keepserver.domain.book.payload.request.BookRequestDto;
-import com.keepgoing.keepserver.domain.book.mapper.BookMapper;
-import com.keepgoing.keepserver.domain.book.domain.repository.BookRepository;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BaseResponse selectAllBook() {
-        return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", bookRepository.findAll());
+        return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", bookRepository.findAll().stream().map(bookMapper::entityToDto).toList());
     }
 
     @Override
@@ -55,7 +55,7 @@ public class BookServiceImpl implements BookService {
     public BaseResponse selectMyBook(Authentication auth) {
         User user = getUserByAuthentication(auth);
         List<Book> books = bookRepository.findByBorrower(user);
-        return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books);
+        return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books.stream().map(bookMapper::entityToDto).toList());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class BookServiceImpl implements BookService {
         DateRange dateRange = DateRange.fromDateString(dateString, "yyyyMMdd");
 
         List<Book> books = bookRepository.findByBorrowerAndRentDateBetween(user, dateRange.getSt(), dateRange.getEnd());
-        return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books);
+        return new BaseResponse(HttpStatus.OK, "책 가져오기 성공", books.stream().map(bookMapper::entityToDto).toList());
     }
 
     @Override
@@ -85,10 +85,6 @@ public class BookServiceImpl implements BookService {
         if (bookRequest.name() != null) book.setBookName(bookRequest.name());
         bookRepository.save(book);
         return new BaseResponse(HttpStatus.OK, "책 정보 수정 성공");
-    }
-
-    public List<Book> findBooksBorrowedByUser(User user) {
-        return bookRepository.findByBorrower(user);
     }
     public User getUserByAuthentication(Authentication auth) {
         if (auth == null) {
