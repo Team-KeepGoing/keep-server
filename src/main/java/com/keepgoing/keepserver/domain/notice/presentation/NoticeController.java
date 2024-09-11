@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.notice.presentation;
 
-import com.keepgoing.keepserver.domain.notice.payload.req.noticeCreateDto;
+import com.keepgoing.keepserver.domain.notice.payload.req.NoticeCreateDto;
 import com.keepgoing.keepserver.domain.notice.service.NoticeService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class NoticeController {
     private final NoticeService noticeService;
-    @Operation(summary = "공지 등록", description = "공지 등록을 진행합니다.")
+    @Operation(summary = "공지 등록", description = "공지 등록을 진행합니다. 전체 학생을 등록하고 싶으실 경우엔 global을 true로 해주시고, list는 빈값으로 보내시면 됩니다.")
     @PostMapping("/post")
-    public BaseResponse addNotice(@RequestBody noticeCreateDto noticeCreateDto, Authentication authentication) {
+    public BaseResponse addNotice(@RequestBody NoticeCreateDto noticeCreateDto, Authentication authentication) {
         return noticeService.createNotice(noticeCreateDto,authentication);
     }
     @Operation(summary = "공지 수정", description = "등록된 공지를 수정합니다.")
     @PatchMapping("/edit/{id}")
-    public BaseResponse editNotice(@PathVariable Long id, @RequestBody noticeCreateDto noticeCreateDto, Authentication authentication) {
+    public BaseResponse editNotice(@PathVariable Long id, @RequestBody NoticeCreateDto noticeCreateDto, Authentication authentication) {
         return noticeService.updateNotice(id, noticeCreateDto,authentication);
     }
 

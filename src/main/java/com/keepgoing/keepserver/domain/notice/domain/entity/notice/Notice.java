@@ -40,6 +40,4 @@ public class Notice {
     @LastModifiedDate
     @Column
     private LocalDateTime editTime;
-    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL)
-    private List<NoticeReception> noticeReceptions;
 }
