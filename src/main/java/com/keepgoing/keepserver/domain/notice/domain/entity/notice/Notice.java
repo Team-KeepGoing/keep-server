@@ -12,7 +12,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -32,7 +31,7 @@ public class Notice {
     @JoinColumn(name = "teacher_id", nullable = false)
     private User teacher;
     @Column(nullable = false)
-    private char isGlobalYN;
+    private boolean isGlobal;
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createTime;
