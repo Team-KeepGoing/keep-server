@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class NoticeController {
     private final NoticeService noticeService;
-    @Operation(summary = "공지 등록", description = "공지 등록을 진행합니다. 전체 학생을 등록하고 싶으실 경우엔 global을 true로 해주시고, list는 빈값으로 보내시면 됩니다.")
+    @Operation(summary = "공지 등록", description = "공지 등록을 진행합니다. 전체 학생을 등록하고 싶으실 경우엔 isGlobal을 true로 해주시고, list는 빈값으로 보내시면 됩니다.")
     @PostMapping("/post")
     public BaseResponse addNotice(@RequestBody NoticeCreateDto noticeCreateDto, Authentication authentication) {
         return noticeService.createNotice(noticeCreateDto,authentication);
@@ -33,10 +33,15 @@ public class NoticeController {
         return noticeService.deleteNotice(id,authentication);
     }
 
-    @Operation(summary = "공지 불러오기", description = "본인이 쓴 공지를 불러옵니다.")
-    @GetMapping("/my")
-    public BaseResponse myNotice(Authentication authentication){
+    @Operation(summary = "전체 공지 불러오기", description = "존재하는 모든 공지를 불러옵니다.")
+    @GetMapping("/all")
+    public BaseResponse allNotice(Authentication authentication){
         return noticeService.getNotice(authentication);
     }
 
+    @Operation(summary = "내 공지 불러오기", description = "본인의 공지를 불러옵니다.")
+    @GetMapping("/my")
+    public BaseResponse myNotice(Authentication authentication){
+        return noticeService.getMyNotice(authentication);
+    }
 }

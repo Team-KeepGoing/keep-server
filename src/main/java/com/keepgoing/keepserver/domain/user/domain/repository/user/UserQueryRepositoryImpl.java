@@ -20,7 +20,6 @@ import static com.keepgoing.keepserver.domain.notice.domain.entity.notice.QNotic
 
 @RequiredArgsConstructor
 public class UserQueryRepositoryImpl implements UserQueryRepository {
-    // teacher 별칭을 따로 설정
     private final JPAQueryFactory factory;
 
     @Override
