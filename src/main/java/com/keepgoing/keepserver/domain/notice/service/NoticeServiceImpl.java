@@ -33,10 +33,15 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public BaseResponse createNotice(NoticeCreateDto noticeCreateDto, Authentication authentication) {
-        Notice notice = noticeRepository.save(Notice.builder().isGlobal(noticeCreateDto.isGlobal()).teacher(getTeacher(authentication)).message(noticeCreateDto.message()).build());
+        Notice notice = noticeRepository.save(
+                Notice.builder()
+                        .isGlobal(noticeCreateDto.isGlobal())
+                        .teacher(getTeacher(authentication))
+                        .message(noticeCreateDto.message()).build()
+        );
         getReception(noticeCreateDto, notice);
 
-        return new BaseResponse(HttpStatus.ACCEPTED, "공지 등록 성공", mapper.entityToDto(notice));
+        return new BaseResponse(HttpStatus.OK, "공지 등록 성공", mapper.entityToDto(notice));
     }
 
     @Override
