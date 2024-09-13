@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NoticeReceptionRepository extends JpaRepository<NoticeReception, Long> {
-    void deleteByNotice(Notice notice);
+    void deleteAllByNotice(Notice notice);
 }

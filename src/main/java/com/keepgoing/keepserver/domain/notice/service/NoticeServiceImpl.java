@@ -35,11 +35,11 @@ public class NoticeServiceImpl implements NoticeService {
     public BaseResponse createNotice(NoticeCreateDto noticeCreateDto, Authentication authentication) {
         Notice notice = noticeRepository.save(
                 Notice.builder()
-                        .isGlobal(noticeCreateDto.isGlobal())
-                        .teacher(getTeacher(authentication))
-                        .message(noticeCreateDto.message()).build()
+                      .isGlobal(noticeCreateDto.isGlobal())
+                      .teacher(getTeacher(authentication))
+                      .message(noticeCreateDto.message()).build()
         );
-        getReception(noticeCreateDto, notice);
+        setReceptions(noticeCreateDto, notice);
 
         return new BaseResponse(HttpStatus.OK, "공지 등록 성공", mapper.entityToDto(notice));
     }
@@ -47,22 +47,26 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public BaseResponse updateNotice(Long id, NoticeCreateDto noticeCreateDto, Authentication authentication) {
-        Notice notice = getNotice(id, getTeacher(authentication));
+        User teacher = getTeacher(authentication);
+        Notice notice = getNotice(id, teacher);
 
         notice.setGlobal(noticeCreateDto.isGlobal());
         if (noticeCreateDto.message() != null) {
             notice.setMessage(noticeCreateDto.message());
         }
+
         noticeRepository.save(notice);
-        noticeReceptionRepository.deleteByNotice(notice);
-        getReception(noticeCreateDto, notice);
+        noticeReceptionRepository.deleteAllByNotice(notice);
+        setReceptions(noticeCreateDto, notice);
 
         return new BaseResponse(HttpStatus.ACCEPTED, "공지 수정 성공", mapper.entityToDto(notice));
     }
 
-    private void getReception(NoticeCreateDto noticeCreateDto, Notice notice) {
+    private void setReceptions(NoticeCreateDto noticeCreateDto, Notice notice) {
         List<NoticeReception> receptions = new ArrayList<>();
-        List<User> users = noticeCreateDto.isGlobal() ? userRepository.findUsersByTeacherIs(false) : userRepository.findUsersByIdIn(noticeCreateDto.userIds());
+        List<User> users = noticeCreateDto.isGlobal()
+                ? userRepository.findUsersByTeacherIs(false)
+                : userRepository.findUsersByIdIn(noticeCreateDto.userIds());
 
         for (User user : users) {
             receptions.add(NoticeReception.builder().user(user).notice(notice).build());
@@ -88,7 +92,8 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public BaseResponse getMyNotice(Authentication authentication) {
-        List<Notice> notices = noticeRepository.findNoticesByTeacher_Name(getTeacher(authentication).getName());
+        User teacher = getTeacher(authentication);
+        List<Notice> notices = noticeRepository.findNoticesByTeacher(teacher);
         getNoticeList(notices);
         return new BaseResponse(HttpStatus.OK, "내가 쓴 글 불러오기", getNoticeList(notices));
     }
@@ -119,10 +124,10 @@ public class NoticeServiceImpl implements NoticeService {
         return notice;
     }
 
-    private List<NoticeResponseDto> getNoticeList(List<Notice> notices){
+    private List<NoticeResponseDto> getNoticeList(List<Notice> notices) {
         List<NoticeResponseDto> dtoList = new ArrayList<>();
 
-        for(Notice n : notices){
+        for (Notice n : notices) {
             dtoList.add(mapper.entityToDto(n));
         }
         return dtoList;
