@@ -6,16 +6,15 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@ToString
 @Table(name = "users")
 public class User {
     @Id
@@ -47,10 +46,10 @@ public class User {
     private boolean teacher;
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
-    private List<Notice> notices;
+    private List<Notice> notices = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<NoticeReception> noticeReceptions;
+    private List<NoticeReception> noticeReceptions = new ArrayList<>();
 
     public static User registerUser(
             String email,
