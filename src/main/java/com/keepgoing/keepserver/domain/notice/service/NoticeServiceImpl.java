@@ -98,12 +98,6 @@ public class NoticeServiceImpl implements NoticeService {
         return new BaseResponse(HttpStatus.OK, "내가 쓴 글 불러오기", getNoticeList(notices));
     }
 
-    private void validateTeacher(User user) {
-        if (!user.isTeacher()) {
-            throw new NoticeException(NoticeError.USER_NOT_TEACHER);
-        }
-    }
-
     private void validateMyNotice(User user, Notice notice) {
         if (!Objects.equals(user.getName(), notice.getTeacher().getName())) {
             throw new NoticeException(NoticeError.USER_CANNOT_DELETE);
@@ -112,10 +106,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     private User getTeacher(Authentication authentication) {
         var ud = (UserDetailsImpl) authentication.getPrincipal();
-        //noinspection OptionalGetWithoutIsPresent
-        var teacher = userRepository.findById(ud.getId()).get();
-        validateTeacher(teacher);
-        return teacher;
+        return userRepository.findByIdAndTeacherIsTrue(ud.getId());
     }
 
     private Notice getNotice(long id, User teacher) {

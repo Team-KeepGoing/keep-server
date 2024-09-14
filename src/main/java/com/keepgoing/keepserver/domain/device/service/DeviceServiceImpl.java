@@ -48,7 +48,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
         User user = findUserByEmail(authentication.getName());
-        validateTeacher(user);
+        userRepository.findByIdAndTeacherIsTrue(user.getId());
         deleteDeviceById(id);
         return new BaseResponse(HttpStatus.OK, "기기 삭제 성공");
     }
@@ -83,12 +83,6 @@ public class DeviceServiceImpl implements DeviceService {
 
     public List<Device> findDevicesBorrowedByUser(User user) {
         return deviceRepository.findByBorrower(user);
-    }
-
-    private void validateTeacher(User user) {
-        if (!user.isTeacher()) {
-            throw new DeviceException(DeviceError.USER_NOT_FOUND);
-        }
     }
 
     private void deleteDeviceById(Long id) {
