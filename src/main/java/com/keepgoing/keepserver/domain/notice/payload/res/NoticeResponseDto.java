@@ -12,8 +12,7 @@ public record NoticeResponseDto (
         String teacherName,
         LocalDateTime createTime,
         LocalDateTime editTime
-)
-{
+) {
     @QueryProjection
-    public NoticeResponseDto {}
+    public NoticeResponseDto{}
 }

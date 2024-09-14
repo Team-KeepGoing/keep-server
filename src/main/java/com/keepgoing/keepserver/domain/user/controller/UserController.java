@@ -1,6 +1,5 @@
 package com.keepgoing.keepserver.domain.user.controller;
 
-import com.keepgoing.keepserver.domain.user.dto.UserDto;
 import com.keepgoing.keepserver.domain.user.dto.request.LoginRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.UserInfoRequest;
@@ -36,13 +35,18 @@ public class UserController {
 
     @Operation(summary = "프로필", description = "토큰을 이용하여 유저 정보와 대여한 기자재 및 도서 목록을 조회합니다.")
     @GetMapping("/userinfo")
-    public UserDto provideUserInfo(Authentication authentication) {
-        return userService.provideUserInfo(authentication);
+    public ResponseEntity<?> provideUserInfo(Authentication authentication) {
+        return ResponseEntity.ok().body(userService.provideUserInfo(authentication));
     }
 
     @Operation(summary = "프로필 수정", description = "유저 정보를 수정합니다.")
     @PutMapping("/userfix")
     public ResponseEntity<String> updateUserData(@RequestBody UserInfoRequest request, Authentication authentication) {
         return userService.updateUserData(request, authentication);
+    }
+    @Operation(summary = "학생이 받은 공지 불러오기", description = "본인의 공지를 불러옵니다.")
+    @GetMapping("/notices")
+    public ResponseEntity<?> getNoticeByUser(Authentication authentication){
+        return ResponseEntity.ok().body(userService.getNoticeByUser(authentication));
     }
 }

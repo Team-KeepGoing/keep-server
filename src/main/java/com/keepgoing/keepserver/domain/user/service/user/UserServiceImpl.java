@@ -3,6 +3,7 @@ package com.keepgoing.keepserver.domain.user.service.user;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.dto.UserDto;
+import com.keepgoing.keepserver.domain.user.dto.UserNoticesDto;
 import com.keepgoing.keepserver.domain.user.dto.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.dto.response.ApiResponse;
@@ -53,7 +54,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto provideUserInfo(Authentication authentication) {
         UserDetailsImpl ud = (UserDetailsImpl) authentication.getPrincipal();
-        return userRepository.getProfileByEmail(ud.getId());
+        return userRepository.getProfileById(ud.getId());
+    }
+
+    @Override
+    public UserNoticesDto getNoticeByUser(Authentication authentication) {
+        var ud = (UserDetailsImpl) authentication.getPrincipal();
+        return userRepository.getNoticesById(ud.getId());
     }
 
     /* 인증 및 JWT 토큰 생성 */
