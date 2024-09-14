@@ -17,8 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,15 +61,15 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     private void setReceptions(NoticeCreateDto noticeCreateDto, Notice notice) {
-        List<NoticeReception> receptions = new ArrayList<>();
         List<User> users = noticeCreateDto.isGlobal()
                 ? userRepository.findUsersByTeacherIs(false)
                 : userRepository.findUsersByIdIn(noticeCreateDto.userIds());
 
-        for (User user : users) {
-            receptions.add(NoticeReception.builder().user(user).notice(notice).build());
-        }
-
+        List<NoticeReception> receptions = users.stream().map(user ->
+            NoticeReception.builder()
+                           .user(user)
+                           .notice(notice)
+                           .build()).collect(Collectors.toList());
         noticeReceptionRepository.saveAll(receptions);
     }
 
@@ -83,18 +83,15 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    @Transactional
     public BaseResponse getNotice(Authentication authentication) {
         List<Notice> notices = noticeRepository.findAll();
         return new BaseResponse(HttpStatus.ACCEPTED, "전체 공지: ", getNoticeList(notices));
     }
 
     @Override
-    @Transactional
-    public BaseResponse getMyNotice(Authentication authentication) {
+    public BaseResponse getNoticeOfTeacher(Authentication authentication) {
         User teacher = getTeacher(authentication);
         List<Notice> notices = noticeRepository.findNoticesByTeacher(teacher);
-        getNoticeList(notices);
         return new BaseResponse(HttpStatus.OK, "내가 쓴 글 불러오기", getNoticeList(notices));
     }
 
@@ -104,11 +101,6 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     private List<NoticeResponseDto> getNoticeList(List<Notice> notices) {
-        List<NoticeResponseDto> dtoList = new ArrayList<>();
-
-        for (Notice n : notices) {
-            dtoList.add(mapper.entityToDto(n));
-        }
-        return dtoList;
+        return notices.stream().map(mapper :: entityToDto).collect(Collectors.toList());
     }
 }
