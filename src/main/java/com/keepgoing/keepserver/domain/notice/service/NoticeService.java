@@ -9,5 +9,5 @@ public interface NoticeService {
     BaseResponse updateNotice(Long id, NoticeCreateDto noticeCreateDto, Authentication authentication);
     BaseResponse deleteNotice(Long id, Authentication authentication);
     BaseResponse getNotice(Authentication authentication);
-    BaseResponse getMyNotice(Authentication authentication);
+    BaseResponse getNoticeOfTeacher(Authentication authentication);
 }

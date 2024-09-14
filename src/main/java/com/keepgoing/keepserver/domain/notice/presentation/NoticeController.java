@@ -39,9 +39,9 @@ public class NoticeController {
         return noticeService.getNotice(authentication);
     }
 
-    @Operation(summary = "내 공지 불러오기", description = "본인의 공지를 불러옵니다.")
-    @GetMapping("/my")
-    public BaseResponse myNotice(Authentication authentication){
-        return noticeService.getMyNotice(authentication);
+    @Operation(summary = "선생님이 쓴 글 (본인 공지) 불러오기", description = "본인의 공지를 불러옵니다.")
+    @GetMapping("/teacher-my")
+    public BaseResponse getNoticeOfTeacher(Authentication authentication){
+        return noticeService.getNoticeOfTeacher(authentication);
     }
 }

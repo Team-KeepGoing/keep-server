@@ -1,6 +1,7 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
 import com.keepgoing.keepserver.domain.user.dto.UserDto;
+import com.keepgoing.keepserver.domain.user.dto.UserNoticesDto;
 import com.keepgoing.keepserver.domain.user.dto.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.dto.response.ApiResponse;
@@ -14,4 +15,5 @@ public interface UserService {
     ResponseEntity<String> updateUserData(UserInfoRequest request, Authentication authentication);
     UserDto provideUserInfo(Authentication authentication);
     JwtResponse authenticateAndGenerateJWT(String email, String password);
+    UserNoticesDto getNoticeByUser(Authentication authentication);
 }
