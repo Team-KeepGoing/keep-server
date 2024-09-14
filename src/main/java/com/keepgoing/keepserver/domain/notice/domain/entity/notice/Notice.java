@@ -24,14 +24,18 @@ public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idx;
+
     @Lob
     @Column(nullable = false)
     private String message;
+
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     private User teacher;
+
     @Column(nullable = false)
     private boolean isGlobal;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createTime;
