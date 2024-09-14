@@ -11,8 +11,6 @@ import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
 import com.keepgoing.keepserver.global.common.BaseResponse;
-import com.keepgoing.keepserver.global.exception.notice.NoticeError;
-import com.keepgoing.keepserver.global.exception.notice.NoticeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +29,7 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeMapper mapper;
 
     @Override
+    @Transactional
     public BaseResponse createNotice(NoticeCreateDto noticeCreateDto, Authentication authentication) {
         Notice notice = noticeRepository.save(
                 Notice.builder()
@@ -48,7 +46,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     public BaseResponse updateNotice(Long id, NoticeCreateDto noticeCreateDto, Authentication authentication) {
         User teacher = getTeacher(authentication);
-        Notice notice = getNotice(id, teacher);
+        Notice notice = noticeRepository.findNoticeByIdxAndTeacher_Id(id, teacher.getId());
 
         notice.setGlobal(noticeCreateDto.isGlobal());
         if (noticeCreateDto.message() != null) {
@@ -78,7 +76,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public BaseResponse deleteNotice(Long id, Authentication authentication) {
-        noticeRepository.delete(getNotice(id, getTeacher(authentication)));
+        User teacher = getTeacher(authentication);
+        Notice notice = noticeRepository.findNoticeByIdxAndTeacher_Id(id, teacher.getId());
+        noticeRepository.delete(notice);
         return new BaseResponse(HttpStatus.OK, "공지가 삭제었습니다.");
     }
 
@@ -98,21 +98,9 @@ public class NoticeServiceImpl implements NoticeService {
         return new BaseResponse(HttpStatus.OK, "내가 쓴 글 불러오기", getNoticeList(notices));
     }
 
-    private void validateMyNotice(User user, Notice notice) {
-        if (!Objects.equals(user.getName(), notice.getTeacher().getName())) {
-            throw new NoticeException(NoticeError.USER_CANNOT_DELETE);
-        }
-    }
-
     private User getTeacher(Authentication authentication) {
         var ud = (UserDetailsImpl) authentication.getPrincipal();
         return userRepository.findByIdAndTeacherIsTrue(ud.getId());
-    }
-
-    private Notice getNotice(long id, User teacher) {
-        Notice notice = noticeRepository.findNoticeByIdx(id);
-        validateMyNotice(teacher, notice);
-        return notice;
     }
 
     private List<NoticeResponseDto> getNoticeList(List<Notice> notices) {

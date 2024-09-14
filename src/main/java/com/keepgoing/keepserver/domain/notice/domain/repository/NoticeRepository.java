@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
-    Notice findNoticeByIdx(long idx);
+    Notice findNoticeByIdxAndTeacher_Id(long idx, long tIdx);
     List<Notice> findNoticesByTeacher(User teacher);
 }
