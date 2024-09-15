@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.user.service.user;
 
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.dto.UserDto;
 import com.keepgoing.keepserver.domain.user.dto.UserNoticesDto;
 import com.keepgoing.keepserver.domain.user.dto.request.SignupRequest;
@@ -12,8 +13,14 @@ import org.springframework.security.core.Authentication;
 
 public interface UserService {
     ApiResponse<JwtResponse> registerUser(SignupRequest signupRequest) throws BusinessException;
+
     ResponseEntity<String> updateUserData(UserInfoRequest request, Authentication authentication);
+
     UserDto provideUserInfo(Authentication authentication);
+
     JwtResponse authenticateAndGenerateJWT(String email, String password);
+
     UserNoticesDto getNoticeByUser(Authentication authentication);
+
+    User getTeacher(Authentication authentication);
 }

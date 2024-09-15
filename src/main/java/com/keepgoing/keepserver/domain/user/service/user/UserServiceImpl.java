@@ -106,4 +106,9 @@ public class UserServiceImpl implements UserService {
     private void updateUser(User user, UserInfoRequest request) {
         user.fixUserData(request.getEmail(), request.getName());
     }
+
+    public User getTeacher(Authentication authentication) {
+        var ud = (UserDetailsImpl) authentication.getPrincipal();
+        return userRepository.findByIdAndTeacherIsTrue(ud.getId());
+    }
 }

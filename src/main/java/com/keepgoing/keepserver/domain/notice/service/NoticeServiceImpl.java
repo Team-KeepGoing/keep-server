@@ -9,7 +9,7 @@ import com.keepgoing.keepserver.domain.notice.payload.req.NoticeCreateDto;
 import com.keepgoing.keepserver.domain.notice.payload.res.NoticeResponseDto;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
-import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
+import com.keepgoing.keepserver.domain.user.service.user.UserService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +27,7 @@ public class NoticeServiceImpl implements NoticeService {
     private final UserRepository userRepository;
     private final NoticeReceptionRepository noticeReceptionRepository;
     private final NoticeMapper mapper;
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -34,7 +35,7 @@ public class NoticeServiceImpl implements NoticeService {
         Notice notice = noticeRepository.save(
                 Notice.builder()
                       .isGlobal(noticeCreateDto.isGlobal())
-                      .teacher(getTeacher(authentication))
+                      .teacher(userService.getTeacher(authentication))
                       .message(noticeCreateDto.message()).build()
         );
         setReceptions(noticeCreateDto, notice);
@@ -45,7 +46,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public BaseResponse updateNotice(Long id, NoticeCreateDto noticeCreateDto, Authentication authentication) {
-        User teacher = getTeacher(authentication);
+        User teacher = userService.getTeacher(authentication);
         Notice notice = noticeRepository.findNoticeByIdxAndTeacher_Id(id, teacher.getId());
 
         notice.setGlobal(noticeCreateDto.isGlobal());
@@ -76,7 +77,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public BaseResponse deleteNotice(Long id, Authentication authentication) {
-        User teacher = getTeacher(authentication);
+        User teacher = userService.getTeacher(authentication);
         Notice notice = noticeRepository.findNoticeByIdxAndTeacher_Id(id, teacher.getId());
         noticeRepository.delete(notice);
         return new BaseResponse(HttpStatus.OK, "공지가 삭제었습니다.");
@@ -90,14 +91,9 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public BaseResponse getNoticeOfTeacher(Authentication authentication) {
-        User teacher = getTeacher(authentication);
+        User teacher = userService.getTeacher(authentication);
         List<Notice> notices = noticeRepository.findNoticesByTeacher(teacher);
         return new BaseResponse(HttpStatus.OK, "내가 쓴 글 불러오기", getNoticeList(notices));
-    }
-
-    private User getTeacher(Authentication authentication) {
-        var ud = (UserDetailsImpl) authentication.getPrincipal();
-        return userRepository.findByIdAndTeacherIsTrue(ud.getId());
     }
 
     private List<NoticeResponseDto> getNoticeList(List<Notice> notices) {
