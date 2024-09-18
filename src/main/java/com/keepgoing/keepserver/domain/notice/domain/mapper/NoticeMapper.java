@@ -1,18 +1,21 @@
 package com.keepgoing.keepserver.domain.notice.domain.mapper;
 
 import com.keepgoing.keepserver.domain.notice.domain.entity.notice.Notice;
+import com.keepgoing.keepserver.domain.notice.payload.req.NoticeCreateDto;
 import com.keepgoing.keepserver.domain.notice.payload.res.NoticeResponseDto;
-import org.springframework.stereotype.Component;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class NoticeMapper {
-    public NoticeResponseDto entityToDto(Notice notice){
-        return NoticeResponseDto.builder()
-                .id(notice.getIdx())
-                .message(notice.getMessage())
-                .createTime(notice.getCreateTime())
-                .editTime(notice.getEditTime())
-                .teacherName(notice.getTeacher().getName())
-                .build();
-    }
+@Mapper(componentModel = "spring")
+public interface NoticeMapper {
+    @Mapping(source = "idx", target = "id")
+    @Mapping(source = "teacher.name", target = "teacherName")
+    NoticeResponseDto entityToDto(Notice notice);
+
+    @Mapping(target = "teacher", source = "teacher")
+    @Mapping(target = "isGlobal", source = "noticeCreateDto.isGlobal")
+    @Mapping(target = "message", source = "noticeCreateDto.message")
+    Notice toEntity(NoticeCreateDto noticeCreateDto, User teacher);
+
 }

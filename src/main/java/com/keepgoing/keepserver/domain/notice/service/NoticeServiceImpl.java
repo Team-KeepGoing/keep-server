@@ -32,7 +32,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public BaseResponse createNotice(NoticeCreateDto noticeCreateDto, Authentication authentication) {
-        Notice notice = noticeRepository.save(noticeCreateDto.toEntity(userService.getTeacher(authentication)));
+        Notice notice = noticeRepository.save(mapper.toEntity(noticeCreateDto, userService.getTeacher(authentication)));
         setReceptions(noticeCreateDto, notice);
 
         return new BaseResponse(HttpStatus.OK, "공지 등록 성공", mapper.entityToDto(notice));
