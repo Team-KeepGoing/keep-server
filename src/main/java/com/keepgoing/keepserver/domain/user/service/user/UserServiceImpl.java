@@ -13,6 +13,8 @@ import com.keepgoing.keepserver.domain.user.security.service.UserDetailsImpl;
 import com.keepgoing.keepserver.global.exception.BusinessException;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
 import com.keepgoing.keepserver.global.exception.error.ErrorCode;
+import com.keepgoing.keepserver.global.exception.user.UserError;
+import com.keepgoing.keepserver.global.exception.user.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -63,6 +65,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.getNoticesById(ud.getId());
     }
 
+    @Override
+    public User getTeacher(Authentication authentication) {
+        var ud = (UserDetailsImpl) authentication.getPrincipal();
+
+        return userRepository.findByIdAndTeacherIsTrue(ud.getId())
+                             .orElseThrow(() -> new UserException(UserError.USER_NOT_TEACHER));
+    }
+
     /* 인증 및 JWT 토큰 생성 */
     public JwtResponse authenticateAndGenerateJWT(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(
@@ -105,10 +115,5 @@ public class UserServiceImpl implements UserService {
 
     private void updateUser(User user, UserInfoRequest request) {
         user.fixUserData(request.getEmail(), request.getName());
-    }
-
-    public User getTeacher(Authentication authentication) {
-        var ud = (UserDetailsImpl) authentication.getPrincipal();
-        return userRepository.findByIdAndTeacherIsTrue(ud.getId());
     }
 }

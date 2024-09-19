@@ -11,6 +11,8 @@ import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepositor
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.device.DeviceError;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
+import com.keepgoing.keepserver.global.exception.user.UserError;
+import com.keepgoing.keepserver.global.exception.user.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -48,7 +50,8 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
         User user = findUserByEmail(authentication.getName());
-        userRepository.findByIdAndTeacherIsTrue(user.getId());
+        userRepository.findByIdAndTeacherIsTrue(user.getId())
+                      .orElseThrow(() -> new UserException(UserError.USER_NOT_TEACHER));
         deleteDeviceById(id);
         return new BaseResponse(HttpStatus.OK, "기기 삭제 성공");
     }
