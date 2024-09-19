@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.notice.domain.mapper;
 
 import com.keepgoing.keepserver.domain.notice.domain.entity.notice.Notice;
-import com.keepgoing.keepserver.domain.notice.payload.req.NoticeCreateDto;
+import com.keepgoing.keepserver.domain.notice.payload.req.NoticeRequestDto;
 import com.keepgoing.keepserver.domain.notice.payload.res.NoticeResponseDto;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import org.mapstruct.Mapper;
@@ -16,6 +16,6 @@ public interface NoticeMapper {
     @Mapping(target = "teacher", source = "teacher")
     @Mapping(target = "isGlobal", source = "noticeCreateDto.isGlobal")
     @Mapping(target = "message", source = "noticeCreateDto.message")
-    Notice toEntity(NoticeCreateDto noticeCreateDto, User teacher);
+    Notice toEntity(NoticeRequestDto noticeRequestDto, User teacher);
 
 }

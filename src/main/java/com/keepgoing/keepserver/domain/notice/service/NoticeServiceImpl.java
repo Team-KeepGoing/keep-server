@@ -5,7 +5,7 @@ import com.keepgoing.keepserver.domain.notice.domain.entity.notice.NoticeRecepti
 import com.keepgoing.keepserver.domain.notice.domain.mapper.NoticeMapper;
 import com.keepgoing.keepserver.domain.notice.domain.repository.NoticeReceptionRepository;
 import com.keepgoing.keepserver.domain.notice.domain.repository.NoticeRepository;
-import com.keepgoing.keepserver.domain.notice.payload.req.NoticeCreateDto;
+import com.keepgoing.keepserver.domain.notice.payload.req.NoticeRequestDto;
 import com.keepgoing.keepserver.domain.notice.payload.res.NoticeResponseDto;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
@@ -31,35 +31,35 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     @Transactional
-    public BaseResponse createNotice(NoticeCreateDto noticeCreateDto, Authentication authentication) {
-        Notice notice = noticeRepository.save(mapper.toEntity(noticeCreateDto, userService.getTeacher(authentication)));
-        setReceptions(noticeCreateDto, notice);
+    public BaseResponse createNotice(NoticeRequestDto noticeRequestDto, Authentication authentication) {
+        Notice notice = noticeRepository.save(mapper.toEntity(noticeRequestDto, userService.getTeacher(authentication)));
+        setReceptions(noticeRequestDto, notice);
 
         return new BaseResponse(HttpStatus.OK, "공지 등록 성공", mapper.entityToDto(notice));
     }
 
     @Override
     @Transactional
-    public BaseResponse updateNotice(Long id, NoticeCreateDto noticeCreateDto, Authentication authentication) {
+    public BaseResponse updateNotice(Long id, NoticeRequestDto noticeRequestDto, Authentication authentication) {
         User teacher = userService.getTeacher(authentication);
         Notice notice = noticeRepository.findNoticeByIdxAndTeacher_Id(id, teacher.getId());
 
-        notice.setGlobal(noticeCreateDto.isGlobal());
-        if (noticeCreateDto.message() != null) {
-            notice.setMessage(noticeCreateDto.message());
+        notice.setGlobal(noticeRequestDto.isGlobal());
+        if (noticeRequestDto.message() != null) {
+            notice.setMessage(noticeRequestDto.message());
         }
 
         noticeRepository.save(notice);
         noticeReceptionRepository.deleteAllByNotice(notice);
-        setReceptions(noticeCreateDto, notice);
+        setReceptions(noticeRequestDto, notice);
 
         return new BaseResponse(HttpStatus.ACCEPTED, "공지 수정 성공", mapper.entityToDto(notice));
     }
 
-    private void setReceptions(NoticeCreateDto noticeCreateDto, Notice notice) {
-        List<User> users = noticeCreateDto.isGlobal()
+    private void setReceptions(NoticeRequestDto noticeRequestDto, Notice notice) {
+        List<User> users = noticeRequestDto.isGlobal()
                 ? userRepository.findUsersByTeacherIs(false)
-                : userRepository.findUsersByIdIn(noticeCreateDto.userIds());
+                : userRepository.findUsersByIdIn(noticeRequestDto.userIds());
 
         List<NoticeReception> receptions = users.stream().map(user ->
             NoticeReception.builder()

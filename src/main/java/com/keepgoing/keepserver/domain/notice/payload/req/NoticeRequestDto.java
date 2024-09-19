@@ -7,7 +7,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record NoticeCreateDto (
+public record NoticeRequestDto(
         @NotBlank(message = "메시지는 필수입니다.")
         String message,
         @NotNull(message = "isGlobal 값은 필수입니다.")
