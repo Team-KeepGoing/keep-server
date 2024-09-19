@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.user.payload.request;
+package com.keepgoing.keepserver.domain.user.dto;
 
 import com.keepgoing.keepserver.domain.book.payload.response.BookResponseDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;

@@ -1,10 +1,15 @@
 package com.keepgoing.keepserver.domain.user.domain.entity.user;
 
+import com.keepgoing.keepserver.domain.notice.domain.entity.notice.Notice;
+import com.keepgoing.keepserver.domain.notice.domain.entity.notice.NoticeReception;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,9 +45,11 @@ public class User {
     @Column(nullable = false)
     private boolean teacher;
 
-    public void hidePassword(String password) {
-        this.password = password;
-    }
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+    private List<Notice> notices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<NoticeReception> noticeReceptions = new ArrayList<>();
 
     public static User registerUser(
             String email,

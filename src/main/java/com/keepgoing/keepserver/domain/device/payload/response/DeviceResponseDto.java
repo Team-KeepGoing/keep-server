@@ -1,17 +1,21 @@
 package com.keepgoing.keepserver.domain.device.payload.response;
 
 import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Builder
-public record DeviceResponseDto (
-        Long id,
+public record DeviceResponseDto(
+        long id,
         String deviceName,
         String imgUrl,
         LocalDateTime regDate,
         LocalDateTime rentDate,
         DeviceStatus status
 ) {
+    @QueryProjection
+    public DeviceResponseDto {
+    }
 }

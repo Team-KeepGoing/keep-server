@@ -22,6 +22,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -36,12 +37,21 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-    implementation 'org.apache.poi:poi:3.11'
-    implementation 'org.apache.poi:poi-ooxml:3.11' // 엑셀 2007 이상 버전에서 사용
-    implementation 'commons-io:commons-io:2.4'
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
 
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.3.0'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.3.0'
+    implementation 'commons-io:commons-io:2.7'
 
+    implementation 'com.querydsl:querydsl-core:5.1.0'
+    implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
+    implementation 'com.querydsl:querydsl-apt:5.1.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.1.0:jakarta'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 }
 
 tasks.named('test') {

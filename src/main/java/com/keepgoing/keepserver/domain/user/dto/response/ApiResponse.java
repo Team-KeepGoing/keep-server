@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.user.payload.response;
+package com.keepgoing.keepserver.domain.user.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;

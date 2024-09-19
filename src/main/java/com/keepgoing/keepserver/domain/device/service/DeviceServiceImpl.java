@@ -1,16 +1,18 @@
 package com.keepgoing.keepserver.domain.device.service;
 
 import com.keepgoing.keepserver.domain.device.domain.entity.Device;
+import com.keepgoing.keepserver.domain.device.domain.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.device.mapper.DeviceMapper;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceEditRequest;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
-import com.keepgoing.keepserver.domain.device.domain.repository.DeviceRepository;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.device.DeviceError;
 import com.keepgoing.keepserver.global.exception.device.DeviceException;
+import com.keepgoing.keepserver.global.exception.user.UserError;
+import com.keepgoing.keepserver.global.exception.user.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -48,7 +50,8 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
         User user = findUserByEmail(authentication.getName());
-        validateTeacher(user);
+        userRepository.findByIdAndTeacherIsTrue(user.getId())
+                      .orElseThrow(() -> new UserException(UserError.USER_NOT_TEACHER));
         deleteDeviceById(id);
         return new BaseResponse(HttpStatus.OK, "기기 삭제 성공");
     }
@@ -83,12 +86,6 @@ public class DeviceServiceImpl implements DeviceService {
 
     public List<Device> findDevicesBorrowedByUser(User user) {
         return deviceRepository.findByBorrower(user);
-    }
-
-    private void validateTeacher(User user) {
-        if (!user.isTeacher()) {
-            throw new DeviceException(DeviceError.USER_NOT_FOUND);
-        }
     }
 
     private void deleteDeviceById(Long id) {
