@@ -14,8 +14,8 @@ public interface NoticeMapper {
     NoticeResponseDto entityToDto(Notice notice);
 
     @Mapping(target = "teacher", source = "teacher")
-    @Mapping(target = "isGlobal", source = "noticeCreateDto.isGlobal")
-    @Mapping(target = "message", source = "noticeCreateDto.message")
+    @Mapping(target = "isGlobal", source = "noticeRequestDto.isGlobal")
+    @Mapping(target = "message", source = "noticeRequestDto.message")
     Notice toEntity(NoticeRequestDto noticeRequestDto, User teacher);
 
 }
