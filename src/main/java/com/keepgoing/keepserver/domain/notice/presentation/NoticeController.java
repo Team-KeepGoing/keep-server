@@ -36,8 +36,8 @@ public class NoticeController {
 
     @Operation(summary = "전체 공지 불러오기", description = "존재하는 모든 공지를 불러옵니다.")
     @GetMapping("/all")
-    public BaseResponse allNotice(Authentication authentication){
-        return noticeService.getNotice(authentication);
+    public BaseResponse allNotice(){
+        return noticeService.getNotice();
     }
 
     @Operation(summary = "선생님이 쓴 글 (본인 공지) 불러오기", description = "본인의 공지를 불러옵니다.")

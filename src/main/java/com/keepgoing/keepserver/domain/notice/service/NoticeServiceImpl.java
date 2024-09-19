@@ -79,7 +79,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public BaseResponse getNotice(Authentication authentication) {
+    public BaseResponse getNotice() {
         List<Notice> notices = noticeRepository.findAll();
         return new BaseResponse(HttpStatus.ACCEPTED, "전체 공지: ", getNoticeList(notices));
     }
