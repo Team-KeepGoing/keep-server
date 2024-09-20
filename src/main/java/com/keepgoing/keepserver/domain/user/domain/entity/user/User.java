@@ -2,6 +2,7 @@ package com.keepgoing.keepserver.domain.user.domain.entity.user;
 
 import com.keepgoing.keepserver.domain.notice.domain.entity.notice.Notice;
 import com.keepgoing.keepserver.domain.notice.domain.entity.notice.NoticeReception;
+import com.keepgoing.keepserver.domain.user.domain.enums.Status;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -44,6 +45,13 @@ public class User {
     */
     @Column(nullable = false)
     private boolean teacher;
+
+    /*
+        학생 상태
+     */
+    @Column(nullable = false, columnDefinition = "Normal")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<Notice> notices = new ArrayList<>();
