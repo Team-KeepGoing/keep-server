@@ -17,5 +17,5 @@ public interface NoticeMapper {
     @Mapping(target = "isGlobal", source = "noticeRequestDto.isGlobal")
     @Mapping(target = "message", source = "noticeRequestDto.message")
     Notice toEntity(NoticeRequestDto noticeRequestDto, User teacher);
-
 }
+
