@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.user.controller;
 
+import com.keepgoing.keepserver.domain.user.dto.request.StatusRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.LoginRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.SignupRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.UserInfoRequest;
@@ -7,6 +8,7 @@ import com.keepgoing.keepserver.domain.user.service.user.UserService;
 import com.keepgoing.keepserver.global.exception.BusinessException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -48,5 +50,11 @@ public class UserController {
     @GetMapping("/notices")
     public ResponseEntity<?> getNoticeByUser(Authentication authentication){
         return ResponseEntity.ok().body(userService.getNoticeByUser(authentication));
+    }
+
+    @Operation(summary = "학생의 상태 전송하기", description = "학생 상태를 전송합니다.")
+    @PutMapping("/status")
+    public ResponseEntity<?> updateUserStatus(@Valid @RequestBody StatusRequest statusRequest, Authentication authentication){
+        return ResponseEntity.ok().body(userService.updateUserStatus(statusRequest,authentication));
     }
 }

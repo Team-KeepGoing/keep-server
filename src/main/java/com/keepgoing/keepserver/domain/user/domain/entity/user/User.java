@@ -49,9 +49,9 @@ public class User {
     /*
         학생 상태
      */
-    @Column(nullable = false, columnDefinition = "Normal")
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.NORMAL;
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<Notice> notices = new ArrayList<>();
@@ -77,5 +77,9 @@ public class User {
     public void fixUserData(String email, String name) {
         this.email = email;
         this.name = name;
+    }
+
+    public void fixUserStatus(Status status){
+        this.status = status;
     }
 }
