@@ -103,6 +103,5 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
         return UserNoticesDto.builder()
                              .notices(dto.notices().stream().filter(r -> r.id() != 0).collect(Collectors.toSet()))
                              .build();
-//        return null;
     }
 }
