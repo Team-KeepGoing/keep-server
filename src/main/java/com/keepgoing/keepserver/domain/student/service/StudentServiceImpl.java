@@ -6,6 +6,8 @@ import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentDto;
 import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentFindDto;
 import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentRequestDto;
 import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentResponseDto;
+import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -27,6 +29,7 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
 
     private List<Student> processExcelFile(MultipartFile file) throws IOException {
         List<Student> studentList = new ArrayList<>();
@@ -176,6 +179,8 @@ public class StudentServiceImpl implements StudentService {
 
     public StudentResponseDto studentFormat(Student student) {
         String studentId = student.getStudentId();
+        User user = userRepository.findByEmail(student.getMail())
+                                  .orElseThrow();
 
         return StudentResponseDto.builder()
                 .id(student.getId())
@@ -184,6 +189,7 @@ public class StudentServiceImpl implements StudentService {
                 .phoneNum(student.getPhoneNum())
                 .studentName(student.getStudentName())
                 .imgUrl(student.getImgUrl())
+                .status(user.getStatus())
                 .build();
     }
 }
