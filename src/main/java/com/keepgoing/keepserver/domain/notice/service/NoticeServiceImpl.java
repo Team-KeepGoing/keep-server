@@ -35,7 +35,7 @@ public class NoticeServiceImpl implements NoticeService {
         Notice notice = noticeRepository.save(mapper.toEntity(noticeRequestDto, userService.getTeacher(authentication)));
         setReceptions(noticeRequestDto, notice);
 
-        return new BaseResponse(HttpStatus.OK, "공지 등록 성공", mapper.entityToDto(notice));
+        return new BaseResponse(HttpStatus.OK, "성공적으로 전송되었습니다.", mapper.entityToDto(notice));
     }
 
     @Override
