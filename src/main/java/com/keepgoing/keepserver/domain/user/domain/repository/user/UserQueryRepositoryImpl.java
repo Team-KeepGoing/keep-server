@@ -2,6 +2,7 @@ package com.keepgoing.keepserver.domain.user.domain.repository.user;
 
 import com.keepgoing.keepserver.domain.book.payload.response.QBookResponseDto;
 import com.keepgoing.keepserver.domain.device.payload.response.QDeviceResponseDto;
+import com.keepgoing.keepserver.domain.notice.payload.res.NoticeResponseDto;
 import com.keepgoing.keepserver.domain.notice.payload.res.QNoticeResponseDto;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.QUser;
 import com.keepgoing.keepserver.domain.user.dto.QUserDto;
@@ -12,7 +13,9 @@ import com.querydsl.core.group.GroupBy;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Comparator;
 import java.util.stream.Collectors;
+import java.util.LinkedHashSet;
 
 import static com.keepgoing.keepserver.domain.book.domain.entity.QBook.book;
 import static com.keepgoing.keepserver.domain.device.domain.entity.QDevice.device;
@@ -101,7 +104,10 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                 );
         UserNoticesDto dto = map.get(id);
         return UserNoticesDto.builder()
-                             .notices(dto.notices().stream().filter(r -> r.id() != 0).collect(Collectors.toSet()))
+                             .notices(dto.notices().stream()
+                                         .filter(r -> r.id() != 0)
+                                         .sorted(Comparator.comparing(NoticeResponseDto::editTime).reversed())
+                                         .collect(Collectors.toCollection(LinkedHashSet::new)))
                              .build();
     }
 }
