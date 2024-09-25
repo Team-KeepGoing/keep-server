@@ -47,6 +47,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                                                 device.id,
                                                 device.deviceName,
                                                 device.imgUrl,
+                                                device.borrower.name,
                                                 device.regDate,
                                                 device.rentDate,
                                                 device.status
@@ -75,6 +76,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                 .borrowedDevices(dto.borrowedDevices().stream().filter(r -> r.id() != 0).collect(Collectors.toSet()))
                 .borrowedBooks(dto.borrowedBooks().stream().filter(r -> r.id() != 0).collect(Collectors.toSet()))
                 .build();
+//        return null;
     }
 
     @Override
