@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> updateUserStatus(StatusRequest statusRequest, Authentication authentication) {
         String userEmail = getEmailFromAuthentication(authentication);
         User user = findUserByEmail(userEmail);
