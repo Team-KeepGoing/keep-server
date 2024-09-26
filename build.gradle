@@ -39,9 +39,9 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
     implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
 
-    implementation group: 'org.apache.poi', name: 'poi', version: '5.3.0'
-    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.3.0'
-    implementation 'commons-io:commons-io:2.7'
+    implementation 'org.apache.poi:poi:3.11'
+    implementation 'org.apache.poi:poi-ooxml:3.11' // 엑셀 2007 이상 버전에서 사용
+    implementation 'commons-io:commons-io:2.4'
 
     implementation 'com.querydsl:querydsl-core:5.1.0'
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
