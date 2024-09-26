@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.student.domain.repository.dto;
 
+import com.keepgoing.keepserver.domain.user.domain.enums.Status;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,4 +13,5 @@ public class StudentResponseDto {
     String studentId;
     String phoneNum;
     String mail;
+    Status status;
 }

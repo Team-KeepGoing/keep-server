@@ -1,7 +1,7 @@
 package com.keepgoing.keepserver.domain.device.mapper;
 
 import com.keepgoing.keepserver.domain.device.domain.entity.Device;
-import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.domain.enums.DeviceStatus;
 import com.keepgoing.keepserver.domain.device.payload.request.DeviceDto;
 import com.keepgoing.keepserver.domain.device.payload.response.DeviceResponseDto;
 import org.springframework.stereotype.Component;
@@ -17,6 +17,7 @@ public class DeviceMapper {
                 .id(entity.getId())
                 .deviceName(entity.getDeviceName())
                 .imgUrl(entity.getImgUrl())
+                .borrower(entity.getBorrower() != null ? entity.getBorrower().getName() : "대여자 없음")
                 .regDate(entity.getRegDate())
                 .rentDate(entity.getRentDate())
                 .status(entity.getStatus())

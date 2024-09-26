@@ -2,7 +2,7 @@ package com.keepgoing.keepserver.domain.notice.service;
 
 import com.keepgoing.keepserver.domain.notice.domain.entity.notice.Notice;
 import com.keepgoing.keepserver.domain.notice.domain.entity.notice.NoticeReception;
-import com.keepgoing.keepserver.domain.notice.domain.mapper.NoticeMapper;
+import com.keepgoing.keepserver.domain.notice.mapper.NoticeMapper;
 import com.keepgoing.keepserver.domain.notice.domain.repository.NoticeReceptionRepository;
 import com.keepgoing.keepserver.domain.notice.domain.repository.NoticeRepository;
 import com.keepgoing.keepserver.domain.notice.payload.req.NoticeRequestDto;
@@ -35,7 +35,7 @@ public class NoticeServiceImpl implements NoticeService {
         Notice notice = noticeRepository.save(mapper.toEntity(noticeRequestDto, userService.getTeacher(authentication)));
         setReceptions(noticeRequestDto, notice);
 
-        return new BaseResponse(HttpStatus.OK, "공지 등록 성공", mapper.entityToDto(notice));
+        return new BaseResponse(HttpStatus.OK, "성공적으로 전송되었습니다.", mapper.entityToDto(notice));
     }
 
     @Override

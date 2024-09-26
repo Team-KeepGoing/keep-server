@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.device.domain.entity.enums;
+package com.keepgoing.keepserver.domain.device.domain.enums;
 
 public enum DeviceStatus {
     AVAILABLE,

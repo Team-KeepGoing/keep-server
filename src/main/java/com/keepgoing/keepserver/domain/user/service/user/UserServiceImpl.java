@@ -5,6 +5,7 @@ import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepositor
 import com.keepgoing.keepserver.domain.user.dto.UserDto;
 import com.keepgoing.keepserver.domain.user.dto.UserNoticesDto;
 import com.keepgoing.keepserver.domain.user.dto.request.SignupRequest;
+import com.keepgoing.keepserver.domain.user.dto.request.StatusRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.dto.response.ApiResponse;
 import com.keepgoing.keepserver.domain.user.dto.response.JwtResponse;
@@ -73,6 +74,15 @@ public class UserServiceImpl implements UserService {
                              .orElseThrow(() -> new UserException(UserError.USER_NOT_TEACHER));
     }
 
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateUserStatus(StatusRequest statusRequest, Authentication authentication) {
+        String userEmail = getEmailFromAuthentication(authentication);
+        User user = findUserByEmail(userEmail);
+        updateUserStatus(user, statusRequest);
+        return ResponseEntity.ok().body("상태 수정 성공");
+    }
+
     /* 인증 및 JWT 토큰 생성 */
     public JwtResponse authenticateAndGenerateJWT(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(
@@ -115,5 +125,9 @@ public class UserServiceImpl implements UserService {
 
     private void updateUser(User user, UserInfoRequest request) {
         user.fixUserData(request.getEmail(), request.getName());
+    }
+
+    private void updateUserStatus(User user, StatusRequest statusRequest) {
+        user.fixUserStatus(statusRequest.status());
     }
 }

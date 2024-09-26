@@ -4,6 +4,7 @@ import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import com.keepgoing.keepserver.domain.user.dto.UserDto;
 import com.keepgoing.keepserver.domain.user.dto.UserNoticesDto;
 import com.keepgoing.keepserver.domain.user.dto.request.SignupRequest;
+import com.keepgoing.keepserver.domain.user.dto.request.StatusRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.dto.response.ApiResponse;
 import com.keepgoing.keepserver.domain.user.dto.response.JwtResponse;
@@ -23,4 +24,6 @@ public interface UserService {
     UserNoticesDto getNoticeByUser(Authentication authentication);
 
     User getTeacher(Authentication authentication);
+
+    ResponseEntity<String> updateUserStatus(StatusRequest statusRequest, Authentication authentication);
 }

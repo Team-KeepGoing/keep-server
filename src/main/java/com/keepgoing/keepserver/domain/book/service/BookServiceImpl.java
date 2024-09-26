@@ -92,7 +92,7 @@ public class BookServiceImpl implements BookService {
         }
 
         return userRepository.findByEmail(auth.getName())
-                .orElseThrow(BookException::userNotFound);
+                             .orElseThrow(BookException::userNotFound);
     }
 
 }
