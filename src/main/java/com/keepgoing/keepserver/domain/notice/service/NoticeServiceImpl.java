@@ -2,7 +2,7 @@ package com.keepgoing.keepserver.domain.notice.service;
 
 import com.keepgoing.keepserver.domain.notice.domain.entity.notice.Notice;
 import com.keepgoing.keepserver.domain.notice.domain.entity.notice.NoticeReception;
-import com.keepgoing.keepserver.domain.notice.domain.mapper.NoticeMapper;
+import com.keepgoing.keepserver.domain.notice.mapper.NoticeMapper;
 import com.keepgoing.keepserver.domain.notice.domain.repository.NoticeReceptionRepository;
 import com.keepgoing.keepserver.domain.notice.domain.repository.NoticeRepository;
 import com.keepgoing.keepserver.domain.notice.payload.req.NoticeRequestDto;

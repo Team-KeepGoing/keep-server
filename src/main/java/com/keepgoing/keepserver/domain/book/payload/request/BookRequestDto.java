@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.book.payload.request;
 
-import com.keepgoing.keepserver.domain.book.domain.entity.enums.BookState;
+import com.keepgoing.keepserver.domain.book.domain.enums.BookState;
 import lombok.Builder;
 
 @Builder

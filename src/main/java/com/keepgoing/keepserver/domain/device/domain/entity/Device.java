@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.device.domain.entity;
 
-import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.domain.enums.DeviceStatus;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;

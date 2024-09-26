@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.device.payload.response;
 
-import com.keepgoing.keepserver.domain.device.domain.entity.enums.DeviceStatus;
+import com.keepgoing.keepserver.domain.device.domain.enums.DeviceStatus;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 

@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.notice.domain.mapper;
+package com.keepgoing.keepserver.domain.notice.mapper;
 
 import com.keepgoing.keepserver.domain.notice.domain.entity.notice.Notice;
 import com.keepgoing.keepserver.domain.notice.payload.req.NoticeRequestDto;
