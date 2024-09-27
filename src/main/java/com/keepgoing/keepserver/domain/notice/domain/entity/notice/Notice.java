@@ -26,7 +26,7 @@ public class Notice {
     private long idx;
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String message;
 
     @ManyToOne
