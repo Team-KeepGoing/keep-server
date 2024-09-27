@@ -7,6 +7,7 @@ import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentFind
 import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentRequestDto;
 import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentResponseDto;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
+import com.keepgoing.keepserver.domain.user.domain.enums.Status;
 import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -180,7 +182,7 @@ public class StudentServiceImpl implements StudentService {
     public StudentResponseDto studentFormat(Student student) {
         String studentId = student.getStudentId();
         User user = userRepository.findByEmail(student.getMail())
-                                  .orElseThrow();
+                                  .orElseThrow((() -> new NoSuchElementException("User not found with email: " + student.getMail())));
 
         return StudentResponseDto.builder()
                 .id(student.getId())
@@ -189,7 +191,7 @@ public class StudentServiceImpl implements StudentService {
                 .phoneNum(student.getPhoneNum())
                 .studentName(student.getStudentName())
                 .imgUrl(student.getImgUrl())
-                .status(user.getStatus())
+                .status(user.getStatus() != null ? user.getStatus() : Status.NORMAL)
                 .build();
     }
 }
