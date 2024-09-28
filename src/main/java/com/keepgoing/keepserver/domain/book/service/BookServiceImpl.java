@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
+    @Transactional
     public BaseResponse bookRegister(BookDto bookDto) {
         String nfcCode = createNfcCode();
         bookRepository.save(bookMapper.dtoToEntity(bookDto, nfcCode));
@@ -33,11 +36,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BaseResponse selectAllBook() {
         return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", bookRepository.findAll().stream().map(bookMapper::entityToDto).toList());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BaseResponse deleteBook(String nfcCode, Authentication auth) {
         if (nfcCode == null || nfcCode.isEmpty()) {
             return new BaseResponse(HttpStatus.NOT_FOUND, "Invalid NFC code");
@@ -52,6 +57,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BaseResponse selectMyBook(Authentication auth) {
         User user = getUserByAuthentication(auth);
         List<Book> books = bookRepository.findByBorrower(user);
@@ -59,6 +65,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BaseResponse alertMyBook(Authentication auth, String dateString) {
         User user = getUserByAuthentication(auth);
         DateRange dateRange = DateRange.fromDateString(dateString, "yyyyMMdd");
@@ -68,6 +75,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String createNfcCode() {
         String nfcCode;
         do {
@@ -77,6 +85,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BaseResponse editBook(String nfcCode, BookRequestDto bookRequest) {
         Book book = bookRepository.findBookByNfcCode(nfcCode);
 
@@ -86,7 +95,8 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
         return new BaseResponse(HttpStatus.OK, "책 정보 수정 성공");
     }
-    public User getUserByAuthentication(Authentication auth) {
+
+    private User getUserByAuthentication(Authentication auth) {
         if (auth == null) {
             throw BookException.userNotFound();
         }
@@ -94,5 +104,4 @@ public class BookServiceImpl implements BookService {
         return userRepository.findByEmail(auth.getName())
                              .orElseThrow(BookException::userNotFound);
     }
-
 }
