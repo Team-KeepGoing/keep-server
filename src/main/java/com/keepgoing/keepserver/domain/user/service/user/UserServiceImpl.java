@@ -38,10 +38,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public ApiResponse<JwtResponse> registerUser(SignupRequest signupRequest) throws BusinessException {
-        validateEmail(signupRequest.getEmail());
+        validateEmail(signupRequest.email());
         User user = createUser(signupRequest);
         userRepository.save(user);
-        JwtResponse jwtResponse = authenticateAndGenerateJWT(signupRequest.getEmail(), signupRequest.getPassword());
+        JwtResponse jwtResponse = authenticateAndGenerateJWT(signupRequest.email(), signupRequest.password());
         return ApiResponse.setApiResponse(true, "회원 가입이 완료 되었습니다!", jwtResponse);
     }
 
@@ -107,9 +107,9 @@ public class UserServiceImpl implements UserService {
 
     private User createUser(SignupRequest signupRequest) {
         return User.registerUser(
-                signupRequest.getEmail(),
-                encoder.encode(signupRequest.getPassword()),
-                signupRequest.getName(),
+                signupRequest.email(),
+                encoder.encode(signupRequest.password()),
+                signupRequest.name(),
                 signupRequest.isTeacher()
         );
     }
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void updateUser(User user, UserInfoRequest request) {
-        user.fixUserData(request.getEmail(), request.getName());
+        user.fixUserData(request.email(), request.name());
     }
 
     private void updateUserStatus(User user, StatusRequest statusRequest) {
