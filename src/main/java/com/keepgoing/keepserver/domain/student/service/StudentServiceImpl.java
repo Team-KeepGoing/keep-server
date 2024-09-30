@@ -41,15 +41,15 @@ public class StudentServiceImpl implements StudentService {
         for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
             try {
                 Row row = sheet.getRow(i);
-                StudentDto excelDto = new StudentDto();
-
-                excelDto.setGrade((int) row.getCell(0).getNumericCellValue());
-                excelDto.setGroup((int) row.getCell(1).getNumericCellValue());
-                excelDto.setGroupNum((int) row.getCell(2).getNumericCellValue());
-                excelDto.setStudentName(row.getCell(3).getStringCellValue());
-                excelDto.setPhoneNum(row.getCell(4).getStringCellValue());
-                excelDto.setAddress(row.getCell(5).getStringCellValue());
-                excelDto.setMail(row.getCell(6).getStringCellValue());
+                StudentDto excelDto = new StudentDto(
+                        row.getCell(3).getStringCellValue(),
+                        (int) row.getCell(0).getNumericCellValue(),
+                        (int) row.getCell(1).getNumericCellValue(),
+                        (int) row.getCell(2).getNumericCellValue(),
+                        row.getCell(4).getStringCellValue(),
+                        row.getCell(5).getStringCellValue(),
+                        row.getCell(6).getStringCellValue()
+                );
 
                 Student student = excelDto.toEntity();
                 studentList.add(student);
