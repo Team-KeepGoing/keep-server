@@ -11,6 +11,7 @@ import java.util.Set;
 public record UserDto(
         Long id,
         String email,
+        String studentId,
         String name,
         boolean teacher,
         Set<DeviceResponseDto> borrowedDevices,
