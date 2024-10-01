@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -181,8 +180,7 @@ public class StudentServiceImpl implements StudentService {
 
     public StudentResponseDto studentFormat(Student student) {
         String studentId = student.getStudentId();
-        User user = userRepository.findByEmail(student.getMail())
-                                  .orElseThrow((() -> new NoSuchElementException("User not found with email: " + student.getMail())));
+        User user = userRepository.findByEmail(student.getMail()).orElse(null);
 
         return StudentResponseDto.builder()
                 .id(student.getId())
@@ -191,7 +189,7 @@ public class StudentServiceImpl implements StudentService {
                 .phoneNum(student.getPhoneNum())
                 .studentName(student.getStudentName())
                 .imgUrl(student.getImgUrl())
-                .status(user.getStatus() != null ? user.getStatus() : Status.NORMAL)
+                .status(user == null ? null : user.getStatus() != null ? user.getStatus() : Status.NORMAL)
                 .build();
     }
 }
