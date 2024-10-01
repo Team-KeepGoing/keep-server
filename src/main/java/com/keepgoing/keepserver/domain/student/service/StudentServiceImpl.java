@@ -130,7 +130,7 @@ public class StudentServiceImpl implements StudentService {
     @Transactional(readOnly = true)
     public BaseResponse findByStudentName(StudentFindDto studentDto) {
         try {
-            List<Student> students = findStudentsByStudentName(studentDto.getStudentName());
+            List<Student> students = findStudentsByStudentName(studentDto.studentName());
             if (!students.isEmpty()) {
                 List<StudentResponseDto> responseDto = convertToResponseDto(students);
                 return new BaseResponse(HttpStatus.OK, "학생 정보 - 이름사용", responseDto);
@@ -153,7 +153,7 @@ public class StudentServiceImpl implements StudentService {
     @Transactional(readOnly = true)
     public BaseResponse findByStudentNum(StudentFindDto studentDto) {
         try {
-            Student student = findStudentByStudentId(studentDto.getStudentId());
+            Student student = findStudentByStudentId(studentDto.studentId());
             if (student != null) {
                 StudentResponseDto responseDto = convertToResponseDto(student);
                 return new BaseResponse(HttpStatus.OK, "학생 정보 - 번호사용", responseDto);
@@ -168,12 +168,12 @@ public class StudentServiceImpl implements StudentService {
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse editStudent(StudentRequestDto studentDto, Long id) {
         Student studentEntity = studentRepository.findStudentById(id);
-        if (studentDto.getStudentName() != null) studentEntity.setStudentName(studentDto.getStudentName());
-        if (studentDto.getPhoneNum() != null) studentEntity.setPhoneNum(studentDto.getPhoneNum());
-        if (studentDto.getStudentId() != null) studentEntity.setStudentId(studentDto.getStudentId());
-        if (studentDto.getMail() != null) studentEntity.setMail(studentDto.getMail());
-        if (studentDto.getAddress() != null) studentEntity.setAddress(studentDto.getAddress());
-        if (studentDto.getImgUrl() != null) studentEntity.setImgUrl(studentDto.getImgUrl());
+        if (studentDto.studentName() != null) studentEntity.setStudentName(studentDto.studentName());
+        if (studentDto.phoneNum() != null) studentEntity.setPhoneNum(studentDto.phoneNum());
+        if (studentDto.studentId() != null) studentEntity.setStudentId(studentDto.studentId());
+        if (studentDto.mail() != null) studentEntity.setMail(studentDto.mail());
+        if (studentDto.address() != null) studentEntity.setAddress(studentDto.address());
+        if (studentDto.imgUrl() != null) studentEntity.setImgUrl(studentDto.imgUrl());
 
         studentRepository.save(studentEntity);
         return new BaseResponse(HttpStatus.OK, "학생 정보 수정 성공");
