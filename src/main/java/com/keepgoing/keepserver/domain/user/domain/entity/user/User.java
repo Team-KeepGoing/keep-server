@@ -7,15 +7,14 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 public class User {
     @Id
@@ -53,6 +52,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Status status = Status.NORMAL;
 
+    /*
+        학생 상태 수정 시간
+     */
+    @Column
+    private LocalDateTime statusTime;
+
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<Notice> notices = new ArrayList<>();
 
@@ -81,5 +86,6 @@ public class User {
 
     public void fixUserStatus(Status status){
         this.status = status;
+        statusTime = LocalDateTime.now();
     }
 }

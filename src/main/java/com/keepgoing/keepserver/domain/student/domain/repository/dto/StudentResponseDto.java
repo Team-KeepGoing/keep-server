@@ -11,6 +11,7 @@ public record StudentResponseDto(
         String studentId,
         String phoneNum,
         String mail,
-        Status status
+        Status status,
+        String statusTime
 ) {
 }
