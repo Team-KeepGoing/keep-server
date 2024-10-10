@@ -47,6 +47,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                                                 device.deviceName,
                                                 device.imgUrl,
                                                 device.borrower.name,
+                                                device.lastBorrowerMail,
                                                 device.regDate,
                                                 device.rentDate,
                                                 device.status
@@ -59,6 +60,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                                                 book.writer,
                                                 book.imageUrl,
                                                 book.nfcCode,
+                                                book.lastBorrowerMail,
                                                 book.registrationDate,
                                                 book.rentDate,
                                                 book.state
@@ -80,6 +82,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                                           .collect(Collectors.toSet()))
                       .borrowedBooks(dto.borrowedBooks().stream().filter(r -> r.id() != 0).collect(Collectors.toSet()))
                       .build();
+//        return null;
     }
 
     @Override

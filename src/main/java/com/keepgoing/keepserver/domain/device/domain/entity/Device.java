@@ -52,6 +52,12 @@ public class Device {
     private LocalDateTime rentDate;
 
     /*
+        기기 마지막 대여자 mail
+     */
+    @Column
+    private String lastBorrowerMail;
+
+    /*
         대여자 id
     */
     @ManyToOne

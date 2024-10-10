@@ -18,6 +18,7 @@ public class DeviceMapper {
                 .deviceName(entity.getDeviceName())
                 .imgUrl(entity.getImgUrl())
                 .borrower(entity.getBorrower() != null ? entity.getBorrower().getName() : "대여자 없음")
+                .lastBorrowerMail(entity.getLastBorrowerMail())
                 .regDate(entity.getRegDate())
                 .rentDate(entity.getRentDate())
                 .status(entity.getStatus())

@@ -12,6 +12,7 @@ public record DeviceResponseDto(
         String deviceName,
         String imgUrl,
         String borrower,
+        String lastBorrowerMail,
         LocalDateTime regDate,
         LocalDateTime rentDate,
         DeviceStatus status
