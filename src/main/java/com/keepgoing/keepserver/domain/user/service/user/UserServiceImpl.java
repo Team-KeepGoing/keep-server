@@ -26,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -67,6 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getTeacher(Authentication authentication) {
         var ud = (UserDetailsImpl) authentication.getPrincipal();
 
@@ -81,6 +84,13 @@ public class UserServiceImpl implements UserService {
         User user = findUserByEmail(userEmail);
         updateUserStatus(user, statusRequest);
         return ResponseEntity.ok().body("상태 수정 성공");
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<User> getUserByEmail(String email){
+        return Optional.ofNullable(userRepository.findByEmail(email)
+                                                 .orElseThrow(() -> new UserException(UserError.USER_NOT_FOUND)));
     }
 
     /* 인증 및 JWT 토큰 생성 */

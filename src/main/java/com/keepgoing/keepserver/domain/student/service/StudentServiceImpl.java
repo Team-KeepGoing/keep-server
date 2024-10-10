@@ -181,7 +181,7 @@ public class StudentServiceImpl implements StudentService {
 
     public StudentResponseDto studentFormat(Student student) {
         String studentId = student.getStudentId();
-        User user = userRepository.findByEmail(student.getMail()).orElse(null);
+        User user = userService.getUserByEmail(student.getMail()).get();
 
         return StudentResponseDto.builder()
                 .id(student.getId())
@@ -193,5 +193,9 @@ public class StudentServiceImpl implements StudentService {
                 .status(user.getStatus() != null ? user.getStatus() : Status.NORMAL)
                 .statusTime(user.getStatusTime() != null ? user.getStatusTime().format(formatter()) : null)
                 .build();
+    }
+
+    private DateTimeFormatter formatter(){
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
     }
 }

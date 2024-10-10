@@ -58,6 +58,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                                                 book.bookName,
                                                 book.writer,
                                                 book.imageUrl,
+                                                book.nfcCode,
                                                 book.registrationDate,
                                                 book.rentDate,
                                                 book.state
