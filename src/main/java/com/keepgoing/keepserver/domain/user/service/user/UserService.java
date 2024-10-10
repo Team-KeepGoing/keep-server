@@ -12,6 +12,8 @@ import com.keepgoing.keepserver.global.exception.BusinessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
+import java.util.Optional;
+
 public interface UserService {
     ApiResponse<JwtResponse> registerUser(SignupRequest signupRequest) throws BusinessException;
 
@@ -26,4 +28,6 @@ public interface UserService {
     User getTeacher(Authentication authentication);
 
     ResponseEntity<String> updateUserStatus(StatusRequest statusRequest, Authentication authentication);
+
+    Optional<User> getUserByEmail(String email);
 }

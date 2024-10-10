@@ -26,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -38,10 +40,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public ApiResponse<JwtResponse> registerUser(SignupRequest signupRequest) throws BusinessException {
-        validateEmail(signupRequest.getEmail());
+        validateEmail(signupRequest.email());
         User user = createUser(signupRequest);
         userRepository.save(user);
-        JwtResponse jwtResponse = authenticateAndGenerateJWT(signupRequest.getEmail(), signupRequest.getPassword());
+        JwtResponse jwtResponse = authenticateAndGenerateJWT(signupRequest.email(), signupRequest.password());
         return ApiResponse.setApiResponse(true, "회원 가입이 완료 되었습니다!", jwtResponse);
     }
 
@@ -67,6 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getTeacher(Authentication authentication) {
         var ud = (UserDetailsImpl) authentication.getPrincipal();
 
@@ -81,6 +84,13 @@ public class UserServiceImpl implements UserService {
         User user = findUserByEmail(userEmail);
         updateUserStatus(user, statusRequest);
         return ResponseEntity.ok().body("상태 수정 성공");
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<User> getUserByEmail(String email){
+        return Optional.ofNullable(userRepository.findByEmail(email)
+                                                 .orElseThrow(() -> new UserException(UserError.USER_NOT_FOUND)));
     }
 
     /* 인증 및 JWT 토큰 생성 */
@@ -107,9 +117,9 @@ public class UserServiceImpl implements UserService {
 
     private User createUser(SignupRequest signupRequest) {
         return User.registerUser(
-                signupRequest.getEmail(),
-                encoder.encode(signupRequest.getPassword()),
-                signupRequest.getName(),
+                signupRequest.email(),
+                encoder.encode(signupRequest.password()),
+                signupRequest.name(),
                 signupRequest.isTeacher()
         );
     }
@@ -124,7 +134,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void updateUser(User user, UserInfoRequest request) {
-        user.fixUserData(request.getEmail(), request.getName());
+        user.fixUserData(request.email(), request.name());
     }
 
     private void updateUserStatus(User user, StatusRequest statusRequest) {

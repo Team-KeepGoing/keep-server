@@ -1,23 +1,16 @@
 package com.keepgoing.keepserver.domain.student.domain.repository.dto;
 
-
 import com.keepgoing.keepserver.domain.student.domain.entity.Student;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-public class StudentDto {
-    private String studentName;
-    private int grade;
-    private int group;
-    private int groupNum;
-    private String phoneNum;
-    private String address;
-    private String mail;
-
+public record StudentDto(
+        String studentName,
+        int grade,
+        int group,
+        int groupNum,
+        String phoneNum,
+        String address,
+        String mail
+) {
     public String format() {
         final String FORMAT_PATTERN = "%d%d%02d";
         return String.format(FORMAT_PATTERN, this.grade, this.group, this.groupNum);
@@ -25,12 +18,12 @@ public class StudentDto {
 
     public Student toEntity() {
         return Student.builder()
-                .studentName(this.studentName)
-                .studentId(format())
-                .phoneNum(this.phoneNum)
-                .address(this.address)
-                .mail(this.mail)
-                .build();
+                      .studentName(this.studentName)
+                      .studentId(format())
+                      .phoneNum(this.phoneNum)
+                      .address(this.address)
+                      .mail(this.mail)
+                      .build();
     }
 
 }

@@ -7,9 +7,6 @@ import com.keepgoing.keepserver.domain.book.payload.response.BookResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class BookMapper {
     public BookResponseDto entityToDto(Book entity) {
@@ -19,6 +16,7 @@ public class BookMapper {
                 .registrationDate(entity.getRegistrationDate())
                 .writer(entity.getWriter())
                 .imageUrl(entity.getImageUrl())
+                .nfcCode(entity.getNfcCode())
                 .rentDate(entity.getRentDate())
                 .state(entity.getState())
                 .build();
@@ -34,11 +32,5 @@ public class BookMapper {
                 .state(BookState.AVAILABLE)
                 .nfcCode(nfcCode)
                 .build();
-    }
-
-    public List<BookResponseDto> convertBooksToDtos(List<Book> books) {
-        return books.stream()
-                .map(this::entityToDto)
-                .collect(Collectors.toList());
     }
 }

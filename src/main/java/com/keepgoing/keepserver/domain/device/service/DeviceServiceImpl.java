@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class DeviceServiceImpl implements DeviceService {
     private final DeviceMapper deviceMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public BaseResponse findAll() {
         List<Device> devices = deviceRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         List<DeviceResponseDto> dtos = deviceMapper.convertDevicesToDtos(devices);
@@ -36,18 +38,21 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @Transactional
     public BaseResponse deviceCreate(DeviceDto deviceDto) {
         deviceRepository.save(deviceMapper.dtoToEntity(deviceDto));
         return new BaseResponse(HttpStatus.OK, "기기 생성 성공");
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BaseResponse deviceRead(Long id) {
         Device device = deviceRepository.findById(id).orElseThrow(DeviceException::notFoundDevice);
         return new BaseResponse(HttpStatus.OK, "기기 조회 성공", deviceMapper.entityToDto(device));
     }
 
     @Override
+    @Transactional
     public BaseResponse deleteDevice(Long id, Authentication authentication) {
         User user = findUserByEmail(authentication.getName());
         userRepository.findByIdAndTeacherIsTrue(user.getId())
@@ -65,6 +70,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @Transactional
     public BaseResponse editDevice(Long id, DeviceEditRequest deviceEditRequest) {
 
         Device device = findDeviceById(id);
@@ -74,6 +80,7 @@ public class DeviceServiceImpl implements DeviceService {
         return new BaseResponse(HttpStatus.OK, "해당 기기 정보 수정 성공");
     }
 
+    @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(DeviceException::userNotFound);

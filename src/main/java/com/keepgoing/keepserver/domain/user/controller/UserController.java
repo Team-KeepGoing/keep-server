@@ -26,7 +26,7 @@ public class UserController {
     @Operation(summary = "로그인", description = "로그인을 진행합니다.")
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok().body(userService.authenticateAndGenerateJWT(loginRequest.getEmail(), loginRequest.getPassword()));
+        return ResponseEntity.ok().body(userService.authenticateAndGenerateJWT(loginRequest.email(), loginRequest.password()));
     }
 
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")

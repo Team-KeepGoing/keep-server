@@ -7,7 +7,8 @@ import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentFind
 import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentRequestDto;
 import com.keepgoing.keepserver.domain.student.domain.repository.dto.StudentResponseDto;
 import com.keepgoing.keepserver.domain.user.domain.entity.user.User;
-import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepository;
+import com.keepgoing.keepserver.domain.user.domain.enums.Status;
+import com.keepgoing.keepserver.domain.user.service.user.UserService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private List<Student> processExcelFile(MultipartFile file) throws IOException {
         List<Student> studentList = new ArrayList<>();
@@ -39,15 +41,15 @@ public class StudentServiceImpl implements StudentService {
         for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
             try {
                 Row row = sheet.getRow(i);
-                StudentDto excelDto = new StudentDto();
-
-                excelDto.setGrade((int) row.getCell(0).getNumericCellValue());
-                excelDto.setGroup((int) row.getCell(1).getNumericCellValue());
-                excelDto.setGroupNum((int) row.getCell(2).getNumericCellValue());
-                excelDto.setStudentName(row.getCell(3).getStringCellValue());
-                excelDto.setPhoneNum(row.getCell(4).getStringCellValue());
-                excelDto.setAddress(row.getCell(5).getStringCellValue());
-                excelDto.setMail(row.getCell(6).getStringCellValue());
+                StudentDto excelDto = new StudentDto(
+                        row.getCell(3).getStringCellValue(),
+                        (int) row.getCell(0).getNumericCellValue(),
+                        (int) row.getCell(1).getNumericCellValue(),
+                        (int) row.getCell(2).getNumericCellValue(),
+                        row.getCell(4).getStringCellValue(),
+                        row.getCell(5).getStringCellValue(),
+                        row.getCell(6).getStringCellValue()
+                );
 
                 Student student = excelDto.toEntity();
                 studentList.add(student);
@@ -128,7 +130,7 @@ public class StudentServiceImpl implements StudentService {
     @Transactional(readOnly = true)
     public BaseResponse findByStudentName(StudentFindDto studentDto) {
         try {
-            List<Student> students = findStudentsByStudentName(studentDto.getStudentName());
+            List<Student> students = findStudentsByStudentName(studentDto.studentName());
             if (!students.isEmpty()) {
                 List<StudentResponseDto> responseDto = convertToResponseDto(students);
                 return new BaseResponse(HttpStatus.OK, "학생 정보 - 이름사용", responseDto);
@@ -151,7 +153,7 @@ public class StudentServiceImpl implements StudentService {
     @Transactional(readOnly = true)
     public BaseResponse findByStudentNum(StudentFindDto studentDto) {
         try {
-            Student student = findStudentByStudentId(studentDto.getStudentId());
+            Student student = findStudentByStudentId(studentDto.studentId());
             if (student != null) {
                 StudentResponseDto responseDto = convertToResponseDto(student);
                 return new BaseResponse(HttpStatus.OK, "학생 정보 - 번호사용", responseDto);
@@ -166,12 +168,12 @@ public class StudentServiceImpl implements StudentService {
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse editStudent(StudentRequestDto studentDto, Long id) {
         Student studentEntity = studentRepository.findStudentById(id);
-        if (studentDto.getStudentName() != null) studentEntity.setStudentName(studentDto.getStudentName());
-        if (studentDto.getPhoneNum() != null) studentEntity.setPhoneNum(studentDto.getPhoneNum());
-        if (studentDto.getStudentId() != null) studentEntity.setStudentId(studentDto.getStudentId());
-        if (studentDto.getMail() != null) studentEntity.setMail(studentDto.getMail());
-        if (studentDto.getAddress() != null) studentEntity.setAddress(studentDto.getAddress());
-        if (studentDto.getImgUrl() != null) studentEntity.setImgUrl(studentDto.getImgUrl());
+        if (studentDto.studentName() != null) studentEntity.setStudentName(studentDto.studentName());
+        if (studentDto.phoneNum() != null) studentEntity.setPhoneNum(studentDto.phoneNum());
+        if (studentDto.studentId() != null) studentEntity.setStudentId(studentDto.studentId());
+        if (studentDto.mail() != null) studentEntity.setMail(studentDto.mail());
+        if (studentDto.address() != null) studentEntity.setAddress(studentDto.address());
+        if (studentDto.imgUrl() != null) studentEntity.setImgUrl(studentDto.imgUrl());
 
         studentRepository.save(studentEntity);
         return new BaseResponse(HttpStatus.OK, "학생 정보 수정 성공");
@@ -179,8 +181,7 @@ public class StudentServiceImpl implements StudentService {
 
     public StudentResponseDto studentFormat(Student student) {
         String studentId = student.getStudentId();
-        User user = userRepository.findByEmail(student.getMail())
-                                  .orElseThrow();
+        User user = userService.getUserByEmail(student.getMail()).get();
 
         return StudentResponseDto.builder()
                 .id(student.getId())
@@ -189,7 +190,12 @@ public class StudentServiceImpl implements StudentService {
                 .phoneNum(student.getPhoneNum())
                 .studentName(student.getStudentName())
                 .imgUrl(student.getImgUrl())
-                .status(user.getStatus())
+                .status(user.getStatus() != null ? user.getStatus() : Status.NORMAL)
+                .statusTime(user.getStatusTime() != null ? user.getStatusTime().format(formatter()) : null)
                 .build();
+    }
+
+    private DateTimeFormatter formatter(){
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
     }
 }
