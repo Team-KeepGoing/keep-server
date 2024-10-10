@@ -33,7 +33,7 @@ public class ReturnServiceImpl implements ReturnService {
         User user = deviceService.findUserByEmail(email);
         Device device = findDeviceByName(deviceName);
         validateDeviceBorrower(device, user);
-        returnDeviceFromUser(device);
+        returnDeviceFromUser(device, user);
         return new BaseResponse(HttpStatus.OK, "반납이 완료 되었습니다.", deviceMapper.entityToDto(device));
     }
 
@@ -42,7 +42,7 @@ public class ReturnServiceImpl implements ReturnService {
         User user = deviceService.findUserByEmail(email);
         Book book = findBookByNfcCodeContaining(nfcCode);
         validateBookBorrower(book, user);
-        returnBookFromUser(book);
+        returnBookFromUser(book, user);
         return new BaseResponse(HttpStatus.OK, "반납이 완료 되었습니다.", bookMapper.entityToDto(book));
     }
 
@@ -57,7 +57,8 @@ public class ReturnServiceImpl implements ReturnService {
         }
     }
 
-    private void returnDeviceFromUser(Device device) {
+    private void returnDeviceFromUser(Device device, User user) {
+        device.setLastBorrowerMail(user.getEmail());
         device.setBorrower(null);
         device.setStatus(DeviceStatus.AVAILABLE);
         device.setRentDate(null);
@@ -75,7 +76,8 @@ public class ReturnServiceImpl implements ReturnService {
         }
     }
 
-    private void returnBookFromUser(Book book) {
+    private void returnBookFromUser(Book book, User user) {
+        book.setLastBorrowerMail(user.getEmail());
         book.setBorrower(null);
         book.setState(BookState.AVAILABLE);
         book.setRentDate(null);

@@ -58,10 +58,16 @@ public class Book {
     private String imageUrl;
 
     /*
-        기기 대여 시작일
+        책 대여 시작일
     */
     @Column
     private LocalDateTime rentDate;
+
+    /*
+        책 마지막 대여자 mail
+     */
+    @Column
+    private String lastBorrowerMail;
 
     /*
         책 대여자

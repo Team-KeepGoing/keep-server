@@ -17,6 +17,7 @@ public class BookMapper {
                 .writer(entity.getWriter())
                 .imageUrl(entity.getImageUrl())
                 .nfcCode(entity.getNfcCode())
+                .lastBorrowerMail(entity.getLastBorrowerMail())
                 .rentDate(entity.getRentDate())
                 .state(entity.getState())
                 .build();

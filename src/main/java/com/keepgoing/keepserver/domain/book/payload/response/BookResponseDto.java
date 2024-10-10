@@ -13,6 +13,7 @@ public record BookResponseDto(
         String writer,
         String imageUrl,
         String nfcCode,
+        String lastBorrowerMail,
         LocalDateTime registrationDate,
         LocalDateTime rentDate,
         BookState state
