@@ -42,7 +42,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public BaseResponse deleteBook(String nfcCode, Authentication auth) {
         if (nfcCode == null || nfcCode.isEmpty()) {
             return new BaseResponse(HttpStatus.NOT_FOUND, "Invalid NFC code");
