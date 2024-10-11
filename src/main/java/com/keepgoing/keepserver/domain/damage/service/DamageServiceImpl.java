@@ -46,7 +46,7 @@ public class DamageServiceImpl implements DamageService {
     @Override
     @Transactional
     public BaseResponse deleteDamage(Long id) {
-        Damage damage = findDamageById(id);
+        findDamageById(id);
         damageRepository.deleteById(id);
         return new BaseResponse(HttpStatus.OK, "파손 정보 삭제 성공");
     }
@@ -58,8 +58,8 @@ public class DamageServiceImpl implements DamageService {
         }
     }
 
-    private Damage findDamageById(Long id) {
-        return damageRepository.findById(id)
+    private void findDamageById(Long id) {
+        damageRepository.findById(id)
                                .orElseThrow(() -> new DamageException(DamageError.INVALID_DAMAGE));
     }
 }
