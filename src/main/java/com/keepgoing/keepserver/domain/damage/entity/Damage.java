@@ -23,7 +23,7 @@ public class Damage {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idx;
 
     /*
         기기 식별 코드 (nfc/이름)

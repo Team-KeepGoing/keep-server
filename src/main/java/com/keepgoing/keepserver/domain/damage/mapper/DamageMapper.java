@@ -3,28 +3,15 @@ package com.keepgoing.keepserver.domain.damage.mapper;
 import com.keepgoing.keepserver.domain.damage.entity.Damage;
 import com.keepgoing.keepserver.domain.damage.payload.request.DamageCreateRequest;
 import com.keepgoing.keepserver.domain.damage.payload.response.DamageResponseDto;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.time.LocalDateTime;
+@Mapper(componentModel = "spring")
+public interface DamageMapper {
 
-@Component
-public class DamageMapper {
-    public DamageResponseDto entityToDto(Damage entity) {
-        return DamageResponseDto.builder()
-                                .id(entity.getId())
-                                .code(entity.getCode())
-                                .issueType(entity.getIssueType())
-                                .description(entity.getDescription())
-                                .reportDate(entity.getReportDate())
-                                .build();
-    }
+    DamageResponseDto entityToDto(Damage damage);
 
-    public Damage dtoToEntity(DamageCreateRequest dto) {
-        return Damage.builder()
-                     .code(dto.getCode())
-                     .issueType(dto.getIssueType())
-                     .description(dto.getDescription())
-                     .reportDate(LocalDateTime.now())
-                     .build();
-    }
+    @Mapping(target = "reportDate", expression = "java(java.time.LocalDateTime.now())")
+    Damage dtoToEntity(DamageCreateRequest damageCreateRequest);
 }
+

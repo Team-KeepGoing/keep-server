@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Builder
 public record DamageResponseDto(
-        Long id,
+        Long idx,
         String code,
         String issueType,
         String description,
