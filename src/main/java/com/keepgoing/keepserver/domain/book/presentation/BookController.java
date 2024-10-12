@@ -54,4 +54,10 @@ public class BookController {
                                           @RequestBody BookRequestDto bookRequest) throws IOException {
         return bookService.editBook(nfcCode, bookRequest);
     }
+
+    @Operation(summary = "추천 도서 불러오기", description = "추천 도서를 불러옵니다")
+    @GetMapping("/recommend")
+    public BaseResponse selectRecommendBook(){
+        return bookService.selectRecommendBook();
+    }
 }
