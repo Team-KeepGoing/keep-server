@@ -1,10 +1,8 @@
 package com.keepgoing.keepserver.domain.damage.entity;
 
+import com.keepgoing.keepserver.domain.damage.enums.IssueType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -34,14 +32,15 @@ public class Damage {
     /*
         문제 유형
      */
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String issueType;
+    private IssueType issueType;
 
     /*
         유형에 맞는 자세한 내용
      */
     @Lob
-    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+    @Column(nullable = true, columnDefinition = "MEDIUMTEXT")
     private String description;
 
     /*
@@ -50,4 +49,12 @@ public class Damage {
     @Column(nullable = false)
     private LocalDateTime reportDate;
 
+    @Builder
+    public Damage(Long idx, String code, String issueType, String description, LocalDateTime reportDate) {
+        this.idx = idx;
+        this.code = code;
+        this.issueType = IssueType.find(issueType);
+        this.description = description;
+        this.reportDate = reportDate;
+    }
 }

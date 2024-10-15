@@ -1,6 +1,7 @@
 package com.keepgoing.keepserver.domain.damage.service;
 
 import com.keepgoing.keepserver.domain.damage.entity.Damage;
+import com.keepgoing.keepserver.domain.damage.enums.IssueType;
 import com.keepgoing.keepserver.domain.damage.mapper.DamageMapper;
 import com.keepgoing.keepserver.domain.damage.payload.request.DamageCreateRequest;
 import com.keepgoing.keepserver.domain.damage.payload.response.DamageResponseDto;
@@ -51,7 +52,7 @@ public class DamageServiceImpl implements DamageService {
         return new BaseResponse(HttpStatus.OK, "파손 정보 삭제 성공");
     }
 
-    private void validateDuplicate(String code, String issueType) {
+    private void validateDuplicate(String code, IssueType issueType) {
         boolean isDuplicate = damageRepository.existsByCodeAndIssueType(code, issueType);
         if (isDuplicate) {
             throw new DamageException(DamageError.DUPLICATE);
