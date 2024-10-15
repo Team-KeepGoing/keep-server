@@ -38,7 +38,9 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public BaseResponse selectAllBook() {
-        return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", bookRepository.findAll().stream().map(bookMapper::entityToDto).toList());
+        return new BaseResponse(HttpStatus.OK,
+                                "책 불러오기 성공",
+                                bookRepository.findAll().stream().map(bookMapper::entityToDto).toList());
     }
 
     @Override
@@ -89,11 +91,21 @@ public class BookServiceImpl implements BookService {
     public BaseResponse editBook(String nfcCode, BookRequestDto bookRequest) {
         Book book = bookRepository.findBookByNfcCode(nfcCode);
 
-        if (bookRequest.state() != null) book.setState(bookRequest.state());
-        if (bookRequest.imageUrl() != null) book.setImageUrl(bookRequest.imageUrl());
-        if (bookRequest.name() != null) book.setBookName(bookRequest.name());
+        if (bookRequest.state() != null)
+            book.setState(bookRequest.state());
+        if (bookRequest.imageUrl() != null)
+            book.setImageUrl(bookRequest.imageUrl());
+        if (bookRequest.name() != null)
+            book.setBookName(bookRequest.name());
         bookRepository.save(book);
         return new BaseResponse(HttpStatus.OK, "책 정보 수정 성공");
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BaseResponse selectRecommendBook() {
+        List<Book> bookLst = bookRepository.selectAll();
+        return new BaseResponse(HttpStatus.OK, "책 불러오기 성공", bookLst.stream().map(bookMapper::entityToDto).toList());
     }
 
     private User getUserByAuthentication(Authentication auth) {
@@ -104,4 +116,5 @@ public class BookServiceImpl implements BookService {
         return userRepository.findByEmail(auth.getName())
                              .orElseThrow(BookException::userNotFound);
     }
+
 }
