@@ -41,7 +41,14 @@ public class DamageServiceImpl implements DamageService {
         if (damages.isEmpty()) {
             throw new DamageException(DamageError.INVALID_DAMAGE);
         }
-        return new BaseResponse(HttpStatus.OK, "파손 정보 불러오기 성공", damages);
+        return new BaseResponse(HttpStatus.OK, "모든 신고 내역 불러오기 성공", damages);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BaseResponse getDamage(Long id) {
+        Damage damage = damageRepository.findById(id).orElseThrow(DamageException::invalidDamage);
+        return new BaseResponse(HttpStatus.OK, "선택한 신고 내역 조회 성공", damageMapper.entityToDto(damage));
     }
 
     @Override
@@ -49,7 +56,7 @@ public class DamageServiceImpl implements DamageService {
     public BaseResponse deleteDamage(Long id) {
         findDamageById(id);
         damageRepository.deleteById(id);
-        return new BaseResponse(HttpStatus.OK, "파손 정보 삭제 성공");
+        return new BaseResponse(HttpStatus.OK, "신고 내역 삭제 성공");
     }
 
     private void validateDuplicate(String code, IssueType issueType) {

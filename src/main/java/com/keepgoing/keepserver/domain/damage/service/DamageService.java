@@ -9,5 +9,7 @@ public interface DamageService {
 
     BaseResponse getAllDamages();
 
+    BaseResponse getDamage(Long id);
+
     BaseResponse deleteDamage(Long id);
 }
