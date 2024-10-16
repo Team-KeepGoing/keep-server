@@ -18,19 +18,25 @@ import org.springframework.web.bind.annotation.*;
 public class DamageController {
     private final DamageService damageService;
 
-    @Operation(summary = "파손 등록", description = "파손된 항목 등록을 진행합니다.")
+    @Operation(summary = "신고 등록", description = "파손된 항목 등록을 진행합니다.")
     @PostMapping("/report")
     public BaseResponse reportDamage(@Valid @RequestBody DamageCreateRequest request) {
         return damageService.reportDamage(request);
     }
 
-    @Operation(summary = "파손 정보 불러오기", description = "파손된 항목들을 불러옵니다.")
+    @Operation(summary = "모든 신고 정보 불러오기", description = "파손된 항목들을 불러옵니다.")
     @GetMapping("/all")
     public BaseResponse getAllDamages() {
         return damageService.getAllDamages();
     }
 
-    @Operation(summary = "파손 정보 삭제하기", description = "파손된 항목을 삭제합니다.")
+    @Operation(summary = "선택한 신고 정보 불러오기", description = "선택한 신고 정보를 조회합니다.")
+    @GetMapping("/{id}")
+    public BaseResponse getDamage(@PathVariable("id") Long id) {
+        return damageService.getDamage(id);
+    }
+
+    @Operation(summary = "신고 내역 삭제하기", description = "신고된 내역을 삭제합니다.")
     @DeleteMapping("/{id}")
     public BaseResponse deleteDamage(@PathVariable Long id) {
         return damageService.deleteDamage(id);
