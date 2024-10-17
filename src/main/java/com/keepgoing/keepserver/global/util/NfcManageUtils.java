@@ -10,13 +10,13 @@ import java.security.SecureRandom;
 @Getter
 @Setter
 @Component
-public class GenerateCertCharacter {
+public class NfcManageUtils {
     private final String characterTable = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
     private int certCharLength = 8;
     private final SecureRandom random;
 
-    public GenerateCertCharacter() {
+    public NfcManageUtils() {
         try {
             random = SecureRandom.getInstanceStrong();
         } catch (NoSuchAlgorithmException e) {
