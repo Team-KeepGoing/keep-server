@@ -33,7 +33,7 @@ public class DamageServiceImpl implements DamageService {
         validateDuplicate(request.getCode(), request.getIssueType());
         Damage damage = damageMapper.dtoToEntity(request);
         damageRepository.save(damage);
-        return new BaseResponse(HttpStatus.OK, "파손 정보 등록 성공", damage);
+        return new BaseResponse(HttpStatus.OK, "신고 정보 등록 성공", damage);
     }
 
     @Override
