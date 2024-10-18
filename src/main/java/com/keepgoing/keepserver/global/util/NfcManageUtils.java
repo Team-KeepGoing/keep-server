@@ -10,13 +10,14 @@ import java.security.SecureRandom;
 @Getter
 @Setter
 @Component
-public class GenerateCertCharacter {
-    private final String characterTable = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+public class NfcManageUtils {
+    private static final String CHARACTER_TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    private static final String BOOK_NFC_PATTERN = "^[A-Z0-9]{8}$";
+    private static final int CERT_CHAR_LENGTH = 8; // NFC 길이
 
-    private int certCharLength = 8;
     private final SecureRandom random;
 
-    public GenerateCertCharacter() {
+    public NfcManageUtils() {
         try {
             random = SecureRandom.getInstanceStrong();
         } catch (NoSuchAlgorithmException e) {
@@ -26,11 +27,11 @@ public class GenerateCertCharacter {
     }
 
     public String executeGenerate() {
-        int tableLength = characterTable.length();
+        int tableLength = CHARACTER_TABLE.length();
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < certCharLength; i++) {
-            sb.append(characterTable.charAt(random.nextInt(tableLength)));
+        for (int i = 0; i < CERT_CHAR_LENGTH; i++) {
+            sb.append(CHARACTER_TABLE.charAt(random.nextInt(tableLength)));
         }
 
         return sb.toString();

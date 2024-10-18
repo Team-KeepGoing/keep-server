@@ -10,7 +10,7 @@ import com.keepgoing.keepserver.domain.user.domain.repository.user.UserRepositor
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.book.BookException;
 import com.keepgoing.keepserver.global.util.DateRange;
-import com.keepgoing.keepserver.global.util.GenerateCertCharacter;
+import com.keepgoing.keepserver.global.util.NfcManageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -24,7 +24,7 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final GenerateCertCharacter generateCertCharacter;
+    private final NfcManageUtils nfcManageUtils;
     private final BookMapper bookMapper;
 
     @Override
@@ -81,7 +81,7 @@ public class BookServiceImpl implements BookService {
     public String createNfcCode() {
         String nfcCode;
         do {
-            nfcCode = generateCertCharacter.executeGenerate();
+            nfcCode = nfcManageUtils.executeGenerate();
         } while (bookRepository.findBookByNfcCode(nfcCode) != null);
         return nfcCode;
     }

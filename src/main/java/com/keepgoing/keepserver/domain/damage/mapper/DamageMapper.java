@@ -9,7 +9,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface DamageMapper {
 
-    DamageResponseDto entityToDto(Damage damage);
+    @Mapping(source = "nfcCode", target = "code")
+    DamageResponseDto entityToDto(Damage damage, String nfcCode);
 
     @Mapping(target = "reportDate", expression = "java(java.time.LocalDateTime.now())")
     Damage dtoToEntity(DamageCreateRequest damageCreateRequest);
