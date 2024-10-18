@@ -7,8 +7,12 @@ import com.keepgoing.keepserver.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.services.rekognition.model.Image;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +26,17 @@ public class ImageService {
         } catch (IOException e) {
             throw new BusinessException(ErrorCode.FILE_ERROR);
         }
+    }
+
+    public Image getS3Image(String s3ImageUrl) throws IOException {
+        byte[] imageBytes = s3Uploader.getObjectBytes(s3ImageUrl);
+        return Image.builder()
+                    .bytes(SdkBytes.fromByteBuffer(ByteBuffer.wrap(imageBytes)))
+                    .build();
+    }
+
+    public List<String> getAllImageUrlsFromS3(String directory) {
+        return s3Uploader.getAllImageUrlsFromS3(directory);
     }
 }
 
