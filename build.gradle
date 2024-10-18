@@ -54,6 +54,9 @@ dependencies {
 
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    implementation 'software.amazon.awssdk:rekognition:2.20.21'
+    implementation 'software.amazon.awssdk:s3:2.20.21'
 }
 
 tasks.named('test') {
