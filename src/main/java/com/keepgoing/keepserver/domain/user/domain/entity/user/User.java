@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 public class User {
@@ -58,6 +60,12 @@ public class User {
     @Column
     private LocalDateTime statusTime;
 
+    /*
+        교사 계정 승인 여부
+     */
+    @Column(nullable = false)
+    private boolean approved;
+
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<Notice> notices = new ArrayList<>();
 
@@ -68,13 +76,15 @@ public class User {
             String email,
             String password,
             String name,
-            boolean teacher
+            boolean teacher,
+            boolean approved
     ) {
         User user = new User();
         user.email = email;
         user.password = password;
         user.name = name;
         user.teacher = teacher;
+        user.approved = approved;
 
         return user;
     }
