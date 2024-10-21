@@ -1,8 +1,8 @@
 package com.keepgoing.keepserver.domain.user.controller;
 
-import com.keepgoing.keepserver.domain.user.dto.request.StatusRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.LoginRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.SignupRequest;
+import com.keepgoing.keepserver.domain.user.dto.request.StatusRequest;
 import com.keepgoing.keepserver.domain.user.dto.request.UserInfoRequest;
 import com.keepgoing.keepserver.domain.user.service.user.UserService;
 import com.keepgoing.keepserver.global.exception.BusinessException;
@@ -33,6 +33,17 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerAndAuthenticateUser(@RequestBody SignupRequest signupRequest) throws BusinessException {
         return ResponseEntity.ok().body(userService.registerUser(signupRequest));
+    }
+
+    @Operation(summary = "회원탈퇴", description = "회원탈퇴를 진행합니다.")
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<String> withdrawMember(@PathVariable Long userId){
+        try {
+            userService.deleteUser(userId);
+            return ResponseEntity.ok().body("회원탈퇴 성공");
+        } catch (RuntimeException ex){
+            return ResponseEntity.ok().body("회원탈퇴 실패");
+        }
     }
 
     @Operation(summary = "프로필", description = "토큰을 이용하여 유저 정보와 대여한 기자재 및 도서 목록을 조회합니다.")
