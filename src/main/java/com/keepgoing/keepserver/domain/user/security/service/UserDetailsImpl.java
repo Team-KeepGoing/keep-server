@@ -26,12 +26,15 @@ public class UserDetailsImpl implements UserDetails {
     @Getter
     private final boolean teacher;
 
-    public UserDetailsImpl(Long id, String email, String name, String password, boolean teacher) {
+    private final boolean approved;
+
+    public UserDetailsImpl(Long id, String email, String name, String password, boolean teacher, boolean approved) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
         this.teacher = teacher;
+        this.approved = approved;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -40,7 +43,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getEmail(),
                 user.getName(),
                 user.getPassword(),
-                user.isTeacher()
+                user.isTeacher(),
+                user.isApproved()
         );
     }
 
