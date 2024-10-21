@@ -57,6 +57,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public ResponseEntity<String> deleteUser(Long id) {
+        try {
+            userRepository.deleteById(id);
+            return ResponseEntity.ok().body("회원탈퇴 성공");
+        } catch (Exception ex) {
+            throw new RuntimeException("회원탈퇴 실패", ex);
+        }
+    }
+
+    @Override
     public UserDto provideUserInfo(Authentication authentication) {
         UserDetailsImpl ud = (UserDetailsImpl) authentication.getPrincipal();
         return userRepository.getProfileById(ud.getId());
