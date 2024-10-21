@@ -37,13 +37,8 @@ public class UserController {
 
     @Operation(summary = "회원탈퇴", description = "회원탈퇴를 진행합니다.")
     @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<String> withdrawMember(@PathVariable Long userId){
-        try {
-            userService.deleteUser(userId);
-            return ResponseEntity.ok().body("회원탈퇴 성공");
-        } catch (RuntimeException ex){
-            return ResponseEntity.ok().body("회원탈퇴 실패");
-        }
+    public ResponseEntity<?> withdrawMember(@PathVariable Long userId){
+        return ResponseEntity.ok().body(userService.deleteUser(userId));
     }
 
     @Operation(summary = "프로필", description = "토큰을 이용하여 유저 정보와 대여한 기자재 및 도서 목록을 조회합니다.")

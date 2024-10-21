@@ -19,7 +19,7 @@ public interface UserService {
 
     ResponseEntity<String> updateUserData(UserInfoRequest request, Authentication authentication);
 
-    void deleteUser(Long id);
+    ResponseEntity<String> deleteUser(Long id);
 
     UserDto provideUserInfo(Authentication authentication);
 

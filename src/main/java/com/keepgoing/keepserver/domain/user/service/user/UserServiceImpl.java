@@ -58,11 +58,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(Long id) {
+    public ResponseEntity<String> deleteUser(Long id) {
         try {
             userRepository.deleteById(id);
-        }  catch (Exception ex) {
-            throw new RuntimeException();
+            return ResponseEntity.ok().body("회원탈퇴 성공");
+        } catch (Exception ex) {
+            throw new RuntimeException("회원탈퇴 실패", ex);
         }
     }
 
