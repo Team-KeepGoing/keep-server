@@ -113,6 +113,13 @@ public class UserServiceImpl implements UserService {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
+        checkTeacherApproval(userDetails);
+
+        String jwt = jwtUtils.generateJwtToken(authentication);
+        return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getName(), userDetails.isTeacher());
+    }
+
+    private void checkTeacherApproval(UserDetailsImpl userDetails) {
         if (userDetails.isTeacher()) {
             User user = userRepository.findById(userDetails.getId())
                     .orElseThrow(() -> new UserException(UserError.USER_NOT_FOUND));
@@ -121,9 +128,6 @@ public class UserServiceImpl implements UserService {
                 throw new BusinessException(UserError.TEACHER_ACCOUNT_NOT_APPROVED);
             }
         }
-
-        String jwt = jwtUtils.generateJwtToken(authentication);
-        return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getName(), userDetails.isTeacher());
     }
 
     private String getNameByAuthentication(Authentication authentication) {
