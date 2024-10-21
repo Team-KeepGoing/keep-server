@@ -19,6 +19,8 @@ public interface UserService {
 
     ResponseEntity<String> updateUserData(UserInfoRequest request, Authentication authentication);
 
+    void deleteUser(Long id);
+
     UserDto provideUserInfo(Authentication authentication);
 
     JwtResponse authenticateAndGenerateJWT(String email, String password);

@@ -57,6 +57,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        try {
+            userRepository.deleteById(id);
+        }  catch (Exception ex) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
     public UserDto provideUserInfo(Authentication authentication) {
         UserDetailsImpl ud = (UserDetailsImpl) authentication.getPrincipal();
         return userRepository.getProfileById(ud.getId());
