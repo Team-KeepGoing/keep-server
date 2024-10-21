@@ -105,14 +105,24 @@ public class UserServiceImpl implements UserService {
     }
 
     /* 인증 및 JWT 토큰 생성 */
+    @Override
     public JwtResponse authenticateAndGenerateJWT(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
+        if (userDetails.isTeacher()) {
+            User user = userRepository.findById(userDetails.getId())
+                    .orElseThrow(() -> new UserException(UserError.USER_NOT_FOUND));
+
+            if (!user.isApproved()) {
+                throw new BusinessException(UserError.TEACHER_ACCOUNT_NOT_APPROVED);
+            }
+        }
+
+        String jwt = jwtUtils.generateJwtToken(authentication);
         return JwtResponse.setJwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), userDetails.getName(), userDetails.isTeacher());
     }
 
@@ -131,7 +141,8 @@ public class UserServiceImpl implements UserService {
                 signupRequest.email(),
                 encoder.encode(signupRequest.password()),
                 signupRequest.name(),
-                signupRequest.isTeacher()
+                signupRequest.isTeacher(),
+                signupRequest.isApproved()
         );
     }
 
