@@ -7,6 +7,7 @@ public record SignupRequest(
         String email,
         String password,
         String name,
-        boolean isTeacher
+        boolean isTeacher,
+        boolean isApproved
 ) {
 }
