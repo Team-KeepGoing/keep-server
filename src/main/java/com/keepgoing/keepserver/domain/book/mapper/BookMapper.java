@@ -11,27 +11,28 @@ import java.time.LocalDateTime;
 public class BookMapper {
     public BookResponseDto entityToDto(Book entity) {
         return BookResponseDto.builder()
-                .id(entity.getId())
-                .bookName(entity.getBookName())
-                .registrationDate(entity.getRegistrationDate())
-                .writer(entity.getWriter())
-                .imageUrl(entity.getImageUrl())
-                .nfcCode(entity.getNfcCode())
-                .lastBorrowerMail(entity.getLastBorrowerMail())
-                .rentDate(entity.getRentDate())
-                .state(entity.getState())
-                .build();
+                              .id(entity.getId())
+                              .bookName(entity.getBookName())
+                              .registrationDate(entity.getRegistrationDate())
+                              .writer(entity.getWriter())
+                              .imageUrl(entity.getImageUrl())
+                              .borrower(entity.getBorrower() != null ? entity.getBorrower().getName() : "대여자 없음")
+                              .nfcCode(entity.getNfcCode())
+                              .lastBorrowerMail(entity.getLastBorrowerMail())
+                              .rentDate(entity.getRentDate())
+                              .state(entity.getState())
+                              .build();
     }
 
     public Book dtoToEntity(BookDto dto, String nfcCode) {
         return Book.builder()
-                .bookName(dto.bookName())
-                .imageUrl(dto.imageUrl())
-                .registrationDate(LocalDateTime.now())
-                .rentDate(dto.rentDate())
-                .writer(dto.writer())
-                .state(BookState.AVAILABLE)
-                .nfcCode(nfcCode)
-                .build();
+                   .bookName(dto.bookName())
+                   .imageUrl(dto.imageUrl())
+                   .registrationDate(LocalDateTime.now())
+                   .rentDate(dto.rentDate())
+                   .writer(dto.writer())
+                   .state(BookState.AVAILABLE)
+                   .nfcCode(nfcCode)
+                   .build();
     }
 }

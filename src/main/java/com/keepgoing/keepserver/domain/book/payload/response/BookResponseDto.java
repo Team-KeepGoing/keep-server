@@ -12,6 +12,7 @@ public record BookResponseDto(
         String bookName,
         String writer,
         String imageUrl,
+        String borrower,
         String nfcCode,
         String lastBorrowerMail,
         LocalDateTime registrationDate,
