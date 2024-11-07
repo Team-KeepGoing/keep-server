@@ -59,6 +59,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                                                 book.bookName,
                                                 book.writer,
                                                 book.imageUrl,
+                                                book.borrower.name,
                                                 book.nfcCode,
                                                 book.lastBorrowerMail,
                                                 book.registrationDate,
@@ -82,7 +83,6 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                                           .collect(Collectors.toSet()))
                       .borrowedBooks(dto.borrowedBooks().stream().filter(r -> r.id() != 0).collect(Collectors.toSet()))
                       .build();
-//        return null;
     }
 
     @Override
