@@ -6,6 +6,7 @@ import com.keepgoing.keepserver.domain.teacher.mapper.ItemMapper;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
 import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponse;
 import com.keepgoing.keepserver.global.common.BaseResponse;
+import com.keepgoing.keepserver.global.exception.teacher.ItemException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,13 @@ public class ItemServiceImpl implements ItemService {
     public BaseResponse createItem(ItemRequest request) {
         itemRepository.save(itemMapper.dtoToEntity(request));
         return new BaseResponse(HttpStatus.OK, "Successful creation of managed items");
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BaseResponse readItem(Long id) {
+        Item item = itemRepository.findById(id).orElseThrow(ItemException::itemNotFound);
+        return new BaseResponse(HttpStatus.OK, "Successful query of managed item details", itemMapper.entityToDto(item));
     }
 
 }
