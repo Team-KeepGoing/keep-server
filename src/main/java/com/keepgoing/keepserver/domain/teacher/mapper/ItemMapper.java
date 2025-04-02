@@ -1,6 +1,7 @@
 package com.keepgoing.keepserver.domain.teacher.mapper;
 
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
+import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
 import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponseDto;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,16 @@ public class ItemMapper {
                 .register_person(entity.getRegister_person())
                 .usage_date(entity.getUsage_date())
                 .memo(entity.getMemo())
+                .build();
+    }
+
+    public Item dtoToEntity(ItemRequest dto) {
+        return Item.builder()
+                .item(dto.item())
+                .serial_number(dto.serial_number())
+                .acquisition_date(dto.acquisition_date())
+                .price(dto.price())
+                .register_person(dto.register_person())
                 .build();
     }
 
