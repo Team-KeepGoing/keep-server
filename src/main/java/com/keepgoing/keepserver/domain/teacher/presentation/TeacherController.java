@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.teacher.presentation;
 
+import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
 import com.keepgoing.keepserver.domain.teacher.service.ItemService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +21,12 @@ public class TeacherController {
     @GetMapping("/item/list")
     public BaseResponse allItems(){
         return itemService.findAll();
+    }
+
+    @Operation(summary = "관리 물품 직접 추가", description = "관리할 물품을 직접 추가합니다.")
+    @PostMapping("/item")
+    public BaseResponse createItem(@RequestBody ItemRequest request){
+        return itemService.createItem(request);
     }
 
 }
