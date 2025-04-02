@@ -60,4 +60,15 @@ public class Item {
     @Column(nullable = true)
     private LocalDateTime memo;
 
+    @Builder
+    public Item(String item, String serial_number, LocalDateTime acquisition_date, LocalDateTime price, String register_person) {
+        this.item = item;
+        this.serial_number = serial_number;
+        this.acquisition_date = acquisition_date;
+        this.price = price;
+        this.register_person = register_person;
+        this.usage_date = LocalDateTime.now();
+        this.memo = LocalDateTime.now();
+    }
+
 }
