@@ -3,6 +3,7 @@ package com.keepgoing.keepserver.domain.teacher.service;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
 import com.keepgoing.keepserver.domain.teacher.domain.repository.ItemRepository;
 import com.keepgoing.keepserver.domain.teacher.mapper.ItemMapper;
+import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
 import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponseDto;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,13 @@ public class ItemServiceImpl implements ItemService {
         List<Item> items = itemRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         List<ItemResponseDto> dtos = itemMapper.convertItemsToDtos(items);
         return new BaseResponse(HttpStatus.OK, "Successful query of managed items list", dtos);
+    }
+
+    @Override
+    @Transactional
+    public BaseResponse createItem(ItemRequest request) {
+        itemRepository.save(itemMapper.dtoToEntity(request));
+        return new BaseResponse(HttpStatus.OK, "Successful creation of managed items");
     }
 
 }
