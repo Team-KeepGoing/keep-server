@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record ItemResponseDto(
+public record ItemResponse(
         Long id,
         String item,
         String serial_number,

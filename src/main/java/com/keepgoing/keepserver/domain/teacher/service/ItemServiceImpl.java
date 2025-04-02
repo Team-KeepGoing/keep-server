@@ -4,7 +4,7 @@ import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
 import com.keepgoing.keepserver.domain.teacher.domain.repository.ItemRepository;
 import com.keepgoing.keepserver.domain.teacher.mapper.ItemMapper;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
-import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponseDto;
+import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponse;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -25,7 +25,7 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(readOnly = true)
     public BaseResponse findAll() {
         List<Item> items = itemRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
-        List<ItemResponseDto> dtos = itemMapper.convertItemsToDtos(items);
+        List<ItemResponse> dtos = itemMapper.convertItemsToDtos(items);
         return new BaseResponse(HttpStatus.OK, "Successful query of managed items list", dtos);
     }
 

@@ -2,7 +2,7 @@ package com.keepgoing.keepserver.domain.teacher.mapper;
 
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
-import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponseDto;
+import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 @Component
 public class ItemMapper {
 
-    public ItemResponseDto entityToDto(Item entity) {
-        return ItemResponseDto.builder()
+    public ItemResponse entityToDto(Item entity) {
+        return ItemResponse.builder()
                 .id(entity.getId())
                 .item(entity.getItem())
                 .serial_number(entity.getSerial_number())
@@ -34,7 +34,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public List<ItemResponseDto> convertItemsToDtos(List<Item> items) {
+    public List<ItemResponse> convertItemsToDtos(List<Item> items) {
         return items.stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
