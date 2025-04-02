@@ -40,7 +40,7 @@ public class Item {
         취득 단가
     */
     @Column(nullable = false)
-    private LocalDateTime price;
+    private String price;
 
     /*
         등록자
@@ -61,7 +61,7 @@ public class Item {
     private LocalDateTime memo;
 
     @Builder
-    public Item(String item, String serial_number, LocalDateTime acquisition_date, LocalDateTime price, String register_person) {
+    public Item(String item, String serial_number, LocalDateTime acquisition_date, String price, String register_person) {
         this.item = item;
         this.serial_number = serial_number;
         this.acquisition_date = acquisition_date;

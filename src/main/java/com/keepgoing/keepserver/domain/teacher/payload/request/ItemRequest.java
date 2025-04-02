@@ -6,7 +6,7 @@ public record ItemRequest (
         String item,
         String serial_number,
         LocalDateTime acquisition_date,
-        LocalDateTime price,
+        String price,
         String register_person
 ) {
 }
