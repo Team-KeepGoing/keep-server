@@ -24,4 +24,10 @@ public class TeacherController {
         return itemService.createItem(request);
     }
 
+    @GetMapping("/item/{id}")
+    public BaseResponse readItem(@PathVariable("id") Long id){
+        return itemService.readItem(id);
+    }
+
+
 }
