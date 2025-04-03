@@ -1,10 +1,12 @@
 package com.keepgoing.keepserver.domain.teacher.service;
 
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
+import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import com.keepgoing.keepserver.domain.teacher.domain.repository.ItemRepository;
 import com.keepgoing.keepserver.domain.teacher.mapper.ItemMapper;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
 import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponse;
+import com.keepgoing.keepserver.domain.teacher.payload.response.ItemStatusCountResponse;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import com.keepgoing.keepserver.global.exception.teacher.ItemException;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +45,21 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(id).orElseThrow(ItemException::itemNotFound);
         return new BaseResponse(HttpStatus.OK, "Successful query of managed item details", itemMapper.entityToDto(item));
     }
+
+    @Transactional(readOnly = true)
+    public BaseResponse statusCount() {
+        ItemStatusCountResponse response = getItemStatusCount();
+        return new BaseResponse(HttpStatus.OK, "Item status count retrieved successfully", response);
+    }
+
+    private ItemStatusCountResponse getItemStatusCount() {
+        return new ItemStatusCountResponse(
+                itemRepository.count(),
+                itemRepository.countByStatus(ItemStatus.AVAILABLE),
+                itemRepository.countByStatus(ItemStatus.IN_USE),
+                itemRepository.countByStatus(ItemStatus.UNAVAILABLE)
+        );
+    }
+
 
 }
