@@ -52,7 +52,7 @@ public class Item {
         사용 일수
     */
     @Column(name = "usage_date", nullable = true)
-    private LocalDateTime usage_date;
+    private Long usage_date;
 
     /*
         메모
@@ -61,13 +61,13 @@ public class Item {
     private String memo;
 
     @Builder
-    public Item(String item, String serialNumber, LocalDateTime acquisitionDate, String price, String registerPerson, String memo) {
+    public Item(String item, String serialNumber, LocalDateTime acquisitionDate, String price, String registerPerson, Long usageDate, String memo) {
         this.item = item;
         this.serialNumber = serialNumber;
         this.acquisitionDate = acquisitionDate;
         this.price = price;
         this.registerPerson = registerPerson;
-        this.usage_date = LocalDateTime.now();
+        this.usage_date = usageDate;
         this.memo = memo;
     }
 
