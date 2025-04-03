@@ -63,7 +63,7 @@ public class Item {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private ItemStatus status;
+    private ItemStatus status = ItemStatus.AVAILABLE;
 
     @Builder
     public Item(String item, String serialNumber, LocalDateTime acquisitionDate, String price, String registerPerson, Long usageDate, String memo, ItemStatus status) {
