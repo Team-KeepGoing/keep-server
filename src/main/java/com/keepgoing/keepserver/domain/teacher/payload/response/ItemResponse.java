@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 public record ItemResponse(
         Long id,
         String item,
-        String serial_number,
-        LocalDateTime acquisition_date,
+        String serialNumber,
+        LocalDateTime acquisitionDate,
         String price,
-        String register_person,
-        LocalDateTime usage_date,
-        LocalDateTime memo
+        String registerPerson,
+        Long usageDate,
+        String memo
 ) {
 }

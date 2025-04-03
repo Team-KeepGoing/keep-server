@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public record ItemRequest (
         String item,
-        String serial_number,
-        LocalDateTime acquisition_date,
+        String serialNumber,
+        LocalDateTime acquisitionDate,
         String price,
-        String register_person
+        String registerPerson
 ) {
 }

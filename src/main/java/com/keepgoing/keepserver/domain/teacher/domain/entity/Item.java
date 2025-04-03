@@ -52,7 +52,7 @@ public class Item {
         사용 일수
     */
     @Column(name = "usage_date", nullable = true)
-    private Long usage_date;
+    private Long usageDate;
 
     /*
         메모
@@ -67,7 +67,7 @@ public class Item {
         this.acquisitionDate = acquisitionDate;
         this.price = price;
         this.registerPerson = registerPerson;
-        this.usage_date = usageDate;
+        this.usageDate = usageDate;
         this.memo = memo;
     }
 

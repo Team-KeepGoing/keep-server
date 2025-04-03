@@ -15,11 +15,11 @@ public class ItemMapper {
         return ItemResponse.builder()
                 .id(entity.getId())
                 .item(entity.getItem())
-                .serial_number(entity.getSerial_number())
-                .acquisition_date(entity.getAcquisition_date())
+                .serialNumber(entity.getSerialNumber())
+                .acquisitionDate(entity.getAcquisitionDate())
                 .price(entity.getPrice())
-                .register_person(entity.getRegister_person())
-                .usage_date(entity.getUsage_date())
+                .registerPerson(entity.getRegisterPerson())
+                .usageDate(entity.getUsageDate())
                 .memo(entity.getMemo())
                 .build();
     }
@@ -27,10 +27,10 @@ public class ItemMapper {
     public Item dtoToEntity(ItemRequest dto) {
         return Item.builder()
                 .item(dto.item())
-                .serial_number(dto.serial_number())
-                .acquisition_date(dto.acquisition_date())
+                .serialNumber(dto.serialNumber())
+                .acquisitionDate(dto.acquisitionDate())
                 .price(dto.price())
-                .register_person(dto.register_person())
+                .registerPerson(dto.registerPerson())
                 .build();
     }
 
