@@ -29,5 +29,9 @@ public class TeacherController {
         return itemService.readItem(id);
     }
 
+    @GetMapping("/item/count")
+    public BaseResponse statusCount() {
+        return itemService.statusCount();
+    }
 
 }
