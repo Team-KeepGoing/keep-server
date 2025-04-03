@@ -28,13 +28,13 @@ public class Item {
         분류 번호
     */
     @Column(nullable = false)
-    private String serial_number;
+    private String serialNumber;
 
     /*
         취득 일자
     */
     @Column(nullable = false)
-    private LocalDateTime acquisition_date;
+    private LocalDateTime acquisitionDate;
 
     /*
         취득 단가
@@ -46,7 +46,7 @@ public class Item {
         등록자
     */
     @Column(nullable = false)
-    private String register_person;
+    private String registerPerson;
 
     /*
         사용 일수
@@ -58,17 +58,17 @@ public class Item {
         메모
     */
     @Column(nullable = true)
-    private LocalDateTime memo;
+    private String memo;
 
     @Builder
-    public Item(String item, String serial_number, LocalDateTime acquisition_date, String price, String register_person) {
+    public Item(String item, String serialNumber, LocalDateTime acquisitionDate, String price, String registerPerson, String memo) {
         this.item = item;
-        this.serial_number = serial_number;
-        this.acquisition_date = acquisition_date;
+        this.serialNumber = serialNumber;
+        this.acquisitionDate = acquisitionDate;
         this.price = price;
-        this.register_person = register_person;
+        this.registerPerson = registerPerson;
         this.usage_date = LocalDateTime.now();
-        this.memo = LocalDateTime.now();
+        this.memo = memo;
     }
 
 }
