@@ -21,43 +21,43 @@ public class Item {
     /*
         품명
     */
-    @Column(nullable = false)
+    @Column(name = "item", nullable = false)
     private String item;
 
     /*
         분류 번호
     */
-    @Column(nullable = false)
+    @Column(name = "serial_number", nullable = false)
     private String serialNumber;
 
     /*
         취득 일자
     */
-    @Column(nullable = false)
+    @Column(name = "acquisition_date", nullable = false)
     private LocalDateTime acquisitionDate;
 
     /*
         취득 단가
     */
-    @Column(nullable = false)
+    @Column(name = "price", nullable = false)
     private String price;
 
     /*
         등록자
     */
-    @Column(nullable = false)
+    @Column(name = "register_person", nullable = false)
     private String registerPerson;
 
     /*
         사용 일수
     */
-    @Column(nullable = true)
+    @Column(name = "usage_date", nullable = true)
     private LocalDateTime usage_date;
 
     /*
         메모
     */
-    @Column(nullable = true)
+    @Column(name = "memo", nullable = true)
     private String memo;
 
     @Builder
