@@ -34,7 +34,7 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public BaseResponse createItem(ItemRequest request) {
         itemRepository.save(itemMapper.dtoToEntity(request));
-        return new BaseResponse(HttpStatus.OK, "Successful creation of managed items");
+        return new BaseResponse(HttpStatus.CREATED, "Successful creation of managed items");
     }
 
     @Override
