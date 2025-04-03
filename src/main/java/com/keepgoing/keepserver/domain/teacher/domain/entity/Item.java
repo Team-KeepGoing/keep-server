@@ -21,54 +21,54 @@ public class Item {
     /*
         품명
     */
-    @Column(name = "item", nullable = false)
+    @Column(nullable = false)
     private String item;
 
     /*
         분류 번호
     */
-    @Column(name = "serial_number", nullable = false)
-    private String serialNumber;
+    @Column(nullable = false)
+    private String serial_number;
 
     /*
         취득 일자
     */
-    @Column(name = "acquisition_date", nullable = false)
-    private LocalDateTime acquisitionDate;
+    @Column(nullable = false)
+    private LocalDateTime acquisition_date;
 
     /*
         취득 단가
     */
-    @Column(name = "price", nullable = false)
+    @Column(nullable = false)
     private String price;
 
     /*
         등록자
     */
-    @Column(name = "register_person", nullable = false)
-    private String registerPerson;
+    @Column(nullable = false)
+    private String register_person;
 
     /*
         사용 일수
     */
-    @Column(name = "usage_date", nullable = true)
-    private Long usageDate;
+    @Column(nullable = true)
+    private LocalDateTime usage_date;
 
     /*
         메모
     */
-    @Column(name = "memo", nullable = true)
-    private String memo;
+    @Column(nullable = true)
+    private LocalDateTime memo;
 
     @Builder
-    public Item(String item, String serialNumber, LocalDateTime acquisitionDate, String price, String registerPerson, Long usageDate, String memo) {
+    public Item(String item, String serial_number, LocalDateTime acquisition_date, String price, String register_person) {
         this.item = item;
-        this.serialNumber = serialNumber;
-        this.acquisitionDate = acquisitionDate;
+        this.serial_number = serial_number;
+        this.acquisition_date = acquisition_date;
         this.price = price;
-        this.registerPerson = registerPerson;
-        this.usageDate = usageDate;
-        this.memo = memo;
+        this.register_person = register_person;
+        this.usage_date = LocalDateTime.now();
+        this.memo = LocalDateTime.now();
     }
 
 }
