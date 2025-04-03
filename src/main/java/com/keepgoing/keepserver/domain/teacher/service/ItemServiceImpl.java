@@ -48,14 +48,17 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional(readOnly = true)
     public BaseResponse statusCount() {
-        ItemStatusCountResponse response = new ItemStatusCountResponse(
+        ItemStatusCountResponse response = getItemStatusCount();
+        return new BaseResponse(HttpStatus.OK, "Item status count retrieved successfully", response);
+    }
+
+    private ItemStatusCountResponse getItemStatusCount() {
+        return new ItemStatusCountResponse(
                 itemRepository.count(),
                 itemRepository.countByStatus(ItemStatus.AVAILABLE),
                 itemRepository.countByStatus(ItemStatus.IN_USE),
                 itemRepository.countByStatus(ItemStatus.UNAVAILABLE)
         );
-
-        return new BaseResponse(HttpStatus.OK, "Item status count retrieved successfully", response);
     }
 
 
