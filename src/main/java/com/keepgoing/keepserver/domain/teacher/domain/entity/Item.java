@@ -22,60 +22,59 @@ public class Item {
     /*
         품명
     */
-    @Column(nullable = false)
+    @Column(name = "item", nullable = false)
     private String item;
 
     /*
         분류 번호
     */
-    @Column(nullable = false)
-    private String serial_number;
+    @Column(name = "serial_number", nullable = false)
+    private String serialNumber;
 
     /*
         취득 일자
     */
-    @Column(nullable = false)
-    private LocalDateTime acquisition_date;
+    @Column(name = "acquisition_date", nullable = false)
+    private LocalDateTime acquisitionDate;
 
     /*
         취득 단가
     */
-    @Column(nullable = false)
+    @Column(name = "price", nullable = false)
     private String price;
 
     /*
         등록자
     */
-    @Column(nullable = false)
-    private String register_person;
+    @Column(name = "register_person", nullable = false)
+    private String registerPerson;
 
     /*
         사용 일수
     */
-    @Column(nullable = true)
-    private LocalDateTime usage_date;
+    @Column(name = "usage_date", nullable = true)
+    private Long usageDate;
 
     /*
         메모
     */
-    @Column(nullable = true)
-    private LocalDateTime memo;
+    @Column(name = "memo", nullable = true)
+    private String memo;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     private ItemStatus status;
 
     @Builder
-    public Item(String item, String serial_number, LocalDateTime acquisition_date, String price, String register_person, ItemStatus status) {
+    public Item(String item, String serialNumber, LocalDateTime acquisitionDate, String price, String registerPerson, Long usageDate, String memo, ItemStatus status) {
         this.item = item;
-        this.serial_number = serial_number;
-        this.acquisition_date = acquisition_date;
+        this.serialNumber = serialNumber;
+        this.acquisitionDate = acquisitionDate;
         this.price = price;
-        this.register_person = register_person;
-        this.usage_date = LocalDateTime.now();
-        this.memo = LocalDateTime.now();
+        this.registerPerson = registerPerson;
+        this.usageDate = usageDate;
+        this.memo = memo;
         this.status = status;
-
     }
 
 }
