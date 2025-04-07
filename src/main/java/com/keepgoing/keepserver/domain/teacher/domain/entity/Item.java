@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.teacher.domain.entity;
 
+import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -60,8 +61,12 @@ public class Item {
     @Column(name = "memo", nullable = true)
     private String memo;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private ItemStatus status = ItemStatus.AVAILABLE;
+
     @Builder
-    public Item(String item, String serialNumber, LocalDateTime acquisitionDate, String price, String registerPerson, Long usageDate, String memo) {
+    public Item(String item, String serialNumber, LocalDateTime acquisitionDate, String price, String registerPerson, Long usageDate, String memo, ItemStatus status) {
         this.item = item;
         this.serialNumber = serialNumber;
         this.acquisitionDate = acquisitionDate;
@@ -69,6 +74,7 @@ public class Item {
         this.registerPerson = registerPerson;
         this.usageDate = usageDate;
         this.memo = memo;
+        this.status = status;
     }
 
 }
