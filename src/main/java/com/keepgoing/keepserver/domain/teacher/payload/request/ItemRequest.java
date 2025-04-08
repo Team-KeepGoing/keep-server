@@ -20,7 +20,7 @@ public record ItemRequest (
         LocalDateTime acquisitionDate,
 
         @NotNull
-        String price,
+        Long price,
 
         @NotNull
         String place

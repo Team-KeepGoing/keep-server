@@ -47,13 +47,13 @@ public class Item {
         취득 단가
     */
     @Column(name = "price", nullable = false)
-    private String price;
+    private Long price;
 
     /*
         사용자
     */
-    @Column(name = "user", nullable = true)
-    private String user;
+    @Column(name = "rentedBy", nullable = true)
+    private String rentedBy;
 
     /*
         기기 위치
@@ -84,18 +84,18 @@ public class Item {
     private ItemStatus status = ItemStatus.AVAILABLE;
 
     @Builder
-    public Item(String item, String details, String serialNumber, LocalDateTime acquisitionDate, String price, String user, String place, LocalDateTime returnDate, LocalDateTime rentalDate, Long usageDate, ItemStatus status) {
+    public Item(String item, String details, String serialNumber, LocalDateTime acquisitionDate, Long price, String rentedBy, String place, LocalDateTime returnDate, LocalDateTime rentalDate, Long usageDate, ItemStatus status) {
         this.item = item;
         this.details = details;
         this.serialNumber = serialNumber;
         this.acquisitionDate = acquisitionDate;
         this.price = price;
-        this.user = user;
+        this.rentedBy = rentedBy;
         this.place = place;
         this.returnDate = returnDate;
         this.rentalDate = rentalDate;
         this.usageDate = usageDate;
-        this.status = status;
+        this.status = status != null ? status : ItemStatus.AVAILABLE;
     }
 
 }
