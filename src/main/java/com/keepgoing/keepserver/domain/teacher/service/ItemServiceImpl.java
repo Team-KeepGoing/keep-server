@@ -5,6 +5,7 @@ import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import com.keepgoing.keepserver.domain.teacher.domain.repository.ItemRepository;
 import com.keepgoing.keepserver.domain.teacher.mapper.ItemMapper;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
+import com.keepgoing.keepserver.domain.teacher.payload.request.ItemStatusUpdateRequest;
 import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponse;
 import com.keepgoing.keepserver.domain.teacher.payload.response.ItemStatusCountResponse;
 import com.keepgoing.keepserver.global.common.BaseResponse;
@@ -46,11 +47,24 @@ public class ItemServiceImpl implements ItemService {
         return new BaseResponse(HttpStatus.OK, "Successful query of managed item details", itemMapper.entityToDto(item));
     }
 
+    @Override
     @Transactional(readOnly = true)
     public BaseResponse statusCount() {
         ItemStatusCountResponse response = getItemStatusCount();
         return new BaseResponse(HttpStatus.OK, "Item status count retrieved successfully", response);
     }
+
+    @Override
+    @Transactional
+    public BaseResponse updateItemStatus(ItemStatusUpdateRequest request) {
+        Item item = itemRepository.findById(request.itemId())
+                .orElseThrow(ItemException::itemNotFound);
+
+        item.updateStatus(request.status());
+
+        return new BaseResponse(HttpStatus.OK, "Item status has been changed successfully");
+    }
+
 
     private ItemStatusCountResponse getItemStatusCount() {
         return new ItemStatusCountResponse(
