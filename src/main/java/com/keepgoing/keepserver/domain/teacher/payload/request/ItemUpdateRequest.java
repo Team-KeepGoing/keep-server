@@ -1,5 +1,7 @@
 package com.keepgoing.keepserver.domain.teacher.payload.request;
 
+import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
+
 import java.time.LocalDateTime;
 
 public record ItemUpdateRequest(
@@ -13,6 +15,6 @@ public record ItemUpdateRequest(
         LocalDateTime returnDate,
         LocalDateTime rentalDate,
         LocalDateTime usageDate,
-        String status
+        ItemStatus status
 ) {}
 

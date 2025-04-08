@@ -1,5 +1,6 @@
 package com.keepgoing.keepserver.domain.teacher.payload.response;
 
+import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,6 @@ public record ItemResponse(
         LocalDateTime returnDate,
         LocalDateTime rentalDate,
         Long usageDate,
-        String status
+        ItemStatus status
 ) {
 }
