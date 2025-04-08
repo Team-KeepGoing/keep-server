@@ -9,12 +9,12 @@ public record ItemUpdateRequest(
         String details,
         String serialNumber,
         LocalDateTime acquisitionDate,
-        Integer price,
+        Long price,
         String rentedBy,
         String place,
         LocalDateTime returnDate,
         LocalDateTime rentalDate,
-        LocalDateTime usageDate,
+        Long usageDate,
         ItemStatus status
 ) {}
 
