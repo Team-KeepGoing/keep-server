@@ -11,7 +11,7 @@ public record ItemResponse(
         String item,
         String serialNumber,
         LocalDateTime acquisitionDate,
-        String price,
+        Long price,
         String rentedBy,
         String place,
         LocalDateTime returnDate,
