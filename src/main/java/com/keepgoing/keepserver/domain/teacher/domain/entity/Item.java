@@ -53,7 +53,7 @@ public class Item {
     /*
         사용자
     */
-    @Column(name = "rentedBy", nullable = true)
+    @Column(name = "rented_by", nullable = true)
     private String rentedBy;
 
     /*
