@@ -52,7 +52,7 @@ public class Item {
     /*
         사용자
     */
-    @Column(name = "user", nullable = false)
+    @Column(name = "user", nullable = true)
     private String user;
 
     /*
@@ -64,13 +64,13 @@ public class Item {
     /*
         반납일
     */
-    @Column(name = "return_date", nullable = false)
+    @Column(name = "return_date", nullable = true)
     private LocalDateTime returnDate;
 
     /*
         대여일
     */
-    @Column(name = "rental_date", nullable = false)
+    @Column(name = "rental_date", nullable = true)
     private LocalDateTime rentalDate;
 
     /*
