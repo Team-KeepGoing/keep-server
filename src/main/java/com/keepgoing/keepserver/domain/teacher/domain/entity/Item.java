@@ -98,4 +98,8 @@ public class Item {
         this.status = status != null ? status : ItemStatus.AVAILABLE;
     }
 
+    public void updateStatus(ItemStatus status) {
+        this.status = status;
+    }
+
 }
