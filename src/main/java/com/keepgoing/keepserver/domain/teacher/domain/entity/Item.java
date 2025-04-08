@@ -26,6 +26,12 @@ public class Item {
     private String item;
 
     /*
+        세부 제품명
+    */
+    @Column(name = "details", nullable = false)
+    private String details;
+
+    /*
         분류 번호
     */
     @Column(name = "serial_number", nullable = false)
@@ -44,10 +50,28 @@ public class Item {
     private String price;
 
     /*
-        등록자
+        사용자
     */
-    @Column(name = "register_person", nullable = false)
-    private String registerPerson;
+    @Column(name = "user", nullable = false)
+    private String user;
+
+    /*
+        대여 위치
+    */
+    @Column(name = "place", nullable = false)
+    private String place;
+
+    /*
+        반납일
+    */
+    @Column(name = "return_date", nullable = false)
+    private LocalDateTime returnDate;
+
+    /*
+        대여일
+    */
+    @Column(name = "rental_date", nullable = false)
+    private LocalDateTime rentalDate;
 
     /*
         사용 일수
@@ -55,25 +79,22 @@ public class Item {
     @Column(name = "usage_date", nullable = true)
     private Long usageDate;
 
-    /*
-        메모
-    */
-    @Column(name = "memo", nullable = true)
-    private String memo;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ItemStatus status = ItemStatus.AVAILABLE;
 
     @Builder
-    public Item(String item, String serialNumber, LocalDateTime acquisitionDate, String price, String registerPerson, Long usageDate, String memo, ItemStatus status) {
+    public Item(String item, String details, String serialNumber, LocalDateTime acquisitionDate, String price, String user, String place, LocalDateTime returnDate, LocalDateTime rentalDate, Long usageDate, ItemStatus status) {
         this.item = item;
+        this.details = details;
         this.serialNumber = serialNumber;
         this.acquisitionDate = acquisitionDate;
         this.price = price;
-        this.registerPerson = registerPerson;
+        this.user = user;
+        this.place = place;
+        this.returnDate = returnDate;
+        this.rentalDate = rentalDate;
         this.usageDate = usageDate;
-        this.memo = memo;
         this.status = status;
     }
 
