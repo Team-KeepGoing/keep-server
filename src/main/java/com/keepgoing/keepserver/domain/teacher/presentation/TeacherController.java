@@ -31,7 +31,7 @@ public class TeacherController {
         return itemService.readItem(id);
     }
 
-    @PatchMapping("/item/{id}")
+    @PutMapping("/item/{id}")
     public BaseResponse updateItem(@PathVariable Long id, @RequestBody ItemUpdateRequest request) {
         return itemService.updateItem(id, request);
     }
