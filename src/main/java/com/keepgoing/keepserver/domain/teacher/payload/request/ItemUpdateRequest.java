@@ -12,6 +12,7 @@ public record ItemUpdateRequest(
         String place,
         LocalDateTime returnDate,
         LocalDateTime rentalDate,
-        LocalDateTime usageDate
+        LocalDateTime usageDate,
+        String status
 ) {}
 
