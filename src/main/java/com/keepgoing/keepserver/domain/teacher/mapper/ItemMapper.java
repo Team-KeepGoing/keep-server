@@ -13,6 +13,6 @@ public interface ItemMapper {
 
     ItemResponse entityToDto(Item entity);
     Item dtoToEntity(ItemRequest dto);
-    void updateItem(@MappingTarget Item target, ItemUpdateRequest source);
+
     List<ItemResponse> convertItemsToDtos(List<Item> items);
 }
