@@ -6,6 +6,7 @@ import com.keepgoing.keepserver.domain.teacher.domain.repository.ItemRepository;
 import com.keepgoing.keepserver.domain.teacher.mapper.ItemMapper;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemStatusUpdateRequest;
+import com.keepgoing.keepserver.domain.teacher.payload.request.ItemUpdateRequest;
 import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponse;
 import com.keepgoing.keepserver.domain.teacher.payload.response.ItemStatusCountResponse;
 import com.keepgoing.keepserver.global.common.BaseResponse;
@@ -49,7 +50,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public BaseResponse updateItem(Long id, ItemRequest request) {
+    public BaseResponse updateItem(Long id, ItemUpdateRequest request) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(ItemException::itemNotFound);
 
