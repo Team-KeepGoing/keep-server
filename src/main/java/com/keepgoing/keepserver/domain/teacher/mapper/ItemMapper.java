@@ -2,8 +2,9 @@ package com.keepgoing.keepserver.domain.teacher.mapper;
 
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
+import com.keepgoing.keepserver.domain.teacher.payload.request.ItemUpdateRequest;
 import com.keepgoing.keepserver.domain.teacher.payload.response.ItemResponse;
-import org.mapstruct.Mapper;
+import org.mapstruct.*;
 
 import java.util.List;
 

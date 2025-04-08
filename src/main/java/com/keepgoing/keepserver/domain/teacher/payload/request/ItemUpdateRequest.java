@@ -1,14 +1,12 @@
-package com.keepgoing.keepserver.domain.teacher.payload.response;
+package com.keepgoing.keepserver.domain.teacher.payload.request;
 
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
-import lombok.Builder;
 
 import java.time.LocalDateTime;
 
-@Builder
-public record ItemResponse(
-        Long id,
+public record ItemUpdateRequest(
         String item,
+        String details,
         String serialNumber,
         LocalDateTime acquisitionDate,
         Long price,
@@ -18,4 +16,5 @@ public record ItemResponse(
         LocalDateTime rentalDate,
         Long usageDate,
         ItemStatus status
-) { }
+) {}
+

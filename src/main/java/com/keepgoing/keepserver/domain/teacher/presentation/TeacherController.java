@@ -1,6 +1,8 @@
 package com.keepgoing.keepserver.domain.teacher.presentation;
 
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
+import com.keepgoing.keepserver.domain.teacher.payload.request.ItemStatusUpdateRequest;
+import com.keepgoing.keepserver.domain.teacher.payload.request.ItemUpdateRequest;
 import com.keepgoing.keepserver.domain.teacher.service.ItemService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +31,19 @@ public class TeacherController {
         return itemService.readItem(id);
     }
 
+    @PatchMapping("/item/{id}")
+    public BaseResponse updateItem(@PathVariable Long id, @RequestBody ItemUpdateRequest request) {
+        return itemService.updateItem(id, request);
+    }
+
     @GetMapping("/item/count")
     public BaseResponse statusCount() {
         return itemService.statusCount();
+    }
+
+    @PatchMapping("/item/status")
+    public BaseResponse updateItemStatus(@RequestBody ItemStatusUpdateRequest request) {
+        return itemService.updateItemStatus(request);
     }
 
 }

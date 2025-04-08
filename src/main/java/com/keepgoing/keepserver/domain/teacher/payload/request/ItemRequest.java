@@ -11,14 +11,17 @@ public record ItemRequest (
         String item,
 
         @NotNull
+        String details,
+
+        @NotNull
         String serialNumber,
 
         @NotNull
         LocalDateTime acquisitionDate,
 
         @NotNull
-        String price,
+        Long price,
 
         @NotNull
-        String registerPerson
+        String place
 ) {}
