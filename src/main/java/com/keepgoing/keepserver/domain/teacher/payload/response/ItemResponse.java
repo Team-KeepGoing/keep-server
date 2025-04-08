@@ -18,5 +18,4 @@ public record ItemResponse(
         LocalDateTime rentalDate,
         Long usageDate,
         ItemStatus status
-) {
-}
+) { }
