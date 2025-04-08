@@ -30,6 +30,11 @@ public class TeacherController {
         return itemService.readItem(id);
     }
 
+    @PatchMapping("/item/{id}")
+    public BaseResponse updateItem(@PathVariable Long id, @RequestBody ItemRequest request) {
+        return itemService.updateItem(id, request);
+    }
+
     @GetMapping("/item/count")
     public BaseResponse statusCount() {
         return itemService.statusCount();
