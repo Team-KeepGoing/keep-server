@@ -9,5 +9,6 @@ public interface ItemService {
     BaseResponse statusCount();
     BaseResponse readItem(Long id);
     BaseResponse createItem(ItemRequest request);
+    BaseResponse updateItem(Long id, ItemRequest request);
     BaseResponse updateItemStatus(ItemStatusUpdateRequest request);
 }

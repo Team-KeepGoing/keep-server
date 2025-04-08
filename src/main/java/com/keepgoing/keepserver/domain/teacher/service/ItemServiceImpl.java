@@ -48,6 +48,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
+    public BaseResponse updateItem(Long id, ItemRequest request) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(ItemException::itemNotFound);
+
+        itemMapper.updateItem(item, request);
+
+        return new BaseResponse(HttpStatus.OK, "Item information has been updated successfully.");
+    }
+
+
+    @Override
     @Transactional(readOnly = true)
     public BaseResponse statusCount() {
         ItemStatusCountResponse response = getItemStatusCount();
