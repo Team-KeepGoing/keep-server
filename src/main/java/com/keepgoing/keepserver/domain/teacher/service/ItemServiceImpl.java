@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(id)
                 .orElseThrow(ItemException::itemNotFound);
 
-        itemMapper.updateItem(item, request);
+        item.updateItem(request);
 
         return new BaseResponse(HttpStatus.OK, "Item information has been updated successfully.");
     }

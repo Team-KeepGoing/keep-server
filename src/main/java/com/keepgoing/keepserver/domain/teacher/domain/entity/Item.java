@@ -1,6 +1,7 @@
 package com.keepgoing.keepserver.domain.teacher.domain.entity;
 
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
+import com.keepgoing.keepserver.domain.teacher.payload.request.ItemUpdateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -100,6 +101,42 @@ public class Item {
 
     public void updateStatus(ItemStatus status) {
         this.status = status;
+    }
+
+    public void updateItem(ItemUpdateRequest dto) {
+        if (dto.item() != null) {
+            this.item = dto.item();
+        }
+        if (dto.details() != null) {
+            this.details = dto.details();
+        }
+        if (dto.serialNumber() != null) {
+            this.serialNumber = dto.serialNumber();
+        }
+        if (dto.acquisitionDate() != null) {
+            this.acquisitionDate = dto.acquisitionDate();
+        }
+        if (dto.price() != null) {
+            this.price = dto.price();
+        }
+        if (dto.rentedBy() != null) {
+            this.rentedBy = dto.rentedBy();
+        }
+        if (dto.place() != null) {
+            this.place = dto.place();
+        }
+        if (dto.returnDate() != null) {
+            this.returnDate = dto.returnDate();
+        }
+        if (dto.rentalDate() != null) {
+            this.rentalDate = dto.rentalDate();
+        }
+        if (dto.usageDate() != null) {
+            this.usageDate = dto.usageDate();
+        }
+        if (dto.status() != null) {
+            this.status = dto.status();
+        }
     }
 
 }
