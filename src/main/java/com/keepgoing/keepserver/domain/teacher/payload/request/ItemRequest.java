@@ -11,6 +11,9 @@ public record ItemRequest (
         String item,
 
         @NotNull
+        String details,
+
+        @NotNull
         String serialNumber,
 
         @NotNull
@@ -20,5 +23,5 @@ public record ItemRequest (
         String price,
 
         @NotNull
-        String registerPerson
+        String place
 ) {}

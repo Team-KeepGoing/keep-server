@@ -11,8 +11,11 @@ public record ItemResponse(
         String serialNumber,
         LocalDateTime acquisitionDate,
         String price,
-        String registerPerson,
+        String user,
+        String place,
+        LocalDateTime returnDate,
+        LocalDateTime rentalDate,
         Long usageDate,
-        String memo
+        String status
 ) {
 }

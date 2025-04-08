@@ -56,7 +56,7 @@ public class Item {
     private String user;
 
     /*
-        대여 위치
+        기기 위치
     */
     @Column(name = "place", nullable = false)
     private String place;
