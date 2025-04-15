@@ -5,8 +5,12 @@ import com.keepgoing.keepserver.domain.teacher.payload.request.ItemStatusUpdateR
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemUpdateRequest;
 import com.keepgoing.keepserver.domain.teacher.service.ItemService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
+import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -46,4 +50,18 @@ public class TeacherController {
         return itemService.updateItemStatus(request);
     }
 
+    @PostMapping("/item/import")
+    public BaseResponse importItemsFromExcel(@RequestPart(value = "excel")MultipartFile file){
+        return itemService.importItemsFromExcel(file);
+    }
+
+    @GetMapping("/item/template")
+    public ResponseEntity<Resource> downloadItemTemplateFile() {
+        return itemService.downloadItemTemplateFile();
+    }
+
+    @GetMapping("/item/export")
+    public ResponseEntity<Resource> exportItemsToExcelFile(){
+        return itemService.exportItemsToExcelFile();
+    }
 }
