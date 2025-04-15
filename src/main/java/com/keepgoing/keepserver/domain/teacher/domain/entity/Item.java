@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -42,7 +42,7 @@ public class Item {
         취득 일자
     */
     @Column(name = "acquisition_date", nullable = false)
-    private LocalDateTime acquisitionDate;
+    private LocalDate acquisitionDate;
 
     /*
         취득 단가
@@ -66,13 +66,13 @@ public class Item {
         반납일
     */
     @Column(name = "return_date", nullable = true)
-    private LocalDateTime returnDate;
+    private LocalDate returnDate;
 
     /*
         대여일
     */
     @Column(name = "rental_date", nullable = true)
-    private LocalDateTime rentalDate;
+    private LocalDate rentalDate;
 
     /*
         사용 일수
@@ -80,12 +80,16 @@ public class Item {
     @Column(name = "usage_date", nullable = true)
     private Long usageDate;
 
+    /*
+        기기 상태
+     */
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ItemStatus status = ItemStatus.AVAILABLE;
 
     @Builder
-    public Item(String item, String details, String serialNumber, LocalDateTime acquisitionDate, Long price, String rentedBy, String place, LocalDateTime returnDate, LocalDateTime rentalDate, Long usageDate, ItemStatus status) {
+    public Item(String item, String details, String serialNumber, LocalDate acquisitionDate, Long price, String rentedBy, String place, LocalDate returnDate, LocalDate rentalDate, Long usageDate, ItemStatus status) {
         this.item = item;
         this.details = details;
         this.serialNumber = serialNumber;
