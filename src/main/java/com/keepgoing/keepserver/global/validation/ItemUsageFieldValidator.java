@@ -5,12 +5,15 @@ import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class ItemUsageFieldsValidator implements ConstraintValidator<ValidateItem, ItemExcelDto> {
+public class ItemUsageFieldValidator implements ConstraintValidator<ValidateItem, ItemExcelDto> {
 
     @Override
     public boolean isValid(ItemExcelDto dto, ConstraintValidatorContext context) {
         if (dto.status() == ItemStatus.IN_USE) {
-            boolean valid = dto.rentalDate() != null && dto.usageDate() != null;
+            boolean valid = dto.rentalDate() != null
+                    && dto.returnDate() != null
+                    && dto.rentedBy() != null && !dto.rentedBy().isBlank()
+                    && dto.usageDate() != null;
 
             if (!valid) {
                 context.disableDefaultConstraintViolation();

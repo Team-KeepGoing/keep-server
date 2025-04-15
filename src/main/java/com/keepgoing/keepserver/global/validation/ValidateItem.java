@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Target({ ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ItemUsageFieldsValidator.class)
+@Constraint(validatedBy = ItemUsageFieldValidator.class)
 public @interface ValidateItem {
     String message() default "사용 필드 유효성 검증 실패";
     Class<?>[] groups() default {};

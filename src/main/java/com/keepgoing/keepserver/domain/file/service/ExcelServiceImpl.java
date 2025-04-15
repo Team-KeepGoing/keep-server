@@ -1,6 +1,8 @@
 package com.keepgoing.keepserver.domain.file.service;
 
 import com.keepgoing.keepserver.global.exception.excel.ExcelException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -20,12 +22,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.function.Consumer;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
 
+    private final Validator validator;
     private FormulaEvaluator evaluator;
 
     @Override
@@ -53,6 +57,10 @@ public class ExcelServiceImpl implements ExcelService {
                     args.add(guessType(param[j].getType(), row, j));
                 }
                 @SuppressWarnings("unchecked") T t = (T) constructor.newInstance(args.toArray());
+                Set<ConstraintViolation<T>> violations = validator.validate(t);
+                if (!violations.isEmpty()) {
+                    throw ExcelException.EXCEL_VALIDATION_ERROR;
+                }
                 dataList.add(t);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 throw ExcelException.UNABLE_TO_INSTANTIATE;
@@ -90,7 +98,7 @@ public class ExcelServiceImpl implements ExcelService {
                                  .body(resource);
 
         } catch (IOException e) {
-            throw new RuntimeException("엑셀 생성 실패", e);
+            throw ExcelException.EXCEL_NOT_AVAILABLE;
         }
     }
 
@@ -178,5 +186,8 @@ public class ExcelServiceImpl implements ExcelService {
         } else {
             return new HSSFWorkbook(file.getInputStream());
         }
+    }
+    private ExcelServiceImpl(Validator validator) {
+        this.validator = validator;
     }
 }
