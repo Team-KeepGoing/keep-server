@@ -1,5 +1,7 @@
 package com.keepgoing.keepserver.global.config;
 
+import com.keepgoing.keepserver.domain.file.service.generate.GenerateExcelTemplate;
+import com.keepgoing.keepserver.domain.file.service.generate.GenerateExcelTemplateImpl;
 import com.keepgoing.keepserver.domain.file.service.mapper.RowMapper;
 import com.keepgoing.keepserver.domain.file.service.parser.ExcelParser;
 import com.keepgoing.keepserver.domain.file.service.parser.ExcelParserImpl;
@@ -22,6 +24,11 @@ public class ExcelConfig {
     @Bean
     public ExcelValidator<ItemExcelDto> itemExcelDtoExcelValidator(Validator validator) {
         return new ItemExcelDtoValidator(validator);
+    }
+
+    @Bean
+    public GenerateExcelTemplate generateExcelTemplate() {
+        return new GenerateExcelTemplateImpl();
     }
 
     @Bean
