@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.file.service.mapper;
+package com.keepgoing.keepserver.global.file;
 
 import org.apache.poi.ss.usermodel.Row;
 

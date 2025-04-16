@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.teacher.service;
 
-import com.keepgoing.keepserver.domain.file.service.validate.ExcelValidator;
+import com.keepgoing.keepserver.global.file.validate.ExcelValidator;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;

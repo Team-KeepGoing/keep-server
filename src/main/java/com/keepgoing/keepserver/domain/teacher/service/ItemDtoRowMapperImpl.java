@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.teacher.service;
 
-import com.keepgoing.keepserver.domain.file.service.mapper.RowMapper;
+import com.keepgoing.keepserver.global.file.RowMapper;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelDto;
 import com.keepgoing.keepserver.global.exception.excel.ExcelException;
@@ -57,5 +57,4 @@ public class ItemDtoRowMapperImpl implements RowMapper<ItemExcelDto> {
     private Long getLongOrNull(Cell cell) {
         return cell == null ? null : (long) cell.getNumericCellValue();
     }
-
 }

@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.file.service.validate;
+package com.keepgoing.keepserver.global.file.validate;
 
 import java.util.List;
 

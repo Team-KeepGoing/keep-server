@@ -1,9 +1,9 @@
 package com.keepgoing.keepserver.domain.teacher.service;
 
-import com.keepgoing.keepserver.domain.file.service.generate.ExcelGenerator;
-import com.keepgoing.keepserver.domain.file.service.generate.GenerateExcelTemplate;
-import com.keepgoing.keepserver.domain.file.service.parser.ExcelParser;
-import com.keepgoing.keepserver.domain.file.service.validate.ExcelValidationResult;
+import com.keepgoing.keepserver.global.file.generate.ExcelGenerator;
+import com.keepgoing.keepserver.global.file.generate.GenerateExcelTemplate;
+import com.keepgoing.keepserver.global.file.ExcelParser;
+import com.keepgoing.keepserver.global.file.validate.ExcelValidationResult;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import com.keepgoing.keepserver.domain.teacher.domain.repository.ItemRepository;

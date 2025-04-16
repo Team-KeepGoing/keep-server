@@ -1,6 +1,6 @@
-package com.keepgoing.keepserver.domain.file.service.parser;
+package com.keepgoing.keepserver.global.file;
 
-import com.keepgoing.keepserver.domain.file.service.validate.ExcelValidationResult;
+import com.keepgoing.keepserver.global.file.validate.ExcelValidationResult;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
