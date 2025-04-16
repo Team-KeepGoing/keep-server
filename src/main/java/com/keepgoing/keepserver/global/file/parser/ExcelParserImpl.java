@@ -1,5 +1,6 @@
-package com.keepgoing.keepserver.global.file;
+package com.keepgoing.keepserver.global.file.parser;
 
+import com.keepgoing.keepserver.global.file.mapper.RowMapper;
 import com.keepgoing.keepserver.global.file.validate.ExcelValidationResult;
 import com.keepgoing.keepserver.global.file.validate.ExcelValidator;
 import com.keepgoing.keepserver.global.exception.excel.ExcelException;
@@ -50,4 +51,3 @@ public class ExcelParserImpl<T> implements ExcelParser<T> {
         return result;
     }
 }
-

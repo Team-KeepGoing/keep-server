@@ -1,6 +1,6 @@
 package com.keepgoing.keepserver.domain.teacher.service;
 
-import com.keepgoing.keepserver.global.file.RowMapper;
+import com.keepgoing.keepserver.global.file.mapper.RowMapper;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelDto;
 import com.keepgoing.keepserver.global.exception.excel.ExcelException;

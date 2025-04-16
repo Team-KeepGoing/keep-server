@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.global.file;
+package com.keepgoing.keepserver.global.file.parser;
 
 import com.keepgoing.keepserver.global.file.validate.ExcelValidationResult;
 import org.springframework.web.multipart.MultipartFile;

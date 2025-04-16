@@ -2,9 +2,9 @@ package com.keepgoing.keepserver.global.config;
 
 import com.keepgoing.keepserver.global.file.generate.GenerateExcelTemplate;
 import com.keepgoing.keepserver.global.file.generate.GenerateExcelTemplateImpl;
-import com.keepgoing.keepserver.global.file.RowMapper;
-import com.keepgoing.keepserver.global.file.ExcelParser;
-import com.keepgoing.keepserver.global.file.ExcelParserImpl;
+import com.keepgoing.keepserver.global.file.mapper.RowMapper;
+import com.keepgoing.keepserver.global.file.parser.ExcelParser;
+import com.keepgoing.keepserver.global.file.parser.ExcelParserImpl;
 import com.keepgoing.keepserver.global.file.validate.ExcelValidator;
 import com.keepgoing.keepserver.domain.teacher.service.ItemDtoRowMapperImpl;
 import com.keepgoing.keepserver.domain.teacher.service.ItemExcelDtoValidator;
