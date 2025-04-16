@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.global.file.validate;
+package com.keepgoing.keepserver.global.file.model;
 
 import java.util.List;
 

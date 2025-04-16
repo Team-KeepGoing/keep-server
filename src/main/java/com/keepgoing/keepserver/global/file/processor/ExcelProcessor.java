@@ -1,8 +1,8 @@
-package com.keepgoing.keepserver.global.file.process;
+package com.keepgoing.keepserver.global.file.processor;
 
 import com.keepgoing.keepserver.global.file.reader.ExcelReader;
-import com.keepgoing.keepserver.global.file.validate.ExcelValidationResult;
-import com.keepgoing.keepserver.global.file.validate.ExcelValidator;
+import com.keepgoing.keepserver.global.file.model.ExcelValidationResult;
+import com.keepgoing.keepserver.global.file.validator.ExcelValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 

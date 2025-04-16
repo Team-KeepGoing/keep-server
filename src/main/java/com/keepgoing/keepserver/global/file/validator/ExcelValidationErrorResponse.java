@@ -1,4 +1,4 @@
-package com.keepgoing.keepserver.domain.teacher.payload;
+package com.keepgoing.keepserver.global.file.validator;
 
 import java.util.List;
 

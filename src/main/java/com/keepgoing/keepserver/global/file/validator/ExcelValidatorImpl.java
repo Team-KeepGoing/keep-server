@@ -1,5 +1,6 @@
-package com.keepgoing.keepserver.global.file.validate;
+package com.keepgoing.keepserver.global.file.validator;
 
+import com.keepgoing.keepserver.global.file.model.ExcelValidationResult;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.AllArgsConstructor;

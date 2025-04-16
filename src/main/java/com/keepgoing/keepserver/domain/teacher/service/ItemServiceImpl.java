@@ -2,13 +2,13 @@ package com.keepgoing.keepserver.domain.teacher.service;
 
 import com.keepgoing.keepserver.global.file.generate.ExcelGenerator;
 import com.keepgoing.keepserver.global.file.generate.GenerateExcelTemplate;
-import com.keepgoing.keepserver.global.file.process.ExcelProcessor;
-import com.keepgoing.keepserver.global.file.validate.ExcelValidationResult;
+import com.keepgoing.keepserver.global.file.processor.ExcelProcessor;
+import com.keepgoing.keepserver.global.file.model.ExcelValidationResult;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import com.keepgoing.keepserver.domain.teacher.domain.repository.ItemRepository;
 import com.keepgoing.keepserver.domain.teacher.mapper.ItemMapper;
-import com.keepgoing.keepserver.domain.teacher.payload.ExcelValidationErrorResponse;
+import com.keepgoing.keepserver.global.file.validator.ExcelValidationErrorResponse;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelDto;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelTemplateDto;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
