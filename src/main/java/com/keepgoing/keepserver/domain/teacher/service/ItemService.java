@@ -17,6 +17,6 @@ public interface ItemService {
     BaseResponse updateItemStatus(ItemStatusUpdateRequest request);
     BaseResponse importItemsFromExcel(MultipartFile file);
     BaseResponse validateItemsFromExcel(MultipartFile file);
-    ResponseEntity<Resource> downloadItemTemplateFile();
-    ResponseEntity<Resource> exportItemsToExcelFile();
+    Resource downloadItemTemplateFile();
+    Resource exportItemsToExcelFile();
 }

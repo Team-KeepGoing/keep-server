@@ -5,6 +5,8 @@ import com.keepgoing.keepserver.domain.teacher.payload.request.ItemStatusUpdateR
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemUpdateRequest;
 import com.keepgoing.keepserver.domain.teacher.service.ItemService;
 import com.keepgoing.keepserver.global.common.BaseResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +23,17 @@ public class TeacherController {
     private final ItemService itemService;
 
     @GetMapping("/item/list")
-    public BaseResponse allItems(){
+    public BaseResponse allItems() {
         return itemService.findAll();
     }
 
     @PostMapping("/item")
-    public BaseResponse createItem(@RequestBody ItemRequest request){
+    public BaseResponse createItem(@RequestBody ItemRequest request) {
         return itemService.createItem(request);
     }
 
     @GetMapping("/item/{id}")
-    public BaseResponse readItem(@PathVariable("id") Long id){
+    public BaseResponse readItem(@PathVariable("id") Long id) {
         return itemService.readItem(id);
     }
 
@@ -62,11 +64,19 @@ public class TeacherController {
 
     @GetMapping("/item/template")
     public ResponseEntity<Resource> downloadItemTemplateFile() {
-        return itemService.downloadItemTemplateFile();
+        var body = itemService.downloadItemTemplateFile();
+        return ResponseEntity.ok()
+                             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dgsw-item-template.xlsx")
+                             .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                             .body(body);
     }
 
     @GetMapping("/item/export")
-    public ResponseEntity<Resource> exportItemsToExcelFile(){
-        return itemService.exportItemsToExcelFile();
+    public ResponseEntity<Resource> exportItemsToExcelFile() {
+        var body = itemService.exportItemsToExcelFile();
+        return ResponseEntity.ok()
+                             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dgsw-item-template.xlsx")
+                             .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                             .body(body);
     }
 }

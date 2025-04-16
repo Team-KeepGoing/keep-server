@@ -23,12 +23,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -121,18 +122,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ResponseEntity<Resource> downloadItemTemplateFile() {
+    public Resource downloadItemTemplateFile() {
         List<ItemExcelTemplateDto> sample = List.of(new ItemExcelTemplateDto());
         Workbook workbook = generateExcelTemplate.generateTemplate(sample);
-        return ExcelGenerator.generate("dgsw-item-template.xlsx", workbook);
+        return ExcelGenerator.generate(workbook);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<Resource> exportItemsToExcelFile() {
+    public Resource exportItemsToExcelFile() {
         List<Item> items = itemRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         Workbook workbook = generateExcelTemplate.generateTemplate(items);
-        return ExcelGenerator.generate("dgsw-item-list.xlsx", workbook);
+        return ExcelGenerator.generate(workbook);
     }
 
     private ItemStatusCountResponse getItemStatusCount() {
