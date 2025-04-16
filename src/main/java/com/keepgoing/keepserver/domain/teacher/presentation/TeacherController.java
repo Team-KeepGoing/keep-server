@@ -75,7 +75,7 @@ public class TeacherController {
     public ResponseEntity<Resource> exportItemsToExcelFile() {
         var body = itemService.exportItemsToExcelFile();
         return ResponseEntity.ok()
-                             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dgsw-item-template.xlsx")
+                             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dgsw-item-list.xlsx")
                              .contentType(MediaType.APPLICATION_OCTET_STREAM)
                              .body(body);
     }
