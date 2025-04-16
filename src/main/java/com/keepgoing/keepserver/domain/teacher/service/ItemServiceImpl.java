@@ -98,7 +98,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ResponseEntity<Resource> downloadItemTemplateFile() {
-        return excelService.generateExcel(
+        return ExcelGenerator.generateExcel(
                 "item-template.xlsx",
                 "item-list",
                 List.of("분류번호", "취득일자", "금액", "물품명", "세부정보", "상태", "대여자", "보관장소", "반납일자", "대여일자", "사용일수"),
