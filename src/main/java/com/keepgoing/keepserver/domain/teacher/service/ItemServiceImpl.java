@@ -159,4 +159,10 @@ public class ItemServiceImpl implements ItemService {
                 itemRepository.countByStatus(ItemStatus.UNAVAILABLE)
         );
     }
+
+    private void validateBySerialNum(String serialNum) {
+        if (itemRepository.existsBySerialNumber(serialNum)) {
+            throw ItemException.itemSerialNumExist();
+        }
+    }
 }

@@ -35,7 +35,7 @@ public class Item {
     /*
         분류 번호
     */
-    @Column(name = "serial_number", nullable = false)
+    @Column(name = "serial_number", nullable = false, unique = true)
     private String serialNumber;
 
     /*
