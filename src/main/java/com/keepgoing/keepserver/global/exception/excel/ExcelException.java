@@ -5,7 +5,6 @@ import com.keepgoing.keepserver.global.exception.BusinessException;
 public class ExcelException extends BusinessException {
     public static final ExcelException EXCEL_NOT_AVAILABLE = new ExcelException(ExcelError.EXCEL_NOT_AVAILABLE);
     public static final ExcelException EXCEL_UNSUPPORTED_TYPE = new ExcelException(ExcelError.EXCEL_UNSUPPORTED_TYPE);
-    public static final ExcelException EXCEL_NOT_CREATE = new ExcelException(ExcelError.EXCEL_NOT_CREATE);
     public static final ExcelException EXCEL_DATE_FORMAT_ERROR = new ExcelException(ExcelError.EXCEL_DATE_FORMAT_ERROR);
     public static final ExcelException EXCEL_STATUS_VALUE_ERROR = new ExcelException(ExcelError.EXCEL_STATUS_VALUE_ERROR);
     public static final ExcelException EXCEL_CANNOT_PARSE = new ExcelException(ExcelError.EXCEL_CANNOT_PARSE);
@@ -22,10 +21,6 @@ public class ExcelException extends BusinessException {
 
     public static ExcelException excelUnsupportedType() {
         return EXCEL_UNSUPPORTED_TYPE;
-    }
-
-    public static ExcelException excelNotCreate() {
-        return EXCEL_NOT_CREATE;
     }
 
     public static ExcelException excelDateFormatError() {
