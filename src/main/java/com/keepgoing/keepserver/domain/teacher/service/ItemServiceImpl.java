@@ -96,10 +96,13 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public BaseResponse importItemsFromExcel(MultipartFile file) {
         List<ItemExcelDto> dtos = excelProcessor.parseValid(file);
+        Map<String, Boolean> serialNums = getSerialNumberMap(dtos);
+
+        updateExistsBySerialNum(serialNums);
 
         List<Item> items = dtos.stream()
                                .map(itemMapper::fromExcelDto)
-                               .filter(item -> !validateBySerialNum(item.getSerialNumber()))
+                               .filter(item -> isNewItem(serialNums, item.getSerialNumber()))
                                .toList();
 
         itemRepository.saveAll(items);
@@ -145,7 +148,24 @@ public class ItemServiceImpl implements ItemService {
         );
     }
 
-    private boolean validateBySerialNum(String serialNum) {
-        return itemRepository.existsBySerialNumber(serialNum);
+    private Map<String, Boolean> getSerialNumberMap(List<ItemExcelDto> dtos){
+        Map<String, Boolean> serialNums = new HashMap<>();
+
+        for (var dto : dtos) {
+            serialNums.put(dto.serialNumber(), true);
+        }
+        return serialNums;
+    }
+
+    private void updateExistsBySerialNum(Map<String, Boolean> serialNums){
+        var exists = itemRepository.findAllBySerialNumberIn(serialNums.keySet());
+
+        for (var item : exists) {
+            serialNums.put(item.getSerialNumber(), false);
+        }
+    }
+
+    private boolean isNewItem(Map<String, Boolean> serialNums, String serialNum){
+        return serialNums.getOrDefault(serialNum, false);
     }
 }
