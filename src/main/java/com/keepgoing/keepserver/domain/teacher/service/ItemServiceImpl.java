@@ -2,7 +2,7 @@ package com.keepgoing.keepserver.domain.teacher.service;
 
 import com.keepgoing.keepserver.global.file.generate.ExcelGenerator;
 import com.keepgoing.keepserver.global.file.generate.GenerateExcelTemplate;
-import com.keepgoing.keepserver.global.file.parser.ExcelParser;
+import com.keepgoing.keepserver.global.file.process.ExcelProcessor;
 import com.keepgoing.keepserver.global.file.validate.ExcelValidationResult;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
@@ -34,7 +34,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    private final ExcelParser<ItemExcelDto> parser;
+    private final ExcelProcessor<ItemExcelDto> excelProcessor;
     private final ItemMapper itemMapper;
     private final ItemRepository itemRepository;
     private final GenerateExcelTemplate generateExcelTemplate;
@@ -94,7 +94,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public BaseResponse importItemsFromExcel(MultipartFile file) {
-        List<ItemExcelDto> dtos = parser.parse(file);
+        List<ItemExcelDto> dtos = excelProcessor.parseValid(file);
 
         List<Item> items = dtos.stream()
                                .map(itemMapper::fromExcelDto)
@@ -108,7 +108,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public BaseResponse validateItemsFromExcel(MultipartFile file) {
-        List<ExcelValidationResult<ItemExcelDto>> validationResults = parser.validate(file);
+        List<ExcelValidationResult<ItemExcelDto>> validationResults = excelProcessor.validate(file);
 
         List<ExcelValidationErrorResponse> errors =
                 validationResults
