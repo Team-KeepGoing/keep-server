@@ -3,10 +3,12 @@ package com.keepgoing.keepserver.domain.teacher.service;
 import com.keepgoing.keepserver.domain.file.service.generate.ExcelGenerator;
 import com.keepgoing.keepserver.domain.file.service.generate.GenerateExcelTemplate;
 import com.keepgoing.keepserver.domain.file.service.parser.ExcelParser;
+import com.keepgoing.keepserver.domain.file.service.validate.ExcelValidationResult;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import com.keepgoing.keepserver.domain.teacher.domain.repository.ItemRepository;
 import com.keepgoing.keepserver.domain.teacher.mapper.ItemMapper;
+import com.keepgoing.keepserver.domain.teacher.payload.ExcelValidationErrorResponse;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelDto;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelTemplateDto;
 import com.keepgoing.keepserver.domain.teacher.payload.request.ItemRequest;
@@ -83,7 +85,7 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public BaseResponse updateItemStatus(ItemStatusUpdateRequest request) {
         Item item = itemRepository.findById(request.itemId())
-                .orElseThrow(ItemException::itemNotFound);
+                                  .orElseThrow(ItemException::itemNotFound);
 
         item.updateStatus(request.status());
 
@@ -94,9 +96,29 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public BaseResponse importItemsFromExcel(MultipartFile file) {
         List<ItemExcelDto> dtos = parser.parse(file);
-        List<Item> items = dtos.stream().map(itemMapper::fromExcelDto).collect(Collectors.toList());
+
+        List<Item> items = dtos.stream()
+                               .map(itemMapper::fromExcelDto)
+                               .filter(item -> !validateBySerialNum(item.getSerialNumber()))
+                               .toList();
+
         itemRepository.saveAll(items);
-        return new BaseResponse(HttpStatus.CREATED, "엑셀 업로딩 성공", items);
+
+        return new BaseResponse(HttpStatus.CREATED, "유효한 항목 업로드 완료", items);
+    }
+
+    @Override
+    public BaseResponse validateItemsFromExcel(MultipartFile file) {
+        List<ExcelValidationResult<ItemExcelDto>> validationResults = parser.validate(file);
+
+        List<ExcelValidationErrorResponse> errors =
+                validationResults
+                        .stream()
+                        .filter(r -> !r.errors().isEmpty())
+                        .map(r -> new ExcelValidationErrorResponse(r.rowNum(), r.errors()))
+                        .toList();
+
+        return new BaseResponse(HttpStatus.OK, "엑셀 검증 완료", errors);
     }
 
     @Override
@@ -123,9 +145,7 @@ public class ItemServiceImpl implements ItemService {
         );
     }
 
-    private void validateBySerialNum(String serialNum) {
-        if (itemRepository.existsBySerialNumber(serialNum)) {
-            throw ItemException.itemSerialNumExist();
-        }
+    private boolean validateBySerialNum(String serialNum) {
+        return itemRepository.existsBySerialNumber(serialNum);
     }
 }

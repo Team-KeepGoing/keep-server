@@ -51,8 +51,13 @@ public class TeacherController {
     }
 
     @PostMapping("/item/import")
-    public BaseResponse importItemsFromExcel(@RequestPart(value = "excel")MultipartFile file){
+    public BaseResponse importItemsFromExcel(@RequestPart(value = "excel") MultipartFile file) {
         return itemService.importItemsFromExcel(file);
+    }
+
+    @PostMapping("/item/validate")
+    public BaseResponse validateItemsFromExcel(@RequestPart(value = "excel") MultipartFile file) {
+        return itemService.validateItemsFromExcel(file);
     }
 
     @GetMapping("/item/template")
