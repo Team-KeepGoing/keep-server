@@ -50,7 +50,7 @@ public class ItemUsageFieldValidator implements ConstraintValidator<ValidateItem
                 isBlank(dto.rentedBy()) &&
                 dto.usageDate() == null;
 
-        if (valid) return false;
+        if (valid) return true;
 
         if (dto.rentalDate() != null) {
             context.buildConstraintViolationWithTemplate("대여일은 상태가 IN_USE가 아닐 경우 입력하지 마세요")
@@ -69,7 +69,7 @@ public class ItemUsageFieldValidator implements ConstraintValidator<ValidateItem
                    .addPropertyNode("usageDate").addConstraintViolation();
 
         }
-        return true;
+        return false;
     }
 
     private boolean isBlank(String value) {
