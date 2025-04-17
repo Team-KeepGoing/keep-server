@@ -34,7 +34,7 @@ public class TeacherController {
     }
 
     @GetMapping("/item/{id}")
-    public BaseResponse readItem(@PathVariable("id") Long id) {
+    public BaseResponse readItem(@PathVariable Long id) {
         return itemService.readItem(id);
     }
 
