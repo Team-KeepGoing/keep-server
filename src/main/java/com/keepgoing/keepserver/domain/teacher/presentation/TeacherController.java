@@ -67,7 +67,7 @@ public class TeacherController {
         var body = itemService.downloadItemTemplateFile();
         return ResponseEntity.ok()
                              .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dgsw-item-template.xlsx")
-                             .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                             .contentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                              .body(body);
     }
 
@@ -76,7 +76,7 @@ public class TeacherController {
         var body = itemService.exportItemsToExcelFile();
         return ResponseEntity.ok()
                              .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dgsw-item-list.xlsx")
-                             .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                             .contentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                              .body(body);
     }
 }
