@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +34,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
+    private final ItemSerialNumValidator itemSerialNumValidator;
     private final ExcelProcessor<ItemExcelDto> excelProcessor;
     private final ItemMapper itemMapper;
     private final ItemRepository itemRepository;
@@ -96,13 +96,13 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public BaseResponse importItemsFromExcel(MultipartFile file) {
         List<ItemExcelDto> dtos = excelProcessor.parseValid(file);
-        Map<String, Boolean> serialNums = getSerialNumberMap(dtos);
+        Map<String, Boolean> serialNums = itemSerialNumValidator.getSerialNumberMap(dtos);
 
-        updateExistsBySerialNum(serialNums);
+        itemSerialNumValidator.updateExistsBySerialNum(serialNums, itemRepository);
 
         List<Item> items = dtos.stream()
                                .map(itemMapper::fromExcelDto)
-                               .filter(item -> isNewItem(serialNums, item.getSerialNumber()))
+                               .filter(item -> itemSerialNumValidator.isNewItem(serialNums, item.getSerialNumber()))
                                .toList();
 
         itemRepository.saveAll(items);
@@ -146,26 +146,5 @@ public class ItemServiceImpl implements ItemService {
                 itemRepository.countByStatus(ItemStatus.IN_USE),
                 itemRepository.countByStatus(ItemStatus.UNAVAILABLE)
         );
-    }
-
-    private Map<String, Boolean> getSerialNumberMap(List<ItemExcelDto> dtos){
-        Map<String, Boolean> serialNums = new HashMap<>();
-
-        for (var dto : dtos) {
-            serialNums.put(dto.serialNumber(), true);
-        }
-        return serialNums;
-    }
-
-    private void updateExistsBySerialNum(Map<String, Boolean> serialNums){
-        var exists = itemRepository.findAllBySerialNumberIn(serialNums.keySet());
-
-        for (var item : exists) {
-            serialNums.put(item.getSerialNumber(), false);
-        }
-    }
-
-    private boolean isNewItem(Map<String, Boolean> serialNums, String serialNum){
-        return serialNums.getOrDefault(serialNum, false);
     }
 }
