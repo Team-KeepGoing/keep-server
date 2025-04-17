@@ -1,8 +1,9 @@
-package com.keepgoing.keepserver.global.file.mapper;
+package com.keepgoing.keepserver.domain.teacher.mapper;
 
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelDto;
 import com.keepgoing.keepserver.global.exception.excel.ExcelException;
+import com.keepgoing.keepserver.global.file.mapper.RowMapper;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 

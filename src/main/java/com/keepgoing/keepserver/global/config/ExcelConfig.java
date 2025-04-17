@@ -7,7 +7,7 @@ import com.keepgoing.keepserver.global.file.processor.ExcelProcessor;
 import com.keepgoing.keepserver.global.file.reader.ExcelReader;
 import com.keepgoing.keepserver.global.file.reader.ExcelReaderImpl;
 import com.keepgoing.keepserver.global.file.validator.ExcelValidator;
-import com.keepgoing.keepserver.global.file.mapper.ItemDtoRowMapperImpl;
+import com.keepgoing.keepserver.domain.teacher.mapper.ItemDtoRowMapperImpl;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelDto;
 import com.keepgoing.keepserver.global.file.validator.ExcelValidatorImpl;
 import jakarta.validation.Validator;
