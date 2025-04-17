@@ -101,8 +101,8 @@ public class ItemServiceImpl implements ItemService {
         itemSerialNumValidator.updateExistsBySerialNum(serialNums, itemRepository);
 
         List<Item> items = dtos.stream()
+                               .filter(item -> itemSerialNumValidator.isNewItem(serialNums, item.serialNumber()))
                                .map(itemMapper::fromExcelDto)
-                               .filter(item -> itemSerialNumValidator.isNewItem(serialNums, item.getSerialNumber()))
                                .toList();
 
         itemRepository.saveAll(items);
