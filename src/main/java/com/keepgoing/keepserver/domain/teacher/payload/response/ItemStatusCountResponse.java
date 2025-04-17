@@ -5,4 +5,4 @@ public record ItemStatusCountResponse (
         Long availableItems,
         Long inUseItems,
         Long unavailableItems
-) { }
+) {}

@@ -3,7 +3,7 @@ package com.keepgoing.keepserver.domain.teacher.payload.request;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record ItemRequest (
         @NotNull
@@ -17,7 +17,7 @@ public record ItemRequest (
         String serialNumber,
 
         @NotNull
-        LocalDateTime acquisitionDate,
+        LocalDate acquisitionDate,
 
         @NotNull
         Long price,
