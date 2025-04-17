@@ -21,6 +21,7 @@ import org.springframework.core.io.Resource;
 public class TeacherController {
 
     private final ItemService itemService;
+    private static final MediaType CONTENT_TYPE_XLSX = MediaType.valueOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
     @GetMapping("/item/list")
     public BaseResponse allItems() {
@@ -67,7 +68,7 @@ public class TeacherController {
         var body = itemService.downloadItemTemplateFile();
         return ResponseEntity.ok()
                              .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dgsw-item-template.xlsx")
-                             .contentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                             .contentType(CONTENT_TYPE_XLSX)
                              .body(body);
     }
 
@@ -76,7 +77,7 @@ public class TeacherController {
         var body = itemService.exportItemsToExcelFile();
         return ResponseEntity.ok()
                              .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dgsw-item-list.xlsx")
-                             .contentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                             .contentType(CONTENT_TYPE_XLSX)
                              .body(body);
     }
 }
