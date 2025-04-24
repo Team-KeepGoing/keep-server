@@ -31,15 +31,19 @@ public class GenerateExcelTemplateImpl implements GenerateExcelTemplate {
 
                 for (int cellIndex = 0; cellIndex < fields.length; cellIndex++) {
                     fields[cellIndex].setAccessible(true);
-                    try {
-                        Object value = fields[cellIndex].get(data);
-                        row.createCell(cellIndex).setCellValue(value != null ? value.toString() : "");
-                    } catch (IllegalAccessException e) {
-                        throw ExcelException.excelUnsupportedType();
-                    }
+                    createCell(cellIndex, data, fields, row);
                 }
             }
         }
         return workbook;
+    }
+
+    private <T> void createCell(int cellIndex, T data, Field[] fields, Row row) {
+        try {
+            Object value = fields[cellIndex].get(data);
+            row.createCell(cellIndex).setCellValue(value != null ? value.toString() : "");
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            throw ExcelException.excelUnsupportedType();
+        }
     }
 }
