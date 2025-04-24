@@ -8,6 +8,7 @@ public class ExcelException extends BusinessException {
     public static final ExcelException EXCEL_STATUS_VALUE_ERROR = new ExcelException(ExcelError.EXCEL_STATUS_VALUE_ERROR);
     public static final ExcelException EXCEL_CANNOT_PARSE = new ExcelException(ExcelError.EXCEL_CANNOT_PARSE);
     public static final ExcelException EXCEL_FAIL_TO_GENERATE = new ExcelException(ExcelError.EXCEL_FAIL_TO_GENERATE);
+    public static final ExcelException EXCEL_CANNOT_GET_STRATEGY = new ExcelException(ExcelError.EXCEL_CANNOT_GET_STRATEGY);
 
     public ExcelException(ExcelError error) {
         super(error);
@@ -31,5 +32,9 @@ public class ExcelException extends BusinessException {
 
     public static ExcelException excelFailToGenerate() {
         return EXCEL_FAIL_TO_GENERATE;
+    }
+
+    public static ExcelException excelCannotGetStrategy() {
+        return EXCEL_CANNOT_GET_STRATEGY;
     }
 }
