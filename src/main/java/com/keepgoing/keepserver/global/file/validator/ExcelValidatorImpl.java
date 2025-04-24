@@ -4,11 +4,13 @@ import com.keepgoing.keepserver.global.file.model.ExcelValidationResult;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Component
 @AllArgsConstructor
 public class ExcelValidatorImpl<T> implements ExcelValidator<T> {
 

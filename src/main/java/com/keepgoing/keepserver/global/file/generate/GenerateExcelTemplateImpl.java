@@ -5,10 +5,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
+@Component
 public class GenerateExcelTemplateImpl implements GenerateExcelTemplate {
     @Override
     public <T> Workbook generateTemplate(List<T> sampleData) {

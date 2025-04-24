@@ -2,12 +2,12 @@ package com.keepgoing.keepserver.domain.teacher.service;
 
 import com.keepgoing.keepserver.global.file.generate.ExcelGenerator;
 import com.keepgoing.keepserver.global.file.generate.GenerateExcelTemplate;
-import com.keepgoing.keepserver.global.file.processor.ExcelProcessor;
 import com.keepgoing.keepserver.global.file.model.ExcelValidationResult;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.Item;
 import com.keepgoing.keepserver.domain.teacher.domain.entity.enums.ItemStatus;
 import com.keepgoing.keepserver.domain.teacher.domain.repository.ItemRepository;
 import com.keepgoing.keepserver.domain.teacher.mapper.ItemMapper;
+import com.keepgoing.keepserver.global.file.service.ExcelImportService;
 import com.keepgoing.keepserver.global.file.validator.ExcelValidationErrorResponse;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelDto;
 import com.keepgoing.keepserver.domain.teacher.payload.ItemExcelTemplateDto;
@@ -35,10 +35,10 @@ import java.util.Map;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemSerialNumberValidator itemSerialNumberValidator;
-    private final ExcelProcessor<ItemExcelDto> excelProcessor;
     private final ItemMapper itemMapper;
     private final ItemRepository itemRepository;
     private final GenerateExcelTemplate generateExcelTemplate;
+    private final ExcelImportService excelImportService;
 
     @Override
     @Transactional(readOnly = true)
@@ -95,7 +95,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public BaseResponse importItemsFromExcel(MultipartFile file) {
-        List<ItemExcelDto> dtos = excelProcessor.parseValid(file);
+        List<ItemExcelDto> dtos = excelImportService.parseValid(file, ItemExcelDto.class);
         Map<String, Boolean> serialNums = itemSerialNumberValidator.getSerialNumberMap(dtos);
 
         itemSerialNumberValidator.updateExistsBySerialNum(serialNums, itemRepository);
@@ -112,7 +112,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public BaseResponse validateItemsFromExcel(MultipartFile file) {
-        List<ExcelValidationResult<ItemExcelDto>> validationResults = excelProcessor.validate(file);
+        List<ExcelValidationResult<ItemExcelDto>> validationResults = excelImportService.validate(file, ItemExcelDto.class);
 
         List<ExcelValidationErrorResponse> errors =
                 validationResults

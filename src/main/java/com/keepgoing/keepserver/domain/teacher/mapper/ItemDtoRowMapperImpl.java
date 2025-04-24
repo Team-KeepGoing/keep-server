@@ -6,10 +6,12 @@ import com.keepgoing.keepserver.global.exception.excel.ExcelException;
 import com.keepgoing.keepserver.global.file.mapper.RowMapper;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.TimeZone;
 
+@Component
 public class ItemDtoRowMapperImpl implements RowMapper<ItemExcelDto> {
     @Override
     public ItemExcelDto map(Row row) {
@@ -32,7 +34,7 @@ public class ItemDtoRowMapperImpl implements RowMapper<ItemExcelDto> {
         }
     }
 
-    private ItemStatus getItemStatusOrElse(Cell cell){
+    private ItemStatus getItemStatusOrElse(Cell cell) {
         try {
             String raw = cell.getStringCellValue().trim();
             return ItemStatus.valueOf(raw);
