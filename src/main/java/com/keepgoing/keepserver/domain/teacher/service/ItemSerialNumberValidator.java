@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class ItemSerialNumValidator {
+public class ItemSerialNumberValidator {
     public Map<String, Boolean> getSerialNumberMap(List<ItemExcelDto> dtos) {
         Map<String, Boolean> serialNums = new HashMap<>();
         for (var dto : dtos) {

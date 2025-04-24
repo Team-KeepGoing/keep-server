@@ -34,7 +34,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    private final ItemSerialNumValidator itemSerialNumValidator;
+    private final ItemSerialNumberValidator itemSerialNumberValidator;
     private final ExcelProcessor<ItemExcelDto> excelProcessor;
     private final ItemMapper itemMapper;
     private final ItemRepository itemRepository;
@@ -96,12 +96,12 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public BaseResponse importItemsFromExcel(MultipartFile file) {
         List<ItemExcelDto> dtos = excelProcessor.parseValid(file);
-        Map<String, Boolean> serialNums = itemSerialNumValidator.getSerialNumberMap(dtos);
+        Map<String, Boolean> serialNums = itemSerialNumberValidator.getSerialNumberMap(dtos);
 
-        itemSerialNumValidator.updateExistsBySerialNum(serialNums, itemRepository);
+        itemSerialNumberValidator.updateExistsBySerialNum(serialNums, itemRepository);
 
         List<Item> items = dtos.stream()
-                               .filter(item -> itemSerialNumValidator.isNewItem(serialNums, item.serialNumber()))
+                               .filter(item -> itemSerialNumberValidator.isNewItem(serialNums, item.serialNumber()))
                                .map(itemMapper::fromExcelDto)
                                .toList();
 
